@@ -5,7 +5,6 @@ import scipy.fftpack as scifft
 import scipy.stats as scistat
 
 
-
 def mean(data):
     return stats.mean(data)
 
@@ -100,15 +99,13 @@ def frequency_preservation(d0, d1):
     return np.linalg.norm(diff, ord=2)
 
 
-def signal_to_noise(original,filtered):
+def signal_to_noise(original, filtered):
     noise = np.subtract(original, filtered)
     n_var = variance_sample(noise)
     if n_var <= 1e-8:
         return 1e10
     else:
         return variance_sample(filtered) / n_var
-
-
 
 #
 # public
@@ -162,4 +159,3 @@ def signal_to_noise(original,filtered):
 # Math.sqrt(tot);
 # }
 #
-

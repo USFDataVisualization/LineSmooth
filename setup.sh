@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # delete old directories
-rm -rf __pycahce__
+rm -rf __pycache__
+rm -rf lcsmooth/__pycache__
 rm -rf venv
 
 # Create Virtual Environment
@@ -13,7 +14,7 @@ python3 -m venv venv
 pip install --upgrade pip
 
 #Within the activated environment, use the following command to install Flask and dependancies:
-pip install wheel Flask numpy sklearn python-dotenv watchdog simplejson blinker gunicorn
+pip install wheel numpy sklearn simplejson Flask python-dotenv watchdog blinker gunicorn
 
 deactivate
 
