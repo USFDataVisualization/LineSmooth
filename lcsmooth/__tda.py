@@ -1,24 +1,20 @@
 from operator import itemgetter
 import os
+import random
 
-rel_error = 0.01
+__hera_bottleneck = os.getenv('HERA_BOTTLENECK')
+__hera_wasserstein = os.getenv('HERA_WASSERSTEIN')
 
-hera_bottleneck = os.getenv('HERA_BOTTLENECK')
-hera_wasserstein = os.getenv('HERA_WASSERSTEIN')
-
-if hera_bottleneck is None or hera_wasserstein is None or \
-        (not os.path.exists(hera_bottleneck)) or (not os.path.exists(hera_wasserstein)):
+if __hera_bottleneck is None or __hera_wasserstein is None or \
+        (not os.path.exists(__hera_bottleneck)) or (not os.path.exists(__hera_wasserstein)):
     print("Path to Hera Bottleneck and Wasserstein not set correctly.")
     print("   For example: ")
     print("       > export HERA_BOTTLENECK=\"/bin/tda/hera/bottleneck_dist\"")
     print("       > export HERA_WASSERSTEIN=\"/bin/tda/hera/wasserstein_dist\"")
     print()
     print("These functionalities will be disabled.")
-    hera_bottleneck = None
-    hera_wasserstein = None
-#else:
-#    print("Hera Bottleneck:  " + hera_bottleneck)
-#    print("Hera Wasserstein: " + hera_wasserstein)
+    __hera_bottleneck = None
+    __hera_wasserstein = None
 
 
 class DisjointSet:
@@ -136,6 +132,14 @@ def filter_tda(data, threshold):
     return filter_cps(data, pairs, threshold)
 
 
+def get_persistence_diagram(data):
+    dtmp = list(map(lambda d: d + random.uniform(-0.0001, 0.0001), data))
+    cps = extract_cps(dtmp)
+    pairs = cp_pairs(cps)
+    nonzero_pairs = filter(lambda p: p['persistence'] > 0, pairs)
+    return list(map(lambda p: [dtmp[p['c0']], dtmp[p['c1']]], nonzero_pairs))
+
+
 def save_persistence_diagram(outfile, pd0, pd1=None):
     f = open(outfile, "w")
 
@@ -149,21 +153,21 @@ def save_persistence_diagram(outfile, pd0, pd1=None):
     f.close()
 
 
-def wasserstein_distance(pd_file0, pd_file1):
-    if hera_wasserstein is None:
+def wasserstein_distance(pd_file0, pd_file1, rel_error=0.01):
+    if __hera_wasserstein is None:
         return float('nan')
 
-    stream = os.popen(hera_wasserstein + " " + pd_file0 + " " + pd_file1 + " " + str(rel_error))
+    stream = os.popen(__hera_wasserstein + " " + pd_file0 + " " + pd_file1 + " " + str(rel_error))
     output = stream.read()
     stream.close()
     return float(output)
 
 
-def bottleneck_distance(pd_file0, pd_file1):
-    if hera_bottleneck is None:
+def bottleneck_distance(pd_file0, pd_file1, rel_error=0.01):
+    if __hera_bottleneck is None:
         return float('nan')
 
-    stream = os.popen(hera_bottleneck + " " + pd_file0 + " " + pd_file1 + " " + str(rel_error))
+    stream = os.popen(__hera_bottleneck + " " + pd_file0 + " " + pd_file1 + " " + str(rel_error))
     output = stream.read()
     stream.close()
     return float(output)

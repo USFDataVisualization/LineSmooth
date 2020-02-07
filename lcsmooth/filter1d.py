@@ -81,6 +81,7 @@ def butterworth(data, cutoff_freq: float, order: int):
     res = scisig.lfilter(b, a, data)
     return list(enumerate(res))
 
+import matplotlib.pyplot as plt
 
 def chebyshev(data, cutoff_freq: float, order: int, ripple_db: float):
     b, a = scisig.cheby1(order, ripple_db, cutoff_freq, btype='low')

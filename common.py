@@ -8,6 +8,8 @@ import simplejson as json
 import lcsmooth.filter1d as filter1d
 import lcsmooth.measures as measures
 
+import math
+
 
 def process_smoothing(input_signal, filter_name, filter_level):
     input_min = min(input_signal)
@@ -15,7 +17,7 @@ def process_smoothing(input_signal, filter_name, filter_level):
     input_range = input_max - input_min
 
     start = time.time()
-    filter_data = []
+    # filter_data = []
     if filter_name == 'cutoff':
         filter_data = filter1d.cutoff(input_signal, filter_level)
     elif filter_name == 'subsample':
@@ -42,49 +44,53 @@ def process_smoothing(input_signal, filter_name, filter_level):
         level = filter1d.__linear_map(filter_level, 0, 1, 1, 30)
         filter_data = filter1d.max_filter(input_signal, int(level))
     elif filter_name == 'savitzky_golay':
-        level = filter1d.__linear_map(filter_level, 0, 1, 1, 15)
+        level = filter1d.__linear_map(filter_level, 0, 1, 1, len(input_signal) / 4)
         filter_data = filter1d.savitzky_golay(input_signal, int(level) * 2 + 1, 2)
     elif filter_name == 'butterworth':
-        filter_data = filter1d.butterworth(input_signal, filter_level, 2)
+        level_tmp = filter1d.__linear_map(filter_level, 0, 1, 1.1, 9999.9)
+        level = math.log(level_tmp)/math.log(10000)
+        filter_data = filter1d.butterworth(input_signal, 1-level, 2)
     elif filter_name == 'chebyshev':
-        filter_data = filter1d.chebyshev(input_signal, filter_level, 2, 1)
+        level_tmp = filter1d.__linear_map(filter_level, 0, 1, 1.1, 9999.9)
+        level = math.log(level_tmp)/math.log(10000)
+        filter_data = filter1d.chebyshev(input_signal, 1-level, 2, 0.001)
     else:
         filter_data = list(enumerate(input_signal))
     end = time.time()
 
     output_signal = list(map(lambda x: x[1], filter_data))
 
+    info = {}
+    info["processing time"] = end - start
+    info["filter level"] = filter_level
+    info["filter name"] = filter_name
+
     res_stats = {}
     res_stats["mean"] = measures.mean(output_signal)
-    res_stats["Pop Stdev"] = measures.stdev_population(output_signal)
-    res_stats["Sample Stdev"] = measures.stdev_sample(output_signal)
-    res_stats["Pop Variance"] = measures.variance_population(output_signal)
-    res_stats["Sample Variance"] = measures.variance_sample(output_signal)
-    res_stats["SNR"] = measures.snr(output_signal)
-    res_stats["PROC_TIME"] = end - start
+    res_stats["pop stdev"] = measures.stdev_population(output_signal)
+    res_stats["sample stdev"] = measures.stdev_sample(output_signal)
+    res_stats["pop variance"] = measures.variance_population(output_signal)
+    res_stats["sample variance"] = measures.variance_sample(output_signal)
+    res_stats["snr"] = measures.snr(output_signal)
+    res_stats["minimum"] = min(output_signal)
+    res_stats["maximum"] = max(output_signal)
 
     metrics = {}
-    metrics["Covariance"] = measures.covariance(input_signal, output_signal)
-    metrics["PearsonCC"] = measures.pearson_correlation(input_signal, output_signal)
-    metrics["SpearmanRC"] = measures.spearman_correlation(input_signal, output_signal)
-    metrics["L1-norm"] = measures.l1_norm(input_signal, output_signal)
-    metrics["L2-norm"] = measures.l2_norm(input_signal, output_signal)
-    metrics["Linf-norm"] = measures.linf_norm(input_signal, output_signal)
-    metrics["DVol"] = measures.delta_volume(input_signal, output_signal)
-    # metrics["Approx Ent (2,0.25)"] = measures.approximate_entropy(output_signal, 2, 0.25)
-    # metrics["Approx Ent (2,0.5)"] = measures.approximate_entropy(output_signal, 2, 0.5)
-    # metrics["Approx Ent (2,1.0)"] = measures.approximate_entropy(output_signal, 2, 1.0)
-    # metrics["Approx Ent (2,2.0)"] = measures.approximate_entropy(output_signal, 2, 2.0)
-    # metrics["Approx Ent (2,4.0)"] = measures.approximate_entropy(output_signal, 2, 4.0)
-    metrics["Frequency Preservation"] = measures.frequency_preservation(input_signal, output_signal)
-    metrics["Signal to Noise"] = measures.signal_to_noise(input_signal, output_signal)
-
-    # if (Float.isFinite(f.peakinessBottleneck())) ret.setFloat( "peakinessBottleneck", f.peakinessBottleneck() );
-    # if (Float.isFinite(f.peakinessWasserstein())) ret.setFloat( "peakinessWasserstein", f.peakinessWasserstein() );
+    metrics["covariance"] = measures.covariance(input_signal, output_signal)
+    metrics["pearson cc"] = measures.pearson_correlation(input_signal, output_signal)
+    metrics["spearman rc"] = measures.spearman_correlation(input_signal, output_signal)
+    metrics["L1 norm"] = measures.l1_norm(input_signal, output_signal)
+    metrics["L2 norm"] = measures.l2_norm(input_signal, output_signal)
+    metrics["L_inf norm"] = measures.linf_norm(input_signal, output_signal)
+    metrics["delta volume"] = measures.delta_volume(input_signal, output_signal)
+    metrics["approx entropy"] = measures.approximate_entropy_v2( output_signal )
+    metrics["frequency preservation"] = measures.frequency_preservation(input_signal, output_signal)
+    metrics["signal to noise"] = measures.signal_to_noise(input_signal, output_signal)
+    metrics.update( measures.peakiness(input_signal, output_signal) )
     # if (Float.isFinite(f.phaseShifted(fPhi))) ret.setFloat( "phaseShift", f.phaseShifted(fPhi) );
 
     return {'original': list(enumerate(input_signal)), 'filtered': filter_data,
-            'statistics': res_stats, 'metrics': metrics}
+            'info': info, 'statistics': res_stats, 'metrics': metrics}
 
 
 def get_datasets(data_dir):

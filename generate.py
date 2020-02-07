@@ -1,13 +1,6 @@
 import argparse
-import fnmatch
-import os
-import time
-from operator import itemgetter
 
 import simplejson as json
-
-import lcsmooth.filter1d as filter1d
-import lcsmooth.measures as measures
 
 import common
 
@@ -31,6 +24,9 @@ datasets = common.get_datasets(data_dir)
 input_signal = common.load_dataset(data_dir, datasets, ds, df)
 
 if input_signal is not None:
-    json.dumps(common.process_smoothing(input_signal, filter_name, filter_level))
+    for i in range(10):
+        filter_level = float(i+1)/100
+        print( filter_level )
+        print( json.dumps(common.process_smoothing(input_signal, filter_name, filter_level)) )
 else:
     print("unknown dataset: " + ds)

@@ -20,7 +20,6 @@ data_dir = "data/"
 datasets = common.get_datasets(data_dir)
 
 
-
 def error(err):
     print(err)
 

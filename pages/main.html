@@ -59,13 +59,18 @@
             <div class="form-group">
                 <label for="filter">Filter Type</label>
                 <select class="form-control form-control-sm" id="filter" name="filter" onchange="reloadData()">
-                    <option value="cutoff">Low Pass</option>
-                    <option value="gaussian">Gaussian</option>
-                    <option value="median">Median</option>
-                    <option value="rdp">RDP</option>
-                    <option value="mean">Mean</option>
-                    <option value="tda">TDA</option>
-                    <option value="subsample">Subsampling</option>
+                    <option value="median">Rank - Median</option>
+                    <option value="min">Rank - Minimum</option>
+                    <option value="max">Rank - Maximum</option>
+                    <option value="gaussian">Convolutional - Gaussian</option>
+                    <option value="mean">Convolutional - Mean</option>
+                    <option value="savitzky_golay">Convolutional - Savitzky-Golay</option>
+                    <option value="cutoff">Frequency - Cutoff</option>
+                    <option value="butterworth">Frequency - Butterworth</option>
+                    <option value="chebyshev">Frequency - Chebyshev</option>
+                    <option value="subsample">Subsampling - Uniform</option>
+                    <option value="rdp">Subsmapling - Ramer-Douglas</option>
+                    <option value="tda">Subsampling - TDA</option>
                 </select>
             </div>
             <div class="form-group">
