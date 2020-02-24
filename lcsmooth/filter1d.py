@@ -2,7 +2,6 @@ import numpy as np
 import scipy.fftpack as scifft
 import scipy.ndimage as scind
 import scipy.signal as scisig
-from sklearn.isotonic import IsotonicRegression
 
 import lcsmooth.__rdp as mod_rdp
 import lcsmooth.__tda as mod_tda
@@ -81,7 +80,6 @@ def butterworth(data, cutoff_freq: float, order: int):
     res = scisig.lfilter(b, a, data)
     return list(enumerate(res))
 
-import matplotlib.pyplot as plt
 
 def chebyshev(data, cutoff_freq: float, order: int, ripple_db: float):
     b, a = scisig.cheby1(order, ripple_db, cutoff_freq, btype='low')
@@ -99,7 +97,7 @@ def elliptical(data, cutoff_freq: int, order: int, ripple_db: float, max_atten_d
 #
 # SUBSAMPLING FILTERS
 def subsample(data, filter_level: float):
-    num_out_points = int(__linear_map(filter_level, 0, 1, len(data), 2))
+    num_out_points = int(__linear_map(filter_level, 0, 1, len(data), 4))
     keys = [[0, data[0]]]
     for i in range(1, num_out_points - 1):
         idx = __linear_map(i, 0, num_out_points - 1, 0, len(data) - 1)
@@ -113,19 +111,11 @@ def subsample(data, filter_level: float):
 
 def rdp(data, eps):
     dtmp = list(enumerate(data))
-    tmp = mod_rdp.rdp(dtmp, epsilon=eps)
+    count = math.ceil(__linear_map(eps, 0, 1, 1, len(dtmp)))
+    tmp = mod_rdp.rdp_iter_count(dtmp, count)
     return __linear_map_points(data, tmp)
 
 
 def tda(data, threshold):
-    cp_keys = mod_tda.filter_tda(data, threshold)
+    return list(enumerate(mod_tda.filter_tda_count(data, threshold)))
 
-    tmp = [data[0]]
-    for i in range(len(cp_keys) - 1):
-        ir = IsotonicRegression(increasing=(cp_keys[i][1] < cp_keys[i + 1][1]))
-        y = data[cp_keys[i][0]: cp_keys[i + 1][0] + 1]
-        y_ = ir.fit_transform(range(len(y)), y)
-        tmp.extend(y_[1:])
-
-    # return __linear_map_points(data, cp_keys)
-    return list(enumerate(tmp))

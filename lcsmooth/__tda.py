@@ -1,6 +1,9 @@
+import math
 from operator import itemgetter
 import os
 import random
+from sklearn.isotonic import IsotonicRegression
+
 
 __hera_bottleneck = os.getenv('HERA_BOTTLENECK')
 __hera_wasserstein = os.getenv('HERA_WASSERSTEIN')
@@ -114,10 +117,10 @@ def cp_pairs(cps):
     return pairs
 
 
-def filter_cps(data, pairs, threshold):
+def filter_cps_threshold(data, pairs, threshold):
     indices = {0, len(data) - 1}
 
-    for p in filter(lambda pair: pair['persistence'] > threshold, pairs):
+    for p in filter(lambda pair: pair['persistence'] >= threshold, pairs):
         if 0 <= p['c0'] <= len(data): indices.add(p['c0'])
         if 0 <= p['c1'] <= len(data): indices.add(p['c1'])
 
@@ -126,17 +129,56 @@ def filter_cps(data, pairs, threshold):
     return new_cps
 
 
-def filter_tda(data, threshold):
+def __linear_map(val, in0, in1, out0, out1):
+    t = (val - in0) / (in1 - in0)
+    return out0 * (1 - t) + out1 * t
+
+
+def filter_cps_count(data, pairs, count_percent):
+    indices = {0, len(data) - 1}
+
+    pairs.sort(key=(lambda pair: pair['persistence']), reverse=True)
+    count = math.ceil(__linear_map(count_percent, 0, 1, 1, len(pairs)))
+
+    # print( count )
+
+    for i in range(count):
+        p = pairs[i]
+        if 0 <= p['c0'] <= len(data): indices.add(p['c0'])
+        if 0 <= p['c1'] <= len(data): indices.add(p['c1'])
+
+    new_cps = list(map(lambda x: [x, data[x]], indices))
+    new_cps.sort(key=itemgetter(0))
+    return new_cps
+
+
+def filter_tda_threshold(data, threshold):
     cps = extract_cps(data)
     pairs = cp_pairs(cps)
-    return filter_cps(data, pairs, threshold)
+    return filter_cps_threshold(data, pairs, threshold)
+
+
+def filter_tda_count(data, threshold):
+    threshold = min(1, max(0, threshold))
+    cps = extract_cps(data)
+    pairs = cp_pairs(cps)
+    cp_keys = filter_cps_count(data, pairs, threshold)
+
+    tmp = [data[0]]
+    for i in range(len(cp_keys) - 1):
+        ir = IsotonicRegression(increasing=(cp_keys[i][1] < cp_keys[i + 1][1]))
+        y = data[cp_keys[i][0]: cp_keys[i + 1][0] + 1]
+        y_ = ir.fit_transform(range(len(y)), y)
+        tmp.extend(y_[1:])
+
+    return tmp
 
 
 def get_persistence_diagram(data):
     dtmp = list(map(lambda d: d + random.uniform(-0.0001, 0.0001), data))
     cps = extract_cps(dtmp)
     pairs = cp_pairs(cps)
-    nonzero_pairs = filter(lambda p: p['persistence'] > 0, pairs)
+    nonzero_pairs = filter(lambda p: not dtmp[p['c0']] == dtmp[p['c1']], pairs)
     return list(map(lambda p: [dtmp[p['c0']], dtmp[p['c1']]], nonzero_pairs))
 
 
@@ -155,7 +197,7 @@ def save_persistence_diagram(outfile, pd0, pd1=None):
 
 def wasserstein_distance(pd_file0, pd_file1, rel_error=0.01):
     if __hera_wasserstein is None:
-        return float('nan')
+        return 'nan'
 
     stream = os.popen(__hera_wasserstein + " " + pd_file0 + " " + pd_file1 + " " + str(rel_error))
     output = stream.read()
@@ -165,7 +207,7 @@ def wasserstein_distance(pd_file0, pd_file1, rel_error=0.01):
 
 def bottleneck_distance(pd_file0, pd_file1, rel_error=0.01):
     if __hera_bottleneck is None:
-        return float('nan')
+        return 'nan'
 
     stream = os.popen(__hera_bottleneck + " " + pd_file0 + " " + pd_file1 + " " + str(rel_error))
     output = stream.read()

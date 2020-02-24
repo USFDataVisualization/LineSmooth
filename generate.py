@@ -1,32 +1,57 @@
 import argparse
-
 import simplejson as json
-
 import common
+import os
 
-parser = argparse.ArgumentParser(description='Time-varying Graph Subdivder.')
-parser.add_argument('-ds', '--dataset', metavar='[SET]', nargs=1, required=True, help='dataset name')
-parser.add_argument('-df', '--datafile', metavar='[FILE]', nargs=1, required=True, help='data file name')
-parser.add_argument('-fl', '--filter_level', metavar='[LEVEL]', type=float, nargs=1, required=True,
-                    help='Filter level [0,1]')
-parser.add_argument('-f', '--filter', metavar='[NAME]', nargs=1, required=True, help='Filter name')
 
-args = parser.parse_args()
+def generate_metric_data(_input_signal, _filter_name, _data_dir, _dataset, _datafile, quiet=False):
+    out_dir = _data_dir + _dataset + '/' + _datafile + '/'
+    if not os.path.exists(out_dir):
+        if not quiet:
+            print( "Creating: " + out_dir )
+        os.mkdir(out_dir)
 
-ds = args.dataset[0]
-df = args.datafile[0]
-filter_name = args.filter[0]
-filter_level = args.filter_level[0]
+    out_filename = out_dir + _filter_name + '.json'
 
-data_dir = "data/"
-datasets = common.get_datasets(data_dir)
+    if os.path.exists(out_filename):
+        if not quiet:
+            print("File already exists: " + out_filename)
+        return out_filename
+    else:
+        results = []
+        # warm up
+        common.process_smoothing(_input_signal, _filter_name, 0 )
+        for i in range(100):
+            res = common.process_smoothing(_input_signal, _filter_name, float(i + 1) / 100)
+            res.pop('original')
+            res.pop('filtered')
+            results.append(res)
 
-input_signal = common.load_dataset(data_dir, datasets, ds, df)
+        if not quiet:
+            print("Saving: " + out_filename)
+        with open(out_filename, 'w') as outfile:
+            json.dump(results, outfile, indent=4, separators=(',', ': '))
+        return out_filename
 
-if input_signal is not None:
-    for i in range(10):
-        filter_level = float(i+1)/100
-        print( filter_level )
-        print( json.dumps(common.process_smoothing(input_signal, filter_name, filter_level)) )
-else:
-    print("unknown dataset: " + ds)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Time-varying Graph Subdivder.')
+    parser.add_argument('-ds', '--dataset', metavar='[SET]', nargs=1, required=True, help='dataset name')
+    parser.add_argument('-df', '--datafile', metavar='[FILE]', nargs=1, required=True, help='data file name')
+
+    args = parser.parse_args()
+
+    ds = args.dataset[0]
+    df = args.datafile[0]
+
+    data_dir = "data/"
+    datasets = common.get_datasets(data_dir)
+
+    input_signal = common.load_dataset(data_dir, datasets, ds, df)
+
+    if input_signal is not None:
+        for filter_name in common.filter_list:
+            generate_metric_data(input_signal, filter_name, data_dir, ds, df)
+    else:
+        print("unknown dataset: " + ds)
+

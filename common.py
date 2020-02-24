@@ -10,6 +10,8 @@ import lcsmooth.measures as measures
 
 import math
 
+filter_list = ['cutoff','subsample','tda','rdp','gaussian', 'median', 'mean', 'min', 'max', 'savitzky_golay',
+               'butterworth', 'chebyshev']
 
 def process_smoothing(input_signal, filter_name, filter_level):
     input_min = min(input_signal)
@@ -32,16 +34,16 @@ def process_smoothing(input_signal, filter_name, filter_level):
         level = filter1d.__linear_map(filter_level, 0, 1, 0.1, 30)
         filter_data = filter1d.gaussian(input_signal, level)
     elif filter_name == 'median':
-        level = filter1d.__linear_map(filter_level, 0, 1, 1, 30)
+        level = filter1d.__linear_map(filter_level, 0, 1, 1, 100)
         filter_data = filter1d.median(input_signal, int(level))
     elif filter_name == 'mean':
-        level = filter1d.__linear_map(filter_level, 0, 1, 1, 30)
+        level = filter1d.__linear_map(filter_level, 0, 1, 1, 100)
         filter_data = filter1d.mean(input_signal, int(level))
     elif filter_name == 'min':
-        level = filter1d.__linear_map(filter_level, 0, 1, 1, 30)
+        level = filter1d.__linear_map(filter_level, 0, 1, 1, 100)
         filter_data = filter1d.min_filter(input_signal, int(level))
     elif filter_name == 'max':
-        level = filter1d.__linear_map(filter_level, 0, 1, 1, 30)
+        level = filter1d.__linear_map(filter_level, 0, 1, 1, 100)
         filter_data = filter1d.max_filter(input_signal, int(level))
     elif filter_name == 'savitzky_golay':
         level = filter1d.__linear_map(filter_level, 0, 1, 1, len(input_signal) / 4)

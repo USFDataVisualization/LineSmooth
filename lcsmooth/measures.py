@@ -1,14 +1,13 @@
+import os
+import random
 import statistics as stats
-import numpy as np
-import math
+import string
+
 import scipy.fftpack as scifft
 import scipy.stats as scistat
 from entropy import *
-import numpy as np
+
 import lcsmooth.__tda as tda
-import random
-import string
-import os
 
 
 def mean(data):
@@ -50,34 +49,6 @@ def spearman_correlation(d0, d1):
     return src[0]
 
 
-def __approx_ent_max_d(pc, i, j, m):
-    maxD = 0;
-    for k in range(0, m):
-        maxD = max(maxD, abs(pc[i + k] - pc[j + k]))
-    return maxD
-
-
-def __approx_ent_c(pc, i, m, r):
-    cnt = 0
-    for j in range(0, len(pc) - m + 1):
-        d = __approx_ent_max_d(pc, i, j, m)
-        if d < r:
-            cnt += 1
-    return cnt / (len(pc) - m + 1)
-
-
-def __approx_ent_phi(pc, m, r):
-    sum = 0
-    for i in range(0, len(pc) - m + 1):
-        c = __approx_ent_c(pc, i, m, r)
-        sum += math.log(c)
-    return sum / (len(pc) - m + 1)
-
-
-def approximate_entropy(pc, window_size, filter_level):
-    return __approx_ent_phi(pc, window_size, filter_level) - __approx_ent_phi(pc, window_size + 1, filter_level)
-
-
 def l1_norm(d0, d1):
     diff = np.subtract(d0, d1)
     return np.linalg.norm(diff, ord=1)
@@ -114,7 +85,7 @@ def signal_to_noise(original, filtered):
         return variance_sample(filtered) / n_var
 
 
-def approximate_entropy_v2(x):
+def approximate_entropy(x):
     # print(perm_entropy(x, order=3, normalize=True))  # Permutation entropy
     # print(spectral_entropy(x, 100, method='welch', normalize=True))  # Spectral entropy
     # print(svd_entropy(x, order=3, delay=1, normalize=True))  # Singular value decomposition entropy
@@ -169,19 +140,3 @@ def peakiness(original, filtered):
     os.remove(file_flt)
     return {'peak bottleneck': res_b, 'peak wasserstein': res_w}
 
-#
-# public
-# float
-# phaseShifted(FilteredSignal
-# phi ) {
-# float
-# tot = 0;
-# for (int i = 0; i < size() - 1 & & i < phi.size(); i++ ) {
-# float o = phi.orig_graph.get(i) - phi.get(i);
-# float f = orig_graph.get(i+1) - get(i+1);
-# tot += Math.pow(o-f, 2);
-# }
-# return (float)
-# Math.sqrt(tot);
-# }
-#

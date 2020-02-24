@@ -13,6 +13,7 @@ from flask import send_file
 from operator import itemgetter, attrgetter
 
 import common
+import generate
 
 app = Flask(__name__)
 
@@ -43,6 +44,29 @@ def page_not_found(error_msg):
 @app.route('/datasets', methods=['GET', 'POST'])
 def get_datasets():
     return json.dumps(datasets)
+
+
+@app.route('/metric', methods=['GET', 'POST'])
+def get_metric_data():
+    ds = request.args.get("dataset")
+    df = request.args.get("datafile")
+    filter_name = request.args.get("filter")
+
+    input_signal = common.load_dataset(data_dir, datasets, ds, df )
+
+    if input_signal is None:
+        print("unknown dataset: " + ds + " or data file: " + df )
+        return "{}";
+
+    if filter_name == 'all':
+        ret = []
+        for f_name in common.filter_list:
+            f = generate.generate_metric_data(input_signal, f_name, data_dir, ds, df)
+            with open(f) as json_file:
+                ret += json.load(json_file)
+        return json.dumps(ret)
+    else:
+        return send_file(generate.generate_metric_data(input_signal, filter_name, data_dir, ds, df))
 
 
 @app.route('/data', methods=['GET', 'POST'])
