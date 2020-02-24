@@ -5,7 +5,7 @@ import scipy.signal as scisig
 
 import lcsmooth.__rdp as mod_rdp
 import lcsmooth.__tda as mod_tda
-
+import math
 
 def __linear_map(val, in0, in1, out0, out1):
     t = (val - in0) / (in1 - in0)
