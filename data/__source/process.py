@@ -67,7 +67,7 @@ def load_dataset(datasets, ds, df):
             for i in range(2,len(data)-6,7):
                 tot = 0
                 for j in range(i,i+7):
-                    tot += int(data[j]['value'])
+                    tot += float(data[j]['value'])
                 ret.append(tot)
             return ret
         if df == 'monthly':
@@ -81,7 +81,7 @@ def load_dataset(datasets, ds, df):
                     ret.append( curTotal )
                     curMonth = m
                     curTotal = 0
-                curTotal += int( d['value'] )
+                curTotal += float( d['value'] )
             ret.append(curTotal)
             return ret
 
@@ -179,6 +179,7 @@ if __name__ == "__main__":
     input_signal = load_dataset(datasets, ds, df)
 
     if input_signal is not None:
+        input_signal = list(map((lambda d: float(d)), input_signal))
         print(json.dumps(input_signal))
     else:
         print("unknown dataset: " + ds)
