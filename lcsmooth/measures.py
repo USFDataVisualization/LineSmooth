@@ -2,7 +2,7 @@ import os
 import random
 import statistics as stats
 import string
-
+import math
 import scipy.fftpack as scifft
 import scipy.stats as scistat
 from entropy import *
@@ -31,7 +31,10 @@ def variance_sample(data):
 
 
 def snr(data):
-    return mean(data) / stdev_sample(data)
+    stdev = stdev_sample(data)
+    if stdev == 0:
+        return math.inf
+    return mean(data) / stdev
 
 
 def covariance(d0, d1):

@@ -12,7 +12,8 @@ import lcsmooth.measures as measures
 
 data_dir = './data'
 filter_list = ['cutoff','subsample','tda','rdp','gaussian', 'median', 'mean', 'min', 'max', 'savitzky_golay', 'butterworth', 'chebyshev']
-data_sets = ['astro', 'chi_homicide', 'climate', 'eeg', 'flights', 'nz_tourist', 'stock', 'unemployment']
+# data_sets = ['astro', 'chi_homicide', 'climate', 'eeg', 'flights', 'nz_tourist', 'stock', 'unemployment']
+data_sets = ['astro', 'chi_homicide', 'climate', 'eeg', 'flights', 'nz_tourist']
 
 
 def process_smoothing(input_signal, filter_name, filter_level):

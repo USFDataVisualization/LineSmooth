@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask
+from flask import Flask, Response
 from flask import request
 from flask import send_file
 from flask import send_from_directory
@@ -18,6 +18,22 @@ for _ds in datasets:
         experiments.generate_metric_data(_ds, _df)
 
 webbrowser.open_new_tab("http://localhost:5250")
+
+
+filter_colors = {
+    'cutoff': [ "#0039e6", "#ccd9ff" ],
+    'subsample': [ "#e68a00", "#ffe0b3" ],
+    'tda': [ "#00802b", "#80ffaa" ],
+    'rdp': [ "#b30000", "#ff9999" ],
+    'gaussian': [ "#9900cc", "#ecb3ff" ],
+    'median': [ "#86592d", "#ecd9c6" ],
+    'mean': [ "#ff33ff", "#ffccff" ],
+    'min': [ "#00b8e6", "#b3f0ff" ],
+    'max': [ "#408000", "#b3ff66" ],
+    'savitzky_golay': [ "#802b00", "#ffbb99" ],
+    'butterworth': [ "#6600cc", "#d9b3ff" ],
+    'chebyshev': [ "#0086b3", "#99e6ff" ]
+}
 
 
 @app.route('/')
@@ -93,3 +109,25 @@ def get_data():
     res = experiments.process_smoothing(input_signal, request.args.get("filter"), float(request.args.get("level")))
 
     return json.dumps(res)
+
+
+@app.route('/public/filters.css', methods=['GET', 'POST'])
+def get_filter_css():
+    css = {}
+
+    for key in filter_colors.keys():
+        col_dark = filter_colors[key][0]
+        col_light = filter_colors[key][1]
+        css['.checkmark-container input:checked ~ .checkmark_' + key] = {'background-color': col_dark}
+        css['.' + key + '_background'] = {'background-color': col_dark}
+        css['.' + key + '_filter'] = {'fill': col_dark,'stroke': col_dark}
+        css['.' + key + '_fig_filter'] = {'fill': 'none','stroke': col_dark, 'stroke-width': 3}
+        css['.' + key + '_filter_light'] = {'fill': col_light,'stroke': col_light}
+
+    ret = '\n'
+    for key in css.keys():
+        val = css[key]
+        ret += key + '\n'
+        ret += json.dumps(val,indent=2).replace('"','').replace(',',';') + '\n\n'
+
+    return Response(ret, mimetype='text/css')

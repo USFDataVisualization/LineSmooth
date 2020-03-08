@@ -105,7 +105,11 @@ def cp_pairs(cps):
         # print( str(c[0] - 1) + " " + str(c[0] + 1) + " " + str(len(max_list)) )
         # print( ds._data )
         min0, min1 = ds.find_key(c[0] - 1), ds.find_key(c[0] + 1)
-        if min0[1]['val'] < min1[1]['val']:
+        if min0 is None:
+            minp = min1
+        elif min1 is None:
+            minp = min0
+        elif min0[1]['val'] < min1[1]['val']:
             minp = min1
             ds.union(min0, min1)
         else:
