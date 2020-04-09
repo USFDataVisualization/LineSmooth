@@ -1,17 +1,12 @@
-// #0039e6, #ccd9ff
-// #e68a00, #ffe0b3
-// #00802b, #80ffaa
-// #b30000, #ff9999
-// #9900cc, #ecb3ff
-// #86592d, #ecd9c6
-// #ff33ff, #ffccff
-// #00b8e6, #b3f0ff
-// #408000, #b3ff66
-// #802b00, #ffbb99
-// #6600cc, #d9b3ff
-// #0086b3, #99e6ff
 
-var filter_list = [ "min", "max", "median", "gaussian", "mean", "savitzky_golay", "cutoff", "butterworth", "chebyshev", "subsample", "rdp", "tda" ];
+var filter_list = [ "median", "min", "max", "gaussian", "savitzky_golay", "mean", "cutoff", "butterworth", "chebyshev", "subsample", "tda", "rdp" ];
+
+var filter_groups = [
+    {"title": "Rank Filters", "filters": [ "median", "min", "max"] },
+    {"title": "Convolutional Filters", "filters": ["gaussian", "savitzky_golay", "mean"] },
+    {"title": "Freq. Domain Filters", "filters": ["cutoff", "butterworth", "chebyshev"] },
+    {"title": "Subsampling", "filters": ["subsample", "tda", "rdp" ] }
+];
 
 var filter_short_names = {
     "median": "Median",
@@ -102,13 +97,50 @@ function insert_dataset_selector(){
     document.write(html);
 }
 
+function select_filter_group( grp, grp_val, other_val = null ){
+    filter_groups.forEach( function(fg){
+        if( grp == fg['title'] ){
+            fg['filters'].forEach( function(key){
+                document.getElementById("metric_"+key).checked = grp_val;
+            });
+        }
+        else if( other_val != null ){
+            fg['filters'].forEach( function(key){
+                document.getElementById("metric_"+key).checked = other_val;
+            });
+        }
+    });
+    if( update_func ) update_func();
+}
+
+function select_filter_only( filter ){
+    filter_list.forEach( function(key){
+        document.getElementById("metric_"+key).checked = key==filter;
+    });
+    if( update_func ) update_func();
+}
 
 function insert_filter_checkboxes(){
-    html = '<div style="padding-top: 10px;">';
-    filter_list.forEach( function(key){
-        html += '<label class="checkmark-container">' + filter_long_names[key] +
-                '<input type="checkbox" id="metric_' + key + '" checked="checked" onchange="update_func();">' +
-                '<span class="checkmark checkmark_' + key + '"></span></label>';
+    html = '<div style="padding-top: 5px;">';
+    filter_groups.forEach( function(fg){
+        html += '<div style="padding-top: 5px;">';
+        html += '<fieldset style="border: 1px black solid">';
+        html += '<legend style="width: auto; font-size: 0.8em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.2em ">' + fg['title']
+                 + '<span style="font-size: 0.7em;">'
+                 + ' ( <a href="javascript:void(0)" onclick="select_filter_group(\'' + fg['title'] + '\',true);">all</a> |'
+                 + ' <a href="javascript:void(0)" onclick="select_filter_group(\'' + fg['title'] + '\', true, false);">only</a> |'
+                 + ' <a href="javascript:void(0)" onclick="select_filter_group(\'' + fg['title'] + '\',false);">none</a> )'
+                 + '</span></legend>';
+        html += '<div style="padding-left: 10px;">'
+        fg['filters'].forEach( function(key){
+            html += '<label class="checkmark-container">' + filter_long_names[key] +
+                    '<span style="font-size: 0.7em;">' +
+                    ' ( <a href="javascript:void(0)" onclick="select_filter_only(\'' + key + '\');">only</a> )' +
+                    '</span>' +
+                    '<input type="checkbox" id="metric_' + key + '" checked="checked" onchange="update_func();">' +
+                    '<span class="checkmark checkmark_' + key + '"></span></label>';
+        });
+        html += '</div></fieldset></div>';
     });
     html += '</div>';
     document.write(html);

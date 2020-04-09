@@ -37,7 +37,10 @@ function updateMetrics(){
 }
 
 function reloadMetrics(){
-    d3.json( "metric?" + $('#parameterForm').serialize(), function( dinput ) {
+    console.log( "metric?" + $('#parameterForm').serialize() );
+    d3.json( "metric?" + $('#parameterForm').serialize(), function( error, dinput ) {
+        if (error) return console.warn(error);
+        console.log( dinput );
         metrics_data = dinput['metric'];
         rank_data = dinput['rank'];
         updateMetrics();
@@ -52,8 +55,10 @@ function update_ranking( doc_id, rank_data ){
     keys = Object.keys(rank_data)
     keys.sort( (a,b) => rank_data[a]['rank'] - rank_data[b]['rank'] );
     keys.forEach( function(key) {
-        val = rank_data[key];
-        html += '<span class="rankbox ' + key + '_background"></span><span class="ranklabel">' + filter_short_names[key] + '</span><br>';
+        if( document.getElementById("metric_"+key).checked ){
+            val = rank_data[key];
+            html += '<span class="rankbox ' + key + '_background"></span><span class="ranklabel">' + filter_short_names[key] + '</span><br>';
+        }
     });
 
     html += '<span class="ranktext" style="color: darkgrey; font-size: small; ">Worst</span>';

@@ -28,9 +28,11 @@
     fill: none;
 }
 
-
-
-
+.dataset_fig_lines {
+    stroke: #777777;
+    stroke-width: 3;
+    fill: none;
+}
 
 .page {
 	display: table;
@@ -42,8 +44,8 @@
 }
 .sidebar {
 	display: table-cell;
-	width: 250px;
-	min-width: 250px;
+	width: 255px;
+	min-width: 255px;
 	padding: 20px;
 	vertical-align: top;
 }
@@ -58,8 +60,8 @@
 }
 
 .rankbox{
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     display: inline-block;
 }
 
@@ -82,7 +84,7 @@
   display: block;
   /*width: 230px;*/
   position: relative;
-  padding-left: 35px;
+  padding-left: 25px;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 14px;
@@ -106,8 +108,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 25px;
-  width: 25px;
+  height: 20px;
+  width: 20px;
   background-color: #eee;
 }
 
@@ -136,10 +138,10 @@
 
 /* Style the checkmark/indicator */
 .checkmark-container .checkmark:after {
-  left: 9px;
+  left: 7px;
   top: 5px;
   width: 5px;
-  height: 10px;
+  height: 8px;
   border: solid white;
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);

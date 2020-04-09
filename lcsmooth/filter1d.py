@@ -3,9 +3,10 @@ import scipy.fftpack as scifft
 import scipy.ndimage as scind
 import scipy.signal as scisig
 
-import lcsmooth.__rdp as mod_rdp
-import lcsmooth.__tda as mod_tda
+import rdp.rdp as mod_rdp
+import topology.topolines as topology
 import math
+
 
 def __linear_map(val, in0, in1, out0, out1):
     t = (val - in0) / (in1 - in0)
@@ -117,5 +118,5 @@ def rdp(data, eps):
 
 
 def tda(data, threshold):
-    return list(enumerate(mod_tda.filter_tda_count(data, threshold)))
+    return list(enumerate(topology.filter_tda_count(data, threshold)))
 

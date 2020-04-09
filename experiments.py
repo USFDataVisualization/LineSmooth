@@ -12,8 +12,7 @@ import lcsmooth.measures as measures
 
 data_dir = './data'
 filter_list = ['cutoff','subsample','tda','rdp','gaussian', 'median', 'mean', 'min', 'max', 'savitzky_golay', 'butterworth', 'chebyshev']
-# data_sets = ['astro', 'chi_homicide', 'climate', 'eeg', 'flights', 'nz_tourist', 'stock', 'unemployment']
-data_sets = ['astro', 'chi_homicide', 'climate', 'eeg', 'flights', 'nz_tourist']
+data_sets = ['astro', 'chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg', 'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
 
 
 def process_smoothing(input_signal, filter_name, filter_level):
@@ -105,6 +104,12 @@ def process_smoothing(input_signal, filter_name, filter_level):
     res_stats["minimum"] = min(output_signal)
     res_stats["maximum"] = max(output_signal)
 
+    for key in res_stats:
+        if res_stats[key] == math.inf:
+            res_stats[key] = 'inf'
+        elif np.isnan(res_stats[key]):
+            res_stats[key] = 'nan'
+
     metrics = {}
     metrics["covariance"] = measures.covariance(input_signal, output_signal)
     metrics["pearson cc"] = measures.pearson_correlation(input_signal, output_signal)
@@ -117,7 +122,12 @@ def process_smoothing(input_signal, filter_name, filter_level):
     metrics["frequency preservation"] = measures.frequency_preservation(input_signal, output_signal)
     metrics["signal to noise"] = measures.signal_to_noise(input_signal, output_signal)
     metrics.update( measures.peakiness(input_signal, output_signal) )
-    # if (Float.isFinite(f.phaseShifted(fPhi))) ret.setFloat( "phaseShift", f.phaseShifted(fPhi) );
+
+    for key in metrics:
+        if metrics[key] == math.inf:
+            metrics[key] = 'inf'
+        if np.isnan( metrics[key]):
+            metrics[key] = 'nan'
     
     return {'input': list(enumerate(input_signal)), 'output': filter_data, 'stats': res_stats, 'info': info, 'metrics': metrics}
 

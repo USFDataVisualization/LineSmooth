@@ -21,18 +21,21 @@ webbrowser.open_new_tab("http://localhost:5250")
 
 
 filter_colors = {
-    'cutoff': [ "#0039e6", "#ccd9ff" ],
-    'subsample': [ "#e68a00", "#ffe0b3" ],
-    'tda': [ "#00802b", "#80ffaa" ],
-    'rdp': [ "#b30000", "#ff9999" ],
-    'gaussian': [ "#9900cc", "#ecb3ff" ],
-    'median': [ "#86592d", "#ecd9c6" ],
-    'mean': [ "#ff33ff", "#ffccff" ],
-    'min': [ "#00b8e6", "#b3f0ff" ],
-    'max': [ "#408000", "#b3ff66" ],
-    'savitzky_golay': [ "#802b00", "#ffbb99" ],
-    'butterworth': [ "#6600cc", "#d9b3ff" ],
-    'chebyshev': [ "#0086b3", "#99e6ff" ]
+    'median': [ "#0CE8CC", "#72E8D9" ],
+    'min': [ "#00FF44", "#8AFFAA" ],
+    'max': [ "#59CB07", "#99CC74" ],
+
+    'gaussian': [ "#3409E8", "#9284E8" ],
+    'savitzky_golay': [ "#184EFF", "#9DB8FF" ],
+    'mean': [ "#099CEB", "#86CCEB" ],
+
+    'cutoff': [ "#E80C94", "#E884BF" ],
+    'butterworth': [ "#DD00FF", "#F39EFF" ],
+    'chebyshev': [ "#7F0CE8", "#BA84E8" ],
+
+    'subsample': [ "#E8A20C", "#E8BC6F" ],
+    'tda': [ "#FF7B00", "#FFB987" ],
+    'rdp': [ "#E8410C", "#E8856F" ]
 }
 
 

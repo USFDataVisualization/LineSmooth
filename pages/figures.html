@@ -32,6 +32,7 @@
 	<script src="public/javascript/canvas-toBlob.js"></script>
 	<script src="public/javascript/FileSaver.min.js"></script>
 	<script src="public/javascript/saveSVG.js"></script>
+    <script src="public/common.js"></script>
     <script src="public/charts.js"></script>
 
     <!-- Favicon -->
@@ -59,42 +60,25 @@
 <body>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="index.html">TopoLines</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">Interactive Smoothing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="ranks.html">Ranking Visualization</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="performance.html">Performance Visualization</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="figures.html">Paper Figures</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<script>
+    insert_navbar("figures.html");
+    insert_page_header();
+</script>
 
-
-<div class="page" style="padding: 15px;">
-    <h1 style="margin: 0;">TopoLines: Topological Smoothing for Line Charts</h1>
-    <h3 style="padding-left: 5px;">EuroVis 2020 Short Papers Submission #1026</h3>
-</div>
 
 
 <div class="page">
     <div style="width: 1350px; padding-left: 20px;">
+
         <h4>Figure 1</h4>
         <svg width="1340" height="465" style="border: none;" id="fig_teaser"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_teaser');" />
 
-<table class="table">
+        <h4>Figure ???</h4>
+        <svg width="1710" height="740" style="border: none;" id="fig_datasets"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_datasets');" />
+
+<!--table class="table">
   <tbody>
     <tr>
       <th scope="row">Row 2</th>
@@ -225,7 +209,6 @@
 </table>
 
 
-        <input type="submit" value="Save Image" onclick="saveImage('fig_teaser');" />
     </div>
     <div style="width: 1700px; padding-left: 20px; padding-top: 40px;">
         <h4>Figure 4</h4>
@@ -410,7 +393,7 @@
 
 
 <script src="public/fig_summary_rank.js"></script>
-<script src="public/fig_filters.js"></script>
+<script-- src="public/fig_filters.js"></script-->
 <script src="public/fig_teaser.js"></script>
 <script>
 	function saveImage( plotID ){
@@ -418,9 +401,9 @@
 		saveSVGImage(svg_save, plotID+".png" );
 	}
 
-    load_rank_figure();
+    //load_rank_figure();
     load_teaser();
-    load_filters_fig();
+    load_datasets_fig();
 </script>
 
 </body>

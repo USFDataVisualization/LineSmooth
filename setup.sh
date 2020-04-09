@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# delete old directories
-rm -rf __pycache__
-rm -rf lcsmooth/__pycache__
-rm -rf venv
-rm -rf entropy
+# clean
+./clean.sh
 
 # Create Virtual Environment
 python3 -m venv venv
@@ -14,9 +11,10 @@ python3 -m venv venv
 
 pip install --upgrade pip
 
-#Within the activated environment, use the following command to install Flask and dependancies:
+# Within the activated environment, use the following command to install Flask and dependancies:
 pip install wheel numpy sklearn simplejson Flask python-dotenv watchdog blinker gunicorn matplotlib
 
+# Install Entropy library
 git clone https://github.com/raphaelvallat/entropy.git entropy/
 cd entropy/
 pip install -r requirements.txt
@@ -24,4 +22,27 @@ python setup.py develop
 cd ..
 
 deactivate
+
+# Clone hera
+git clone https://bitbucket.org/grey_narn/hera.git
+
+# Patching for macport error
+patch hera/bottleneck/CMakeLists.txt hera_macport.patch
+
+# Build Hera Bottleneck
+mkdir hera/bottleneck/bin
+cd hera/bottleneck/bin
+cmake ..
+make
+cd ../../../
+
+# Build Hera Wasserstein
+mkdir hera/wasserstein/bin
+cd hera/wasserstein/bin
+cmake ..
+make
+cd ../../../
+
+
+
 

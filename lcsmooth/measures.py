@@ -5,9 +5,8 @@ import string
 import math
 import scipy.fftpack as scifft
 import scipy.stats as scistat
+import topology
 from entropy import *
-
-import lcsmooth.__tda as tda
 
 
 def mean(data):
@@ -98,48 +97,45 @@ def approximate_entropy(x):
     return app_entropy(x, order=2, metric='chebyshev')
 
 
-def randomString(stringLength=10):
-    """Generate a random string of fixed length """
+# generate a random string of fixed length
+def random_string(stringLength=10):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
 
-def peakiness_bottleneck(original, filtered):
-    pd_org = tda.get_persistence_diagram(original)
-    pd_flt = tda.get_persistence_diagram(filtered)
-    file_org = randomString(10) + '.pd'
-    file_flt = randomString(10) + '.pd'
-    tda.save_persistence_diagram(file_org, pd_org)
-    tda.save_persistence_diagram(file_flt, pd_flt)
-    res = tda.bottleneck_distance(file_org, file_flt)
+def __save_pds( orig, filt ):
+    pd_org = topology.pd.get_persistence_diagram(orig)
+    pd_flt = topology.pd.get_persistence_diagram(filt)
+    file_org = random_string(10) + '.pd'
+    file_flt = random_string(10) + '.pd'
+    topology.pd.save_persistence_diagram(file_org, pd_org)
+    topology.pd.save_persistence_diagram(file_flt, pd_flt)
+    return file_org, file_flt
+
+
+def __remove_pds(file_org, file_flt ):
     os.remove(file_org)
     os.remove(file_flt)
+
+
+def peakiness_bottleneck(original, filtered):
+    file_org, file_flt = __save_pds(original, filtered)
+    res = topology.pd.bottleneck_distance(file_org, file_flt)
+    __remove_pds(file_org, file_flt)
     return res
 
 
 def peakiness_wasserstein(original, filtered):
-    pd_org = tda.get_persistence_diagram(original)
-    pd_flt = tda.get_persistence_diagram(filtered)
-    file_org = randomString(10) + '.pd'
-    file_flt = randomString(10) + '.pd'
-    tda.save_persistence_diagram(file_org, pd_org)
-    tda.save_persistence_diagram(file_flt, pd_flt)
-    res = tda.wasserstein_distance(file_org, file_flt)
-    os.remove(file_org)
-    os.remove(file_flt)
+    file_org, file_flt = __save_pds(original, filtered)
+    res = topology.pd.wasserstein_distance(file_org, file_flt)
+    __remove_pds(file_org, file_flt)
     return res
 
 
 def peakiness(original, filtered):
-    pd_org = tda.get_persistence_diagram(original)
-    pd_flt = tda.get_persistence_diagram(filtered)
-    file_org = randomString(10) + '.pd'
-    file_flt = randomString(10) + '.pd'
-    tda.save_persistence_diagram(file_org, pd_org)
-    tda.save_persistence_diagram(file_flt, pd_flt)
-    res_b = tda.bottleneck_distance(file_org, file_flt)
-    res_w = tda.wasserstein_distance(file_org, file_flt)
-    os.remove(file_org)
-    os.remove(file_flt)
+    file_org, file_flt = __save_pds(original, filtered)
+    res_b = topology.pd.bottleneck_distance(file_org, file_flt)
+    res_w = topology.pd.wasserstein_distance(file_org, file_flt)
+    __remove_pds(file_org, file_flt)
     return {'peak bottleneck': res_b, 'peak wasserstein': res_w}
 
