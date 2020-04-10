@@ -191,7 +191,7 @@ def __generate_metric_dataset(_ds):
 
 jobs = []
 for _ds in data_sets:
-    jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=_ds))
+    jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
 
 # Start the processes (i.e. calculate the random number lists)
 for j in jobs:

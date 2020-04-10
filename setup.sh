@@ -25,6 +25,7 @@ deactivate
 
 # Clone hera
 git clone https://bitbucket.org/grey_narn/hera.git
+git checkout d72ebd3ede77c887e0f4fbb3d9c1410fb38f23ba
 
 # Patching for macport error
 patch hera/bottleneck/CMakeLists.txt hera_macport.patch
