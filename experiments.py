@@ -11,6 +11,8 @@ import lcsmooth.smoothing as lc_smooth
 import lcsmooth.measures as lc_measures
 import lcsmooth.ranks as lc_ranks
 
+import multiprocessing
+
 #
 #
 # Methods and variables for data files
@@ -152,7 +154,6 @@ def __create_directory(_dir, quiet=False):
 
 
 def generate_metric_data(_dataset, _datafile, _filter_name='all', _input_data=None, quiet=False):
-
     my_out_dir = out_dir + '/' + _dataset + '/' + _datafile + '/'
     __create_directory(my_out_dir)
 
@@ -182,10 +183,28 @@ def generate_metric_data(_dataset, _datafile, _filter_name='all', _input_data=No
 
 #
 # Metric data is generated when the program is loaded
-for _ds in data_sets:
+def __generate_metric_dataset(_ds):
     for _df in data_sets[_ds]:
         print("Checking: " + _ds + " " + _df)
         generate_metric_data(_ds, _df)
+
+
+jobs = []
+for _ds in data_sets:
+    jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=_ds))
+
+# Start the processes (i.e. calculate the random number lists)
+for j in jobs:
+    j.start()
+
+# Ensure all of the processes have finished
+for j in jobs:
+    j.join()
+
+# for _ds in data_sets:
+#    for _df in data_sets[_ds]:
+#        print("Checking: " + _ds + " " + _df)
+#        generate_metric_data(_ds, _df)
 
 #############################################
 #############################################
