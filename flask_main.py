@@ -7,35 +7,27 @@ from flask import send_from_directory
 
 import experiments
 import webbrowser
-import os
 
 app = Flask(__name__)
 
-datasets = experiments.get_datasets()
-
-for _ds in datasets:
-    for _df in datasets[_ds]:
-        experiments.generate_metric_data(_ds, _df)
-
 webbrowser.open_new_tab("http://localhost:5250")
 
-
 filter_colors = {
-    'median': [ "#0CE8CC", "#72E8D9" ],
-    'min': [ "#00FF44", "#8AFFAA" ],
-    'max': [ "#59CB07", "#99CC74" ],
+    'median': ["#0CE8CC", "#72E8D9"],
+    'min': ["#00FF44", "#8AFFAA"],
+    'max': ["#59CB07", "#99CC74"],
 
-    'gaussian': [ "#3409E8", "#9284E8" ],
-    'savitzky_golay': [ "#184EFF", "#9DB8FF" ],
-    'mean': [ "#099CEB", "#86CCEB" ],
+    'gaussian': ["#3409E8", "#9284E8"],
+    'savitzky_golay': ["#184EFF", "#9DB8FF"],
+    'mean': ["#099CEB", "#86CCEB"],
 
-    'cutoff': [ "#E80C94", "#E884BF" ],
-    'butterworth': [ "#DD00FF", "#F39EFF" ],
-    'chebyshev': [ "#7F0CE8", "#BA84E8" ],
+    'cutoff': ["#E80C94", "#E884BF"],
+    'butterworth': ["#DD00FF", "#F39EFF"],
+    'chebyshev': ["#7F0CE8", "#BA84E8"],
 
-    'subsample': [ "#E8A20C", "#E8BC6F" ],
-    'tda': [ "#FF7B00", "#FFB987" ],
-    'rdp': [ "#E8410C", "#E8856F" ]
+    'subsample': ["#E8A20C", "#E8BC6F"],
+    'tda': ["#FF7B00", "#FFB987"],
+    'rdp': ["#E8410C", "#E8856F"]
 }
 
 
@@ -73,7 +65,7 @@ def page_not_found(error_msg):
 
 @app.route('/datasets', methods=['GET', 'POST'])
 def get_datasets():
-    return json.dumps(datasets)
+    return json.dumps(experiments.data_sets)
 
 
 @app.route('/metric', methods=['GET', 'POST'])
@@ -81,7 +73,7 @@ def get_metric_data():
     ds = request.args.get("dataset")
     df = request.args.get("datafile")
 
-    if not experiments.valid_dataset(datasets, ds, df):
+    if not experiments.valid_dataset(experiments.data_sets, ds, df):
         print("unknown dataset: " + ds + " or data file: " + df)
         return "{}"
 
@@ -96,7 +88,7 @@ def get_metric_data():
 
 @app.route('/all_ranks', methods=['GET', 'POST'])
 def get_all_rank_data():
-    return json.dumps( experiments.metric_ranks(datasets) )
+    return json.dumps(experiments.get_all_ranks(experiments.data_sets))
 
 
 @app.route('/data', methods=['GET', 'POST'])
@@ -104,7 +96,7 @@ def get_data():
     ds = request.args.get("dataset")
     df = request.args.get("datafile")
 
-    if not experiments.valid_dataset(datasets, ds, df):
+    if not experiments.valid_dataset(experiments.data_sets, ds, df):
         print("unknown dataset: " + ds + " or data file: " + df)
         return "{}"
 
@@ -123,14 +115,14 @@ def get_filter_css():
         col_light = filter_colors[key][1]
         css['.checkmark-container input:checked ~ .checkmark_' + key] = {'background-color': col_dark}
         css['.' + key + '_background'] = {'background-color': col_dark}
-        css['.' + key + '_filter'] = {'fill': col_dark,'stroke': col_dark}
-        css['.' + key + '_fig_filter'] = {'fill': 'none','stroke': col_dark, 'stroke-width': 3}
-        css['.' + key + '_filter_light'] = {'fill': col_light,'stroke': col_light}
+        css['.' + key + '_filter'] = {'fill': col_dark, 'stroke': col_dark}
+        css['.' + key + '_fig_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
+        css['.' + key + '_filter_light'] = {'fill': col_light, 'stroke': col_light}
 
     ret = '\n'
     for key in css.keys():
         val = css[key]
         ret += key + '\n'
-        ret += json.dumps(val,indent=2).replace('"','').replace(',',';') + '\n\n'
+        ret += json.dumps(val, indent=2).replace('"', '').replace(',', ';') + '\n\n'
 
     return Response(ret, mimetype='text/css')

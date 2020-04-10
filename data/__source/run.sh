@@ -54,49 +54,52 @@ python process.py -ds eeg_10000 -df chan20 > ../eeg/eeg_chan20_10000.json
 python process.py -ds eeg_10000 -df chan25 > ../eeg/eeg_chan25_10000.json
 python process.py -ds eeg_10000 -df chan30 > ../eeg/eeg_chan30_10000.json
 
-mkdir ../climate
-python process.py -ds climate_TMAX -df atl > ../climate/climate_atl_tmax.json
-python process.py -ds climate_TMAX -df jfk > ../climate/climate_jfk_tmax.json
-python process.py -ds climate_TMAX -df lax > ../climate/climate_lax_tmax.json
-python process.py -ds climate_TMAX -df ord > ../climate/climate_ord_tmax.json
-python process.py -ds climate_TMAX -df sea > ../climate/climate_sea_tmax.json
-python process.py -ds climate_TMAX -df slc > ../climate/climate_slc_tmax.json
+mkdir ../climate_max_temp
+python process.py -ds climate_TMAX -df atl > ../climate_max_temp/climate_atl_tmax.json
+python process.py -ds climate_TMAX -df jfk > ../climate_max_temp/climate_jfk_tmax.json
+python process.py -ds climate_TMAX -df lax > ../climate_max_temp/climate_lax_tmax.json
+python process.py -ds climate_TMAX -df ord > ../climate_max_temp/climate_ord_tmax.json
+python process.py -ds climate_TMAX -df sea > ../climate_max_temp/climate_sea_tmax.json
+python process.py -ds climate_TMAX -df slc > ../climate_max_temp/climate_slc_tmax.json
 
-python process.py -ds climate_PRCP -df atl > ../climate/climate_atl_prcp.json
-python process.py -ds climate_PRCP -df jfk > ../climate/climate_jfk_prcp.json
-python process.py -ds climate_PRCP -df lax > ../climate/climate_lax_prcp.json
-python process.py -ds climate_PRCP -df ord > ../climate/climate_ord_prcp.json
-python process.py -ds climate_PRCP -df sea > ../climate/climate_sea_prcp.json
-python process.py -ds climate_PRCP -df slc > ../climate/climate_slc_prcp.json
+mkdir ../climate_prcp
+python process.py -ds climate_PRCP -df atl > ../climate_prcp/climate_atl_prcp.json
+python process.py -ds climate_PRCP -df jfk > ../climate_prcp/climate_jfk_prcp.json
+python process.py -ds climate_PRCP -df lax > ../climate_prcp/climate_lax_prcp.json
+python process.py -ds climate_PRCP -df ord > ../climate_prcp/climate_ord_prcp.json
+python process.py -ds climate_PRCP -df sea > ../climate_prcp/climate_sea_prcp.json
+python process.py -ds climate_PRCP -df slc > ../climate_prcp/climate_slc_prcp.json
 
-python process.py -ds climate_AWND -df atl > ../climate/climate_atl_awnd.json
-python process.py -ds climate_AWND -df jfk > ../climate/climate_jfk_awnd.json
-python process.py -ds climate_AWND -df lax > ../climate/climate_lax_awnd.json
-python process.py -ds climate_AWND -df ord > ../climate/climate_ord_awnd.json
-python process.py -ds climate_AWND -df sea > ../climate/climate_sea_awnd.json
-python process.py -ds climate_AWND -df slc > ../climate/climate_slc_awnd.json
+mkdir ../climate_avg_wind
+python process.py -ds climate_AWND -df atl > ../climate_avg_wind/climate_atl_awnd.json
+python process.py -ds climate_AWND -df jfk > ../climate_avg_wind/climate_jfk_awnd.json
+python process.py -ds climate_AWND -df lax > ../climate_avg_wind/climate_lax_awnd.json
+python process.py -ds climate_AWND -df ord > ../climate_avg_wind/climate_ord_awnd.json
+python process.py -ds climate_AWND -df sea > ../climate_avg_wind/climate_sea_awnd.json
+python process.py -ds climate_AWND -df slc > ../climate_avg_wind/climate_slc_awnd.json
 
 
-mkdir ../stock
-python process.py -ds stock_close -df AAPL > ../stock/stock_aapl_price.json
-python process.py -ds stock_close -df AMZN > ../stock/stock_amzn_price.json
-python process.py -ds stock_close -df BAC > ../stock/stock_bac_price.json
-python process.py -ds stock_close -df GOOG > ../stock/stock_goog_price.json
-python process.py -ds stock_close -df INTC > ../stock/stock_intc_price.json
-python process.py -ds stock_close -df JPM > ../stock/stock_jpm_price.json
-python process.py -ds stock_close -df MSFT > ../stock/stock_msft_price.json
-python process.py -ds stock_close -df TSLA > ../stock/stock_tsla_price.json
-python process.py -ds stock_close -df TM > ../stock/stock_tm_price.json
+mkdir ../stock_price
+python process.py -ds stock_close -df AAPL > ../stock_price/stock_aapl_price.json
+python process.py -ds stock_close -df AMZN > ../stock_price/stock_amzn_price.json
+python process.py -ds stock_close -df BAC > ../stock_price/stock_bac_price.json
+python process.py -ds stock_close -df GOOG > ../stock_price/stock_goog_price.json
+python process.py -ds stock_close -df INTC > ../stock_price/stock_intc_price.json
+python process.py -ds stock_close -df JPM > ../stock_price/stock_jpm_price.json
+python process.py -ds stock_close -df MSFT > ../stock_price/stock_msft_price.json
+python process.py -ds stock_close -df TSLA > ../stock_price/stock_tsla_price.json
+python process.py -ds stock_close -df TM > ../stock_price/stock_tm_price.json
 
-python process.py -ds stock_volume -df AAPL > ../stock/stock_aapl_volume.json
-python process.py -ds stock_volume -df AMZN > ../stock/stock_amzn_volume.json
-python process.py -ds stock_volume -df BAC > ../stock/stock_bac_volume.json
-python process.py -ds stock_volume -df GOOG > ../stock/stock_goog_volume.json
-python process.py -ds stock_volume -df INTC > ../stock/stock_intc_volume.json
-python process.py -ds stock_volume -df JPM > ../stock/stock_jpm_volume.json
-python process.py -ds stock_volume -df MSFT > ../stock/stock_msft_volume.json
-python process.py -ds stock_volume -df TSLA > ../stock/stock_tsla_volume.json
-python process.py -ds stock_volume -df TM > ../stock/stock_tm_volume.json
+mkdir ../stock_volume
+python process.py -ds stock_volume -df AAPL > ../stock_volume/stock_aapl_volume.json
+python process.py -ds stock_volume -df AMZN > ../stock_volume/stock_amzn_volume.json
+python process.py -ds stock_volume -df BAC > ../stock_volume/stock_bac_volume.json
+python process.py -ds stock_volume -df GOOG > ../stock_volume/stock_goog_volume.json
+python process.py -ds stock_volume -df INTC > ../stock_volume/stock_intc_volume.json
+python process.py -ds stock_volume -df JPM > ../stock_volume/stock_jpm_volume.json
+python process.py -ds stock_volume -df MSFT > ../stock_volume/stock_msft_volume.json
+python process.py -ds stock_volume -df TSLA > ../stock_volume/stock_tsla_volume.json
+python process.py -ds stock_volume -df TM > ../stock_volume/stock_tm_volume.json
 
 mkdir ../astro
 python process.py -ds radioAstronomy -df output_115_120 > ../astro/astro_115_120.json
