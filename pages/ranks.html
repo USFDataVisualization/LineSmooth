@@ -68,6 +68,7 @@
         <form id="parameterForm">
         <script>
             insert_dataset_selector();
+            insert_task_selector();
             insert_filter_checkboxes();
         </script>
         </form>
@@ -75,7 +76,29 @@
     <div class="page-content" style="padding-bottom: 0;">
         <div style="width: 1020px; height: 350px;">
             <span style="text-align: center; width:auto; float: left; height:330px;">
-                Retrieve Value (average case): L<sub>1</sub>-norm vs. Entropy<br>
+                <span id="chart1_title"></span><br>
+                <span>
+                    <span style="text-align: center; width:auto; float: left;">
+                        <svg width="360" height="300" style="border: none;" id="chart1"></svg>
+                    </span>
+                    <span id="chart1_rank" class="rankspan"></span>
+                </span>
+            </span>
+            <span style="text-align: center; width:auto; float: left;  height:230px; padding-left: 5px; ">
+                <span id="chart2_title"></span><br>
+                <span>
+                    <span style="text-align: center; width:auto; float: left;">
+                        <svg width="360" height="300" style="border: none;" id="chart2"></svg>
+                    </span>
+                    <span id="chart2_rank" class="rankspan"></span>
+                </span>
+            </span>
+        </div>
+    </div>
+    <!-- div class="page-content" style="padding-bottom: 0;">
+        <div style="width: 1020px; height: 350px;">
+            <span style="text-align: center; width:auto; float: left; height:330px;">
+                Retrieve Value (average case): L<sup>1</sup>-norm vs. Entropy<br>
                 <span>
                     <span style="text-align: center; width:auto; float: left;">
                         <svg width="360" height="300" style="border: none;" id="entropy_l1"></svg>
@@ -84,7 +107,7 @@
                 </span>
             </span>
             <span style="text-align: center; width:auto; float: left;  height:230px; padding-left: 5px; ">
-                Retrieve Value (worst case): L<sub>&#8734;</sub>-norm vs. Entropy<br>
+                Retrieve Value (worst case): L<sup>&#8734;</sup>-norm vs. Entropy<br>
                 <span>
                     <span style="text-align: center; width:auto; float: left;">
                         <svg width="360" height="300" style="border: none;" id="entropy_linf"></svg>
@@ -114,12 +137,17 @@
             </span>
 
         </div>
-    </div>
+    </div-->
 </div>
 
 
 <script>
     load_datasets(reloadMetrics);
+
+    function update_task(){
+        console.log("update task");
+        updateMetrics();
+    }
 </script>
 
 

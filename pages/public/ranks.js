@@ -17,21 +17,83 @@ function updateMetrics(){
     func_time = function(d){ return d['info']['processing time']; };
     func_entropy = function(d){ return d['metrics']['approx entropy']; };
     func_l1 = function(d){ return d['metrics']['L1 norm']; };
-    func_linf = function(d){ return d['metrics']['L_inf norm']; };
+    func_linf = function(d){ return d['metrics']['Linf norm']; };
     func_wasserstein = function(d){ return d['metrics']['peak wasserstein']; };
     func_bottleneck = function(d){ return d['metrics']['peak bottleneck']; };
+    func_delta_vol = function(d){ return d['metrics']['delta volume']; };
+    func_freq_pres = function(d){ return d['metrics']['frequency preservation']; };
+    func_pcc = function(d){ return d['metrics']['pearson cc']; };
+    func_src = function(d){ return d['metrics']['spearman rc']; };
+
+    console.log( document.getElementById("task").value )
+    if( document.getElementById("task").value == 'task_retrieve' || document.getElementById("task").value == 'task_range' ){
+        update_scatterplot( "#chart1", dinput, func_entropy, func_l1, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='L1 norm' )[0]['result'], active_filters );
+        update_scatterplot( "#chart2", dinput, func_entropy, func_linf, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='Linf norm' )[0]['result'], active_filters );
+        update_ranking( "chart1_rank",   rank_data.filter( d => d['x']=='approx entropy' && d['y']=='L1 norm' )[0]['result'] )
+        update_ranking( "chart2_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='Linf norm' )[0]['result'] );
+        if( document.getElementById("task").value == 'task_retrieve' ){
+            document.getElementById("chart1_title").innerHTML = "Retrieve Value (average case): L<sup>1</sup>-norm vs. Entropy";
+            document.getElementById("chart2_title").innerHTML = "Retrieve Value (worst case): L<sup>&#8734;</sup>-norm vs. Entropy";
+        }
+        if( document.getElementById("task").value == 'task_range' ){
+            document.getElementById("chart1_title").innerHTML = "Determine Range (average case): L<sup>1</sup>-norm vs. Entropy";
+            document.getElementById("chart2_title").innerHTML = "Determine Range (worst case): L<sup>&#8734;</sup>-norm vs. Entropy";
+        }
+    }
+    if( document.getElementById("task").value == 'task_extrema' || document.getElementById("task").value == 'task_anomalies' ){
+        update_scatterplot( "#chart1", dinput, func_entropy, func_wasserstein, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak wasserstein' )[0]['result'], active_filters );
+        update_scatterplot( "#chart2", dinput, func_entropy, func_bottleneck, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak bottleneck' )[0]['result'], active_filters );
+        update_ranking( "chart1_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak wasserstein' )[0]['result'] );
+        update_ranking( "chart2_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak bottleneck' )[0]['result'] );
+        if( document.getElementById("task").value == 'task_extrema'){
+            document.getElementById("chart1_title").innerHTML = "Find Extrema (average case): Wasserstein vs. Entropy";
+            document.getElementById("chart2_title").innerHTML = "Find Extrema (worst case): Bottleneck vs. Entropy";
+        }
+        if(  document.getElementById("task").value == 'task_anomalies' ){
+            document.getElementById("chart1_title").innerHTML = "Find Anomalies (average case): Wasserstein vs. Entropy";
+            document.getElementById("chart2_title").innerHTML = "Find Anomalies (worst case): Bottleneck vs. Entropy";
+        }
+    }
+
+    if( document.getElementById("task").value == 'task_derive' ){
+        update_scatterplot( "#chart1", dinput, func_entropy, func_delta_vol, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='delta volume' )[0]['result'], active_filters );
+        update_ranking( "chart1_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='delta volume' )[0]['result'] );
+        document.getElementById("chart1_title").innerHTML = "Compute Derived Value (average case): Volume Preservation vs. Entropy";
+        $("#chart2").empty();
+        document.getElementById("chart2_rank").innerHTML = "";
+        document.getElementById("chart2_title").innerHTML = "";
+    }
+
+    if( document.getElementById("task").value == 'task_characterize' || document.getElementById("task").value == 'task_cluster_trends' ){
+        update_scatterplot( "#chart1", dinput, func_entropy, func_freq_pres, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='frequency preservation' )[0]['result'], active_filters );
+        update_ranking( "chart1_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='frequency preservation' )[0]['result'] );
+        if( document.getElementById("task").value == 'task_characterize' ){
+            document.getElementById("chart1_title").innerHTML = "Characterize Distribution (average case): Frequency Preservation vs. Entropy";
+        }
+        if( document.getElementById("task").value == 'task_cluster_trends' ){
+            document.getElementById("chart1_title").innerHTML = "Cluster: Trends (average case): Frequency Preservation vs. Entropy";
+        }
+        $("#chart2").empty();
+        document.getElementById("chart2_rank").innerHTML = "";
+        document.getElementById("chart2_title").innerHTML = "";
+    }
+
+    if( document.getElementById("task").value == 'task_sort' || document.getElementById("task").value == 'task_cluster_points' ){
+        update_scatterplot( "#chart1", dinput, func_entropy, func_pcc, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='pearson cc' )[0]['result'], active_filters );
+        update_scatterplot( "#chart2", dinput, func_entropy, func_src, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='spearman rc' )[0]['result'], active_filters );
+        update_ranking( "chart1_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='pearson cc' )[0]['result'] );
+        update_ranking( "chart2_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='spearman rc' )[0]['result'] );
+        if( document.getElementById("task").value == 'task_sort'){
+            document.getElementById("chart1_title").innerHTML = "Sort: Pearson Correlation vs. Entropy";
+            document.getElementById("chart2_title").innerHTML = "Sort: Spearman Rank Correlation vs. Entropy";
+        }
+        if(  document.getElementById("task").value == 'task_cluster_points' ){
+            document.getElementById("chart1_title").innerHTML = "Cluster: Points: Pearson Correlation vs. Entropy";
+            document.getElementById("chart2_title").innerHTML = "Cluster: Points: Spearman Rank Correlation vs. Entropy";
+        }
+    }
 
 
-    update_scatterplot( "#entropy_l1", dinput, func_entropy, func_l1, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='L1 norm' )[0]['result'], active_filters );
-    update_scatterplot( "#entropy_linf", dinput, func_entropy, func_linf, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='L_inf norm' )[0]['result'], active_filters );
-    update_scatterplot( "#entropy_wass", dinput, func_entropy, func_wasserstein, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak wasserstein' )[0]['result'], active_filters );
-    update_scatterplot( "#entropy_bott", dinput, func_entropy, func_bottleneck, func_class, rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak bottleneck' )[0]['result'], active_filters );
-
-
-    update_ranking( "entropy_l1_rank",   rank_data.filter( d => d['x']=='approx entropy' && d['y']=='L1 norm' )[0]['result'] )
-    update_ranking( "entropy_linf_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='L_inf norm' )[0]['result'] );
-    update_ranking( "entropy_wass_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak wasserstein' )[0]['result'] );
-    update_ranking( "entropy_bott_rank", rank_data.filter( d => d['x']=='approx entropy' && d['y']=='peak bottleneck' )[0]['result'] );
 
 
 }

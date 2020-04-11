@@ -96,6 +96,7 @@ function add_linechart( chart_name, dinput, doutput, upper_left, width_height, c
 
 
 function special_round( val ){
+    if( isNaN(val) ) return 1;
     if( val < 0.05 ) return special_round( val*10 ) / 10;
     if( val < 0.1 ) return 0.1;
     if( val < 0.2 ) return 0.2;

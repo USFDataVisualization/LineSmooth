@@ -12,7 +12,7 @@ function reloadChart(){
         console.log( dinput );
         document.getElementById("approx_ent_value").innerHTML = stringize(dinput['metrics']['approx entropy']);
         document.getElementById("l1_norm_value").innerHTML = stringize(dinput['metrics']['L1 norm']);
-        document.getElementById("linf_norm_value").innerHTML = stringize(dinput['metrics']['L_inf norm']);
+        document.getElementById("linf_norm_value").innerHTML = stringize(dinput['metrics']['Linf norm']);
         document.getElementById("wass_value").innerHTML = stringize(dinput['metrics']['peak wasserstein']);
         document.getElementById("bott_value").innerHTML = stringize(dinput['metrics']['peak bottleneck']);
 

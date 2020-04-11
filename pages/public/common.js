@@ -159,6 +159,24 @@ function insert_filter_selector(){
     document.write(html);
 }
 
+function insert_task_selector(){
+    html = `<div class="form-group">
+                <label for="task">Visual Analytic Task</label>
+                <select class="form-control form-control-sm" id="task" name="task" onchange="update_task();">`;
+    html += '<option value="task_retrieve">Retrieve Value</option>';
+    html += '<option value="task_range">Determine Range</option>';
+    html += '<option value="task_derive">Compute Derived Value</option>';
+    html += '<option value="task_extrema">Find Extrema</option>';
+    html += '<option value="task_anomalies">Find Anomalies</option>';
+    html += '<option value="task_characterize">Characterize Distribution</option>';
+    html += '<option value="task_sort">Sort</option>';
+    html += '<option value="task_cluster_trends">Cluster: Trends</option>';
+    html += '<option value="task_cluster_points">Cluster: Points</option>';
+    html += '</select></div>';
+    document.write(html);
+}
+
+
 var pages = ["index.html", "ranks.html", "performance.html", "figures.html"];
 var page_titles = {"index.html": "Interactive Smoothing",
                    "ranks.html": "Ranking Visualization",

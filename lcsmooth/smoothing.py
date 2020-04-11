@@ -13,6 +13,10 @@ def __linear_map(val, in0, in1, out0, out1):
     return out0 * (1 - t) + out1 * t
 
 
+def __lerp(t, out0, out1):
+    return out0 * (1 - t) + out1 * t
+
+
 def __linear_map_points(data, points):
     outdata = []
     j = 0
@@ -24,6 +28,19 @@ def __linear_map_points(data, points):
         outdata.append([i, __linear_map(i, p0[0], p1[0], p0[1], p1[1])])
     outdata.append([len(data) - 1, data[-1]])
     return outdata
+
+
+def __filter_level_scale_log(filter_level, log_scale):
+    scaled_level = __lerp(filter_level, math.exp(0), math.exp(log_scale))
+    return math.log(scaled_level)
+
+
+def __filter_level_scale(filter_level, filter_level_func):
+    if filter_level_func == 'log1':
+        return __filter_level_scale_log(filter_level,1)
+    elif filter_level_func == 'log10':
+        return __filter_level_scale_log(filter_level, 10)
+    return filter_level
 
 
 #
@@ -68,10 +85,11 @@ def savitzky_golay(data: list, window_length: int, polyorder: int):
 #
 #
 # FREQUENCY DOMAIN FILTERS
-def cutoff(data, filter_level: float):
-    max_freq = int(__linear_map(filter_level, 0, 1, len(data), 2))
+def cutoff(data, filter_level: float, filter_level_func='log1'):
+    level = __filter_level_scale( filter_level, filter_level_func )
+    cutoff_freq = int(__linear_map(level, 0, 1, len(data), 2))
     fft = scifft.rfft(data)
-    fft[max_freq:] = 0
+    fft[cutoff_freq:] = 0
     res = scifft.irfft(fft)
     return list(enumerate(res))
 
@@ -97,8 +115,9 @@ def elliptical(data, cutoff_freq: int, order: int, ripple_db: float, max_atten_d
 #
 #
 # SUBSAMPLING FILTERS
-def subsample(data, filter_level: float):
-    num_out_points = int(__linear_map(filter_level, 0, 1, len(data), 4))
+def subsample(data, filter_level: float, filter_level_func='log1'):
+    level = __filter_level_scale(filter_level, filter_level_func)
+    num_out_points = int(__linear_map(level, 0, 1, len(data), 4))
     keys = [[0, data[0]]]
     for i in range(1, num_out_points - 1):
         idx = __linear_map(i, 0, num_out_points - 1, 0, len(data) - 1)

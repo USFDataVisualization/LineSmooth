@@ -19,8 +19,9 @@ import multiprocessing
 data_dir = './data'
 out_dir = './pages/json'
 
-data_groups = ['astro', 'chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg', 'flights',
-               'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
+# data_groups = ['climate_prcp', 'climate_max_temp', 'eeg', 'flights',
+#                'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
+data_groups = ['astro', 'chi_homicide', 'climate_avg_wind', 'stock_price']
 
 data_sets = {}
 
@@ -53,17 +54,9 @@ def process_smoothing(input_signal, filter_name, filter_level):
 
     start = time.time()
     if filter_name == 'cutoff':
-        min_level = math.exp(0)
-        max_level = math.exp(1)
-        scaled_level = lc_smooth.__linear_map(filter_level, 0, 1, min_level, max_level)
-        level = lc_smooth.__linear_map(math.log(scaled_level), 0, 1, 0, 1.0)
-        filter_data = lc_smooth.cutoff(input_signal, level)
+        filter_data = lc_smooth.cutoff(input_signal, filter_level, filter_level_func='log1')
     elif filter_name == 'subsample':
-        min_level = math.exp(0)
-        max_level = math.exp(1)
-        scaled_level = lc_smooth.__linear_map(filter_level, 0, 1, min_level, max_level)
-        level = lc_smooth.__linear_map(math.log(scaled_level), 0, 1, 0, 1.0)
-        filter_data = lc_smooth.subsample(input_signal, level)
+        filter_data = lc_smooth.subsample(input_signal, filter_level, filter_level_func='log1')
     elif filter_name == 'tda':
         min_level = math.log(1)
         max_level = math.log(100)
@@ -189,29 +182,28 @@ def __generate_metric_dataset(_ds):
         generate_metric_data(_ds, _df)
 
 
-jobs = []
-for _ds in data_sets:
-    jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
-
-# Start the processes (i.e. calculate the random number lists)
-for j in jobs:
-    j.start()
-
-# Ensure all of the processes have finished
-for j in jobs:
-    j.join()
-
+# jobs = []
 # for _ds in data_sets:
-#    for _df in data_sets[_ds]:
-#        print("Checking: " + _ds + " " + _df)
-#        generate_metric_data(_ds, _df)
+#     jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
+#
+# # Start the processes (i.e. calculate the random number lists)
+# for j in jobs:
+#     j.start()
+#
+# # Ensure all of the processes have finished
+# for j in jobs:
+#     j.join()
+
+for _ds in data_sets:
+    __generate_metric_dataset(_ds)
+
 
 #############################################
 #############################################
 #############################################
 #############################################
 #############################################
-measures = ['L1 norm', 'L_inf norm', 'peak wasserstein', 'peak bottleneck', "pearson cc", "spearman rc",
+measures = ['L1 norm', 'Linf norm', 'peak wasserstein', 'peak bottleneck', "pearson cc", "spearman rc",
             "delta volume", "frequency preservation"]
 
 

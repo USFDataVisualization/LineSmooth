@@ -6,6 +6,7 @@ from flask import send_file
 from flask import send_from_directory
 
 import experiments
+import lcsmooth.ranks as ranks
 import webbrowser
 
 app = Flask(__name__)
@@ -78,10 +79,10 @@ def get_metric_data():
         return "{}"
 
     metric_data = experiments.generate_metric_data(ds, df)
-    metric_reg = [experiments.metric_regression(metric_data, 'approx entropy', 'L1 norm'),
-                  experiments.metric_regression(metric_data, 'approx entropy', 'L_inf norm'),
-                  experiments.metric_regression(metric_data, 'approx entropy', 'peak wasserstein'),
-                  experiments.metric_regression(metric_data, 'approx entropy', 'peak bottleneck')]
+    metric_reg = []
+
+    for f in experiments.measures:
+        metric_reg.append(ranks.metric_ranks(metric_data, experiments.filter_list, 'approx entropy', f)),
 
     return json.dumps({'metric': metric_data, 'rank': metric_reg})
 
