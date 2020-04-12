@@ -88,7 +88,7 @@ def linf_norm(d0, d1):
 #
 # Volume Preservation
 def delta_volume(d0, d1):
-    return np.sum(d1) - np.sum(d0)
+    return abs(np.sum(d1) - np.sum(d0))
 
 
 #

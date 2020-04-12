@@ -6,6 +6,10 @@ def __metric_regression(x, y, x_cutoff):
     # res = regression.lls(y, x)
     res = regression.irls(y, x)
 
+    #print( regression.irls(y, x, transform='none') )
+    #print( regression.irls(y, x, transform='log') )
+    #print()
+
     m, c = res['result']
     r2 = res['r2']
 
@@ -28,6 +32,7 @@ def metric_ranks(all_metric_data, filters, fieldX, fieldY):
     x_cutoff = max(map((lambda d: d['metrics'][fieldX]), all_metric_data))
 
     for f in filters:
+        #print(f + " " + fieldX + " " + fieldY)
         filter_metric_data = list(filter(lambda m: m['info']['filter name'] == f, all_metric_data))
         x = list(map((lambda d: d['metrics'][fieldX]), filter_metric_data))
         y = list(map((lambda d: d['metrics'][fieldY]), filter_metric_data))
