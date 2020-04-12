@@ -34,25 +34,29 @@ python process.py -ds flights -df daily > ../flights/flights_daily.json
 python process.py -ds flights -df weekly > ../flights/flights_weekly.json
 python process.py -ds flights -df monthly > ../flights/flights_monthly.json
 
-mkdir ../eeg
-python process.py -ds eeg_500 -df chan05 > ../eeg/eeg_chan05_500.json
-python process.py -ds eeg_500 -df chan10 > ../eeg/eeg_chan10_500.json
-python process.py -ds eeg_500 -df chan15 > ../eeg/eeg_chan15_500.json
-python process.py -ds eeg_500 -df chan20 > ../eeg/eeg_chan20_500.json
-python process.py -ds eeg_500 -df chan25 > ../eeg/eeg_chan25_500.json
-python process.py -ds eeg_500 -df chan30 > ../eeg/eeg_chan30_500.json
-python process.py -ds eeg_2500 -df chan05 > ../eeg/eeg_chan05_2500.json
-python process.py -ds eeg_2500 -df chan10 > ../eeg/eeg_chan10_2500.json
-python process.py -ds eeg_2500 -df chan15 > ../eeg/eeg_chan15_2500.json
-python process.py -ds eeg_2500 -df chan20 > ../eeg/eeg_chan20_2500.json
-python process.py -ds eeg_2500 -df chan25 > ../eeg/eeg_chan25_2500.json
-python process.py -ds eeg_2500 -df chan30 > ../eeg/eeg_chan30_2500.json
-python process.py -ds eeg_10000 -df chan05 > ../eeg/eeg_chan05_10000.json
-python process.py -ds eeg_10000 -df chan10 > ../eeg/eeg_chan10_10000.json
-python process.py -ds eeg_10000 -df chan15 > ../eeg/eeg_chan15_10000.json
-python process.py -ds eeg_10000 -df chan20 > ../eeg/eeg_chan20_10000.json
-python process.py -ds eeg_10000 -df chan25 > ../eeg/eeg_chan25_10000.json
-python process.py -ds eeg_10000 -df chan30 > ../eeg/eeg_chan30_10000.json
+mkdir ../eeg_500
+python process.py -ds eeg_500 -df chan05 > ../eeg_500/eeg_chan05_500.json
+python process.py -ds eeg_500 -df chan10 > ../eeg_500/eeg_chan10_500.json
+python process.py -ds eeg_500 -df chan15 > ../eeg_500/eeg_chan15_500.json
+python process.py -ds eeg_500 -df chan20 > ../eeg_500/eeg_chan20_500.json
+python process.py -ds eeg_500 -df chan25 > ../eeg_500/eeg_chan25_500.json
+python process.py -ds eeg_500 -df chan30 > ../eeg_500/eeg_chan30_500.json
+
+mkdir ../eeg_2500
+python process.py -ds eeg_2500 -df chan05 > ../eeg_2500/eeg_chan05_2500.json
+python process.py -ds eeg_2500 -df chan10 > ../eeg_2500/eeg_chan10_2500.json
+python process.py -ds eeg_2500 -df chan15 > ../eeg_2500/eeg_chan15_2500.json
+python process.py -ds eeg_2500 -df chan20 > ../eeg_2500/eeg_chan20_2500.json
+python process.py -ds eeg_2500 -df chan25 > ../eeg_2500/eeg_chan25_2500.json
+python process.py -ds eeg_2500 -df chan30 > ../eeg_2500/eeg_chan30_2500.json
+
+mkdir ../eeg_10000
+python process.py -ds eeg_10000 -df chan05 > ../eeg_10000/eeg_chan05_10000.json
+python process.py -ds eeg_10000 -df chan10 > ../eeg_10000/eeg_chan10_10000.json
+python process.py -ds eeg_10000 -df chan15 > ../eeg_10000/eeg_chan15_10000.json
+python process.py -ds eeg_10000 -df chan20 > ../eeg_10000/eeg_chan20_10000.json
+python process.py -ds eeg_10000 -df chan25 > ../eeg_10000/eeg_chan25_10000.json
+python process.py -ds eeg_10000 -df chan30 > ../eeg_10000/eeg_chan30_10000.json
 
 mkdir ../climate_max_temp
 python process.py -ds climate_TMAX -df atl > ../climate_max_temp/climate_atl_tmax.json

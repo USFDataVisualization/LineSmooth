@@ -19,8 +19,8 @@ import multiprocessing
 data_dir = './data'
 out_dir = './pages/json'
 
-data_groups = ['chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg', 'flights',
-               'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
+data_groups = ['chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg_500', 'eeg_2500',
+               'eeg_10000', 'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
 # data_groups = ['chi_homicide']
 
 data_sets = {}
