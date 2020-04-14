@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="public/style.css">
+    <link rel="stylesheet" href="public/filters.css">
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <script src="https://d3js.org/d3.v4.js" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js" crossorigin="anonymous"></script>
+
+    <script src="public/charts.js"></script>
+    <script src="public/common.js"></script>
+    <script src="public/ranks.js"></script>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" href="public/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="public/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="public/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="public/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="public/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="public/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="public/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="public/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="public/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="public/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="public/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="public/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="public/favicon/favicon-16x16.png">
+    <link rel="manifest" href="public/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="public/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>A Framework for the Analytical Evaluation of Line Chart Smoothing</title>
+
+</head>
+<body>
+
+<script>
+    insert_navbar("ranks-by-datafile.html");
+    insert_page_header();
+</script>
+
+
+<div class="page">
+
+    <div class="sidebar">
+        <form id="parameterForm">
+        <script>
+            insert_dataset_selector();
+            insert_filter_checkboxes();
+        </script>
+        </form>
+    </div>
+    <div class="page-content" style="padding-bottom: 0;">
+        <div style="width: 1020px; height: 350px;">
+            <span style="text-align: center; width:auto; float: left; height:360px;">
+                <fieldset style="border: 1px black solid">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Retrieve Value / Determine Range
+                    </legend>
+                    <span>
+                        <span id="rank_l1" class="rankspan2"></span>
+                        <span id="rank_linf" class="rankspan2"></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
+                <fieldset style="border: 1px black solid; text-align: center;">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Compute Derived Value
+                    </legend>
+                    <span style="display: grid;">
+                        <span id="rank_dvol" class="rankspan2" style="margin:auto; "></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
+                <fieldset style="border: 1px black solid">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Find Extrema / Find Anomalies
+                    </legend>
+                    <span>
+                        <span id="rank_wass" class="rankspan2"></span>
+                        <span id="rank_bott" class="rankspan2"></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px;">
+                <fieldset style="border: 1px black solid; text-align: center; width:auto;">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Characterize Distribution / Cluster: Trends
+                    </legend>
+                    <span style="display: grid;">
+                        <span id="rank_freq" class="rankspan2" style="margin:auto; "></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
+                <fieldset style="border: 1px black solid; text-align: center; width:auto;">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Sort / Cluster: Points
+                    </legend>
+                    <span>
+                        <span id="rank_pcc" class="rankspan2"></span>
+                        <span id="rank_src" class="rankspan2"></span>
+                    </span>
+                </fieldset>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+
+    function reload_tmp(){
+        d3.json( "/all_ranks", function( dinput ) {
+            let ds = get_selected_dataset();
+            let df = get_selected_datafile();
+
+            data = dinput.filter( function(d){
+                return d['dataset']==ds && d['datafile']==df;
+            })[0];
+            console.log(data);
+
+            update_ranking("rank_l1", data['rank']['L1 norm'], 'Average Case:<br>L<sup>1</sup>-norm')
+            update_ranking("rank_linf", data['rank']['Linf norm'], 'Worst Case:<br>L<sup>&#8734;</sup>-norm')
+            update_ranking("rank_wass", data['rank']['peak wasserstein'], 'Average Case:<br>Wasserstein')
+            update_ranking("rank_bott", data['rank']['peak bottleneck'], 'Worst Case:<br>Bottleneck')
+            update_ranking("rank_dvol", data['rank']['delta volume'], 'Volume<br>Preservation')
+            update_ranking("rank_freq", data['rank']['frequency preservation'], 'Frequency<br>Preservation')
+            update_ranking("rank_pcc", data['rank']['pearson cc'], 'Pearson<br>Correlation')
+            update_ranking("rank_src", data['rank']['spearman rc'], 'Spearman Rank<br>Correlation')
+        });
+    }
+    load_datasets(reload_tmp);
+
+</script>
+
+
+
+</body>
+</html>
+

@@ -19,9 +19,10 @@ import multiprocessing
 data_dir = './data'
 out_dir = './pages/json'
 
-data_groups = ['chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg_500', 'eeg_2500',
+data_groups = ['astro', 'chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg_500', 'eeg_2500',
                'eeg_10000', 'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
-# data_groups = ['chi_homicide']
+# data_groups = ['astro', 'chi_homicide', 'climate_avg_wind', 'climate_max_temp', 'eeg_500', 'eeg_2500',
+#                'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
 
 data_sets = {}
 
@@ -182,20 +183,20 @@ def __generate_metric_dataset(_ds):
         generate_metric_data(_ds, _df)
 
 
-jobs = []
-for _ds in data_sets:
-    jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
-
-# Start the processes (i.e. calculate the random number lists)
-for j in jobs:
-    j.start()
-
-# Ensure all of the processes have finished
-for j in jobs:
-    j.join()
-
+# jobs = []
 # for _ds in data_sets:
-#     __generate_metric_dataset(_ds)
+#     jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
+#
+# # Start the processes (i.e. calculate the random number lists)
+# for j in jobs:
+#     j.start()
+#
+# # Ensure all of the processes have finished
+# for j in jobs:
+#     j.join()
+
+for _ds in data_sets:
+    __generate_metric_dataset(_ds)
 
 
 #############################################

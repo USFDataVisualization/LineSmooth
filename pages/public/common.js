@@ -38,6 +38,18 @@ var filter_long_names = {
     "savitzky_golay": "Savitzky-Golay"
 };
 
+var metric_names = ['pearson cc', 'spearman rc', 'L1 norm', 'Linf norm', 'delta volume',
+                    'frequency preservation', 'peak bottleneck', 'peak wasserstein'];
+
+var metric_math_name = {'pearson cc': ["\u03C1",''],
+                        'spearman rc': ['r','s'],
+                        'L1 norm': ['\u2113\u2081',''],
+                        'Linf norm': ['\u2113','\u221E'],
+                        'delta volume': ["\u03B4v",''],
+                        'frequency preservation': ["\u2131",''],
+                        'peak wasserstein': ['W\u2081',''],
+                        'peak bottleneck': ['W','\u221E'] };
+
 var datasets = {};
 
 var update_func = null;
@@ -71,8 +83,24 @@ function change_dataset(){
     datasets[dset].forEach( function(d){
         html += '<option value="'+d+'">'+d+'</option>';
     });
-    document.getElementById("datafile").innerHTML = html;
+    if( document.getElementById("datafile") != null ){
+        document.getElementById("datafile").innerHTML = html;
+    }
     if( update_func ) update_func();
+}
+
+function insert_dataset_only_selector(){
+    html = `    <div class="container" style="padding: 0;">
+                  <div class="row">
+                    <div class="col-4" style="padding-right: 3px;">
+                        <label for="dataset" style="margin-top: 3px;" >Data Set</label>
+                    </div>
+                    <div class="col-8" style="padding-right: 3px;">
+                        <select class="form-control form-control-sm" id="dataset" name="dataset" onchange="update_func();"></select>
+                    </div>
+                  </div>
+               </div>`;
+    document.write(html);
 }
 
 function insert_dataset_selector(){
@@ -177,9 +205,11 @@ function insert_task_selector(){
 }
 
 
-var pages = ["index.html", "ranks.html", "performance.html", "figures.html"];
+var pages = ["index.html", "ranks-by-dataset.html", "ranks-by-datafile.html", "ranks.html", "performance.html", "figures.html"];
 var page_titles = {"index.html": "Interactive Smoothing",
-                   "ranks.html": "Ranking Visualization",
+                   "ranks-by-dataset.html": "Rank By Data Set",
+                   "ranks-by-datafile.html": "Rank By Data File",
+                   "ranks.html": "Rank-Entropy Plots",
                    "performance.html": "Performance Visualization",
                    "figures.html": "Paper Figures"};
 
@@ -216,3 +246,15 @@ function insert_page_header(){
             </div>`;
     document.write(html);
 }
+
+function get_selected_dataset(){
+    var e = document.getElementById("dataset");
+    return e.options[e.selectedIndex].value;
+}
+
+function get_selected_datafile(){
+    var e = document.getElementById("datafile");
+    if( e == null ) return null;
+    return e.options[e.selectedIndex].value;
+}
+

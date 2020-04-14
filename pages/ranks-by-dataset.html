@@ -31,6 +31,7 @@
     <script src="public/charts.js"></script>
     <script src="public/common.js"></script>
     <script src="public/ranks.js"></script>
+    <script src="public/vis_rank_summary.js"></script>
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="public/favicon/apple-icon-57x57.png">
@@ -57,7 +58,7 @@
 <body>
 
 <script>
-    insert_navbar("ranks.html");
+    insert_navbar("ranks-by-dataset.html");
     insert_page_header();
 </script>
 
@@ -67,43 +68,70 @@
     <div class="sidebar">
         <form id="parameterForm">
         <script>
-            insert_dataset_selector();
-            insert_task_selector();
+            insert_dataset_only_selector();
             insert_filter_checkboxes();
         </script>
         </form>
     </div>
     <div class="page-content" style="padding-bottom: 0;">
-        <div style="width: 1020px; height: 350px;">
-            <span style="text-align: center; width:auto; float: left; height:330px;">
-                <span id="chart1_title"></span><br>
-                <span>
-                    <span style="text-align: center; width:auto; float: left;">
-                        <svg width="360" height="300" style="border: none;" id="chart1"></svg>
-                    </span>
-                    <span id="chart1_rank" class="rankspan"></span>
-                </span>
+        <span>
+        <span style="text-align: center; display: grid; width: fit-content;">L1<br>
+        <svg width="400" height="300" name="rank_summary_l1" id="rank_summary_l1"></svg>
             </span>
-            <span style="text-align: center; width:auto; float: left;  height:230px; padding-left: 5px; ">
-                <span id="chart2_title"></span><br>
-                <span>
-                    <span style="text-align: center; width:auto; float: left;">
-                        <svg width="360" height="300" style="border: none;" id="chart2"></svg>
-                    </span>
-                    <span id="chart2_rank" class="rankspan"></span>
-                </span>
-            </span>
-        </div>
+        </span>
+        <span>
+        <span>Linf</span>
+        <svg width="400" height="300" name="rank_summary_linf" id="rank_summary_linf"></svg>
+        </span>
+        <span>
+        <span>Wass</span>
+        <svg width="400" height="300" name="rank_summary_wass" id="rank_summary_wass"></svg>
+        </span>
+        <span>
+              <span>Bott</span>
+        <svg width="1000" height="300" name="rank_summary_bott" id="rank_summary_bott"></svg>
+        </span>
+        <span>DVol</span>
+        <svg width="1000" height="300" name="rank_summary_dvol" id="rank_summary_dvol"></svg>
+        <span>Freq</span>
+        <svg width="1000" height="300" name="rank_summary_freq" id="rank_summary_freq"></svg>
+        <span>PCC</span>
+        <svg width="1000" height="300" name="rank_summary_pcc" id="rank_summary_pcc"></svg>
+        <span>SRC</span>
+        <svg width="1000" height="300" name="rank_summary_src" id="rank_summary_src"></svg>
     </div>
 </div>
 
 
-<script>
-    load_datasets(reloadMetrics);
 
-    function update_task(){
-        updateMetrics();
+<script>
+
+
+    function reload_tmp(){
+        d3.json( "/all_ranks", function( dinput ) {
+            let ds = get_selected_dataset();
+
+            active_list = [];
+            filter_list.forEach( function(key){
+                if( document.getElementById("metric_"+key).checked ){
+                    active_list.push(key);
+                }
+            });
+
+            vis_rank_summary("#rank_summary_l1", preprocess_ranks( dinput, ds, "L1 norm", active_list ) );
+            vis_rank_summary("#rank_summary_linf", preprocess_ranks( dinput, ds, "Linf norm", active_list ) );
+            vis_rank_summary("#rank_summary_wass", preprocess_ranks( dinput, ds, "peak wasserstein", active_list ) );
+            vis_rank_summary("#rank_summary_bott", preprocess_ranks( dinput, ds, "peak bottleneck", active_list ) );
+            vis_rank_summary("#rank_summary_dvol", preprocess_ranks( dinput, ds, "delta volume", active_list ) );
+            vis_rank_summary("#rank_summary_freq", preprocess_ranks( dinput, ds, "frequency preservation", active_list ) );
+            vis_rank_summary("#rank_summary_pcc", preprocess_ranks( dinput, ds, "pearson cc", active_list ) );
+            vis_rank_summary("#rank_summary_src", preprocess_ranks( dinput, ds, "spearman rc", active_list ) );
+
+
+        });
     }
+    load_datasets(reload_tmp);
+
 </script>
 
 

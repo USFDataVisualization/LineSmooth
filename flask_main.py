@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import Flask, Response
 from flask import request
@@ -41,6 +42,16 @@ def render_index():
 @app.route('/figures.html')
 def render_figures():
     return send_file('pages/figures.html')
+
+
+@app.route('/ranks-by-dataset.html')
+def render_ranks_by_dataset():
+    return send_file('pages/ranks-by-dataset.html')
+
+
+@app.route('/ranks-by-datafile.html')
+def render_ranks_by_datafile():
+    return send_file('pages/ranks-by-datafile.html')
 
 
 @app.route('/ranks.html')
@@ -89,7 +100,14 @@ def get_metric_data():
 
 @app.route('/all_ranks', methods=['GET', 'POST'])
 def get_all_rank_data():
-    return json.dumps(experiments.get_all_ranks(experiments.data_sets))
+    cache_file = "cache/get_all_rank_data.json"
+    if not os.path.exists(cache_file):
+        with open(cache_file, 'w') as outfile:
+            json.dump( experiments.get_all_ranks(experiments.data_sets), outfile, indent=1)
+
+    return send_file(cache_file)
+
+    # return json.dumps(experiments.get_all_ranks(experiments.data_sets))
 
 
 @app.route('/data', methods=['GET', 'POST'])

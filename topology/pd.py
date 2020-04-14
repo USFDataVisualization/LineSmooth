@@ -1,3 +1,4 @@
+import json
 import math
 import random
 import os
@@ -19,8 +20,13 @@ if __hera_bottleneck is None or __hera_wasserstein is None or \
     __hera_wasserstein = None
 
 
-def _extract_cps(data):
+def _extract_cps(_data):
     ret = []
+
+    random.seed(0)
+    data = []
+    for d in _data:
+        data.append( d + random.uniform(0, 1e-10) )
 
     b = {'idx': 0, 'val': data[0], 'type': ('min' if (data[0] < data[1]) else 'max')}
     if b['type'] == 'min': ret.append({'idx': -1, 'val': math.inf, 'type': 'max'})
