@@ -215,11 +215,12 @@ function insert_task_selector(){
 }
 
 
-var pages = ["index.html", "ranks-by-dataset.html", "ranks-by-datafile.html", "ranks.html", "performance.html", "figures.html"];
-var page_titles = {"index.html": "Interactive Smoothing",
+var pages = ["index.html", "ranks-by-dataset.html", "ranks-by-datafile.html", "entropy-plots.html", "performance.html", "figures.html"];
+var page_titles = {"index.html": "Summary Ranks",
                    "ranks-by-dataset.html": "Rank By Data Set",
                    "ranks-by-datafile.html": "Rank By Data File",
-                   "ranks.html": "Rank-Entropy Plots",
+                   "entropy-plots.html": "Rank-Entropy Plots",
+                   "interactive-smoothing.html": "Interactive Smoothing",
                    "performance.html": "Performance Visualization",
                    "figures.html": "Paper Figures"};
 

@@ -1,39 +1,36 @@
 import fnmatch
 import os
 import time
-
+import multiprocessing
 import simplejson as json
-import numpy as np
-
-import math
 
 import lcsmooth.smoothing as lc_smooth
 import lcsmooth.measures as lc_measures
 import lcsmooth.ranks as lc_ranks
 
-import multiprocessing
 
 #
 #
 # Methods and variables for data files
 data_dir = './data'
 out_dir = './pages/json'
+generate_parallel = True
 
 data_groups = ['astro', 'chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg_500', 'eeg_2500',
                'eeg_10000', 'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
-# data_groups = ['astro', 'chi_homicide', 'climate_avg_wind', 'climate_max_temp', 'eeg_500', 'eeg_2500',
-#                'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
+
+filter_list = ['cutoff', 'subsample', 'tda', 'rdp', 'gaussian', 'median', 'mean', 'min', 'max', 'savitzky_golay',
+               'butterworth', 'chebyshev']
+
+measures = ['L1 norm', 'Linf norm', 'peak wasserstein', 'peak bottleneck', "pearson cc", "spearman rc",
+            "delta volume", "frequency preservation"]
 
 data_sets = {}
 
-for group in data_groups:
-    cur_ds = []
-    for data_file in os.listdir(data_dir + "/" + group):
-        if fnmatch.fnmatch(data_file, "*.json"):
-            cur_ds.append(data_file[:-5])
-    data_sets[group] = cur_ds
 
-
+#
+#
+# Methods for generating metric data
 def load_dataset(ds, df):
     filename = data_dir + "/" + ds + "/" + df + ".json"
     with open(filename) as json_file:
@@ -44,75 +41,36 @@ def valid_dataset(datasets, ds, df):
     return ds in data_groups and df in datasets[ds]
 
 
-filter_list = ['cutoff', 'subsample', 'tda', 'rdp', 'gaussian', 'median', 'mean', 'min', 'max', 'savitzky_golay',
-               'butterworth', 'chebyshev']
-
-
 def process_smoothing(input_signal, filter_name, filter_level):
-    input_min = min(input_signal)
-    input_max = max(input_signal)
-    input_range = input_max - input_min
 
     start = time.time()
-    if filter_name == 'cutoff':
-        filter_data = lc_smooth.cutoff(input_signal, filter_level, filter_level_func='log1')
-    elif filter_name == 'subsample':
-        filter_data = lc_smooth.subsample(input_signal, filter_level, filter_level_func='log1')
-    elif filter_name == 'tda':
-        min_level = math.log(1)
-        max_level = math.log(100)
-        scaled_level = lc_smooth.__linear_map(filter_level, 1, 0, min_level, max_level)
-        level = lc_smooth.__linear_map(math.exp(scaled_level), 1, 100, 0, 1.0)
-        # level = filter1d.__linear_map(filter_level, 0, 1, 0, input_range)
-        # level = filter1d.__linear_map(filter_level, 0, 1, 1, 0)
-        filter_data = lc_smooth.tda(input_signal, level)
-    elif filter_name == 'rdp':
-        # level = filter1d.__linear_map(filter_level, 0, 1, 0, input_range)
-        # level = filter1d.__linear_map(filter_level, 0, 1, 1, 0)
-        min_level = math.log(1)
-        max_level = math.log(100)
-        scaled_level = lc_smooth.__linear_map(filter_level, 1, 0, min_level, max_level)
-        level = lc_smooth.__linear_map(math.exp(scaled_level), 1, 100, 0, 1.0)
-        filter_data = lc_smooth.rdp(input_signal, level)
-    elif filter_name == 'gaussian':
-        min_level = math.log(0.1)
-        max_level = math.log(len(input_signal) * 0.1)
-        scaled_level = lc_smooth.__linear_map(filter_level, 0, 1, min_level, max_level)
-        level = math.exp(scaled_level)
-        # level = filter1d.__linear_map(filter_level, 0, 1, 0.1, len(input_signal)*0.1 )
-        filter_data = lc_smooth.gaussian(input_signal, level)
-    elif filter_name == 'median':
-        min_level = math.log(1)
-        max_level = math.log(len(input_signal) * 0.1)
-        scaled_level = lc_smooth.__linear_map(filter_level, 0, 1, min_level, max_level)
-        level = math.exp(scaled_level)
-        # level = filter1d.__linear_map(filter_level, 0, 1, 1, len(input_signal)*0.1)
-        filter_data = lc_smooth.median(input_signal, int(level))
-    elif filter_name == 'mean':
-        level = lc_smooth.__linear_map(filter_level, 0, 1, 1, 100)
-        filter_data = lc_smooth.mean(input_signal, int(level))
+    if filter_name == 'mean':
+        output_signal = lc_smooth.mean(input_signal, filter_level)
     elif filter_name == 'min':
-        level = lc_smooth.__linear_map(filter_level, 0, 1, 1, 100)
-        filter_data = lc_smooth.min_filter(input_signal, int(level))
+        output_signal = lc_smooth.min_filter(input_signal, filter_level)
     elif filter_name == 'max':
-        level = lc_smooth.__linear_map(filter_level, 0, 1, 1, 100)
-        filter_data = lc_smooth.max_filter(input_signal, int(level))
+        output_signal = lc_smooth.max_filter(input_signal, filter_level)
+    elif filter_name == 'gaussian':
+        output_signal = lc_smooth.gaussian(input_signal, filter_level)
+    elif filter_name == 'median':
+        output_signal = lc_smooth.median(input_signal, filter_level)
     elif filter_name == 'savitzky_golay':
-        level = lc_smooth.__linear_map(filter_level, 0, 1, 1, len(input_signal) / 4)
-        filter_data = lc_smooth.savitzky_golay(input_signal, int(level) * 2 + 1, 2)
+        output_signal = lc_smooth.savitzky_golay(input_signal, filter_level, 2)
+    elif filter_name == 'cutoff':
+        output_signal = lc_smooth.cutoff(input_signal, filter_level)
     elif filter_name == 'butterworth':
-        level_tmp = lc_smooth.__linear_map(filter_level, 0, 1, 1.1, 9999.9)
-        level = math.log(level_tmp) / math.log(10000)
-        filter_data = lc_smooth.butterworth(input_signal, 1 - level, 2)
+        output_signal = lc_smooth.butterworth(input_signal, filter_level, 2)
     elif filter_name == 'chebyshev':
-        level_tmp = lc_smooth.__linear_map(filter_level, 0, 1, 1.1, 9999.9)
-        level = math.log(level_tmp) / math.log(10000)
-        filter_data = lc_smooth.chebyshev(input_signal, 1 - level, 2, 0.001)
+        output_signal = lc_smooth.chebyshev(input_signal, filter_level, 2, 0.001)
+    elif filter_name == 'subsample':
+        output_signal = lc_smooth.subsample(input_signal, filter_level)
+    elif filter_name == 'tda':
+        output_signal = lc_smooth.tda(input_signal, filter_level)
+    elif filter_name == 'rdp':
+        output_signal = lc_smooth.rdp(input_signal, filter_level)
     else:
-        filter_data = list(enumerate(input_signal))
+        output_signal = input_signal
     end = time.time()
-
-    output_signal = list(map(lambda x: x[1], filter_data))
 
     info = {"processing time": end - start,
             "filter level": filter_level,
@@ -121,13 +79,10 @@ def process_smoothing(input_signal, filter_name, filter_level):
     res_stats = lc_measures.get_stats(output_signal)
     metrics = lc_measures.get_metrics(input_signal, output_signal)
 
-    return {'input': list(enumerate(input_signal)), 'output': filter_data, 'stats': res_stats, 'info': info,
+    return {'input': list(enumerate(input_signal)), 'output': list(enumerate(output_signal)), 'stats': res_stats, 'info': info,
             'metrics': metrics}
 
 
-#
-#
-# Methods for generating metric data
 def __generate_filter_metric_data(_input_signal, _filter_name):
     results = []
     process_smoothing(_input_signal, _filter_name, 0)  # warm up
@@ -183,31 +138,6 @@ def __generate_metric_dataset(_ds):
         generate_metric_data(_ds, _df)
 
 
-# jobs = []
-# for _ds in data_sets:
-#     jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
-#
-# # Start the processes (i.e. calculate the random number lists)
-# for j in jobs:
-#     j.start()
-#
-# # Ensure all of the processes have finished
-# for j in jobs:
-#     j.join()
-
-for _ds in data_sets:
-    __generate_metric_dataset(_ds)
-
-
-#############################################
-#############################################
-#############################################
-#############################################
-#############################################
-measures = ['L1 norm', 'Linf norm', 'peak wasserstein', 'peak bottleneck', "pearson cc", "spearman rc",
-            "delta volume", "frequency preservation"]
-
-
 def get_all_ranks(datasets):
     res = []
 
@@ -240,3 +170,37 @@ def get_all_ranks(datasets):
     res.sort(key=(lambda a: (a['dataset'] + "_" + a['datafile']).lower()))
 
     return res
+
+
+#############################################
+#############################################
+#############################################
+#############################################
+#############################################
+
+for group in data_groups:
+    cur_ds = []
+    for data_file in os.listdir(data_dir + "/" + group):
+        if fnmatch.fnmatch(data_file, "*.json"):
+            cur_ds.append(data_file[:-5])
+    data_sets[group] = cur_ds
+
+
+if generate_parallel:
+    jobs = []
+
+    # Create the processes
+    for _ds in data_sets:
+        jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
+
+    # Start the processes
+    for j in jobs:
+        j.start()
+
+    # Ensure all of the processes have finished
+    for j in jobs:
+        j.join()
+else:
+    for _ds in data_sets:
+        __generate_metric_dataset(_ds)
+

@@ -179,13 +179,15 @@ function update_scatterplot( doc_id, data, func_x, func_y, func_class, rank_data
         //Object.keys(rank_data).forEach( function(key) {
         active_filters.forEach( function(key) {
             val = rank_data[key];
-            svg_grp.append("line")
+            svg_grp.append("path")
+                .datum( val['points'] )
                          .attr("clip-path", "url(#boxclip)")
-                         .attr("x1", xAxis(val['points'][0][0]) )
-                         .attr("y1", yAxis(val['points'][0][1]) )
-                         .attr("x2", xAxis(val['points'][1][0]) )
-                         .attr("y2", yAxis(val['points'][1][1]) )
-                         .attr("class", key+"_filter regression");
+                         .attr("class", key+"_regression regression")
+                         .attr("d", d3.line()
+                            .x(function(d) { return xAxis(d[0]); })
+                            .y(function(d) { return yAxis(d[1]); })
+                            );
+
         });
     }
 

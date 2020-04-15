@@ -39,6 +39,11 @@ def render_index():
     return send_file('pages/index.html')
 
 
+@app.route('/interactive-smoothing.html')
+def render_smoothing():
+    return send_file('pages/interactive-smoothing.html')
+
+
 @app.route('/figures.html')
 def render_figures():
     return send_file('pages/figures.html')
@@ -54,9 +59,9 @@ def render_ranks_by_datafile():
     return send_file('pages/ranks-by-datafile.html')
 
 
-@app.route('/ranks.html')
-def render_ranks():
-    return send_file('pages/ranks.html')
+@app.route('/entropy-plots.html')
+def render_entropy_plots():
+    return send_file('pages/entropy-plots.html')
 
 
 @app.route('/performance.html')
@@ -135,6 +140,7 @@ def get_filter_css():
         css['.checkmark-container input:checked ~ .checkmark_' + key] = {'background-color': col_dark}
         css['.' + key + '_background'] = {'background-color': col_dark}
         css['.' + key + '_filter'] = {'fill': col_dark, 'stroke': col_dark}
+        css['.' + key + '_regression'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 5}
         css['.' + key + '_fig_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
         css['.' + key + '_filter_light'] = {'fill': col_light, 'stroke': col_light}
 

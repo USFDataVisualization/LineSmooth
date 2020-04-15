@@ -2,25 +2,32 @@ import numpy as np
 import sklearn.metrics
 
 
+def __tform( _y, transform ):
+    if transform == 'log':
+        return np.array(list(map(lambda p: -10 if p <= 1e-10 else np.math.log(p), _y)))
+    else:
+        return np.array(_y)
+
+
+def __tform_inv( _yT, transform ):
+    if transform == 'log':
+        return np.array(list(map( lambda p: np.math.exp(p), _yT)))
+    else:
+        return np.array(_yT)
+
+
 # conventional linear least squares regression
 def lls(_y, _x, transform='none'):
     x = np.array(_x)
-
-    if transform == 'log':
-        y = np.array(list(map(lambda p: -10 if p <= 1e-10 else np.math.log(p), _y)))
-    else:
-        y = np.array(_y)
+    y = __tform(_y,transform)
 
     N = len(x)
     A = np.vstack([x, np.ones(N)]).T
 
     result = np.linalg.lstsq(A, y, rcond=None)[0]
 
-    if transform == 'log':
-        y_res = np.array(list(map( lambda p: np.math.exp(p), np.dot(A, result))))
-        r2 = sklearn.metrics.r2_score(np.array(_y), y_res)
-    else:
-        r2 = sklearn.metrics.r2_score(y, np.dot(A, result) )
+    y_res = __tform_inv(np.dot(A, result), transform)
+    r2 = sklearn.metrics.r2_score(np.array(_y), y_res)
 
     return {'result': result,
             'r^2': r2,
@@ -30,11 +37,7 @@ def lls(_y, _x, transform='none'):
 # iteratively reweighted linear least squares regression
 def irls(_y, _x, maxiter=50, w_init=1, d=0.0001, tolerance=0.001, transform='none'):
     x = np.array(_x)
-
-    if transform == 'log':
-        y = np.array(list(map(lambda p: -10 if p <= 1e-10 else np.math.log(p), _y)))
-    else:
-        y = np.array(_y)
+    y = __tform(_y,transform)
 
     N = len(x)
     A = np.vstack([x, np.ones(N)]).T
@@ -61,11 +64,8 @@ def irls(_y, _x, maxiter=50, w_init=1, d=0.0001, tolerance=0.001, transform='non
 
         _residual = residual
 
-    if transform == 'log':
-        y_res = np.array(list(map(lambda p: np.math.exp(p), np.dot(A, result))))
-        r2 = sklearn.metrics.r2_score(np.array(_y), y_res)
-    else:
-        r2 = sklearn.metrics.r2_score(y, np.dot(A, result))
+    y_res = __tform_inv(np.dot(A, result), transform)
+    r2 = sklearn.metrics.r2_score(np.array(_y), y_res)
 
     return {'result': result, 'r2': r2, 'weights': weights, 'tol': err, 'iter': (i + 1),
             'unweighted result': unweighted_result, 'transform': transform}

@@ -30,7 +30,7 @@
 
     <script src="public/charts.js"></script>
     <script src="public/common.js"></script>
-    <script src="public/index.js"></script>
+    <script src="public/ranks.js"></script>
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="public/favicon/apple-icon-57x57.png">
@@ -56,8 +56,6 @@
 </head>
 <body>
 
-
-
 <script>
     insert_navbar("index.html");
     insert_page_header();
@@ -68,44 +66,100 @@
 
     <div class="sidebar">
         <form id="parameterForm">
-
-            <script>
-                insert_dataset_selector();
-                insert_filter_selector();
-            </script>
-
-            <div class="form-group">
-                <label for="level">Filter Level</label>
-                <input type="range" class="custom-range" min="0" max="1" step="0.01" value="0" id="level" name="level"
-                       onchange="changeFilterLevel()">
-            </div>
-            <div style="font-size:14px;">
-                <span>Approx Entropy: </span><span id="approx_ent_value"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="l1_norm_value"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="linf_norm_value"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="wass_value"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="bott_value"></span>
-                </div>
-            </div>
-
+        <script>
+            insert_dataset_selector();
+            insert_filter_checkboxes();
+        </script>
         </form>
     </div>
-    <div class="page-content" id="visualization" style="padding-bottom: 0;">
-        <div>
-        <svg width="1000" height="375" style="border: none;" id="linechart"></svg>
+    <div class="page-content" style="padding-bottom: 0;">
+        <div style="width: 1020px; height: 350px;">
+            <span style="text-align: center; width:auto; float: left; height:360px;">
+                <fieldset style="border: 1px black solid">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Retrieve Value / Determine Range
+                    </legend>
+                    <span>
+                        <span id="rank_l1" class="rankspan2"></span>
+                        <span id="rank_linf" class="rankspan2"></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
+                <fieldset style="border: 1px black solid; text-align: center;">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Compute Derived Value
+                    </legend>
+                    <span style="display: grid;">
+                        <span id="rank_dvol" class="rankspan2" style="margin:auto; "></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
+                <fieldset style="border: 1px black solid">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Find Extrema / Find Anomalies
+                    </legend>
+                    <span>
+                        <span id="rank_wass" class="rankspan2"></span>
+                        <span id="rank_bott" class="rankspan2"></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px;">
+                <fieldset style="border: 1px black solid; text-align: center; width:auto;">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Characterize Distribution / Cluster: Trends
+                    </legend>
+                    <span style="display: grid;">
+                        <span id="rank_freq" class="rankspan2" style="margin:auto; "></span>
+                    </span>
+                </fieldset>
+            </span>
+            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
+                <fieldset style="border: 1px black solid; text-align: center; width:auto;">
+                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
+                        Sort / Cluster: Points
+                    </legend>
+                    <span>
+                        <span id="rank_pcc" class="rankspan2"></span>
+                        <span id="rank_src" class="rankspan2"></span>
+                    </span>
+                </fieldset>
+            </span>
         </div>
     </div>
 </div>
 
 
+
 <script>
-    load_datasets(reloadChart);
+
+
+    function reload_tmp(){
+        d3.json( "/all_ranks", function( dinput ) {
+            let ds = get_selected_dataset();
+            let df = get_selected_datafile();
+
+            data = dinput.filter( function(d){
+                return d['dataset']==ds && d['datafile']==df;
+            })[0];
+            console.log(data);
+
+            update_ranking("rank_l1", data['rank']['L1 norm'], 'Average Case:<br>L<sup>1</sup>-norm')
+            update_ranking("rank_linf", data['rank']['Linf norm'], 'Worst Case:<br>L<sup>&#8734;</sup>-norm')
+            update_ranking("rank_wass", data['rank']['peak wasserstein'], 'Average Case:<br>Wasserstein')
+            update_ranking("rank_bott", data['rank']['peak bottleneck'], 'Worst Case:<br>Bottleneck')
+            update_ranking("rank_dvol", data['rank']['delta volume'], 'Volume<br>Preservation')
+            update_ranking("rank_freq", data['rank']['frequency preservation'], 'Frequency<br>Preservation')
+            update_ranking("rank_pcc", data['rank']['pearson cc'], 'Pearson<br>Correlation')
+            update_ranking("rank_src", data['rank']['spearman rc'], 'Spearman Rank<br>Correlation')
+        });
+    }
+    load_datasets(reload_tmp);
+
 </script>
+
 
 
 </body>

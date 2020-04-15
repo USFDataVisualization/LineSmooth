@@ -57,11 +57,15 @@ def signal_to_noise(original, filtered):
 #
 # Value-Order Preservation
 def pearson_correlation(d0, d1):
+    if stdev_sample(d0) == 0 or stdev_sample(d1) == 0:
+        return 0
     pcc = np.corrcoef(d0, d1)
     return 1 - pcc[0, 1]
 
 
 def spearman_correlation(d0, d1):
+    if stdev_sample(d0) == 0 or stdev_sample(d1) == 0:
+        return 0
     src = scistat.spearmanr(d0, d1)
     return 1 - src[0]
 
