@@ -23,7 +23,6 @@ if __hera_bottleneck is None or __hera_wasserstein is None or \
 def _extract_cps(_data):
     ret = []
 
-    random.seed(0)
     data = []
     for d in _data:
         data.append( d + random.uniform(0, 1e-10) )

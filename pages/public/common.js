@@ -50,6 +50,16 @@ var metric_math_name = {'pearson cc': ["\u03C1",''],
                         'peak wasserstein': ['W\u2081',''],
                         'peak bottleneck': ['W','\u221E'] };
 
+var task_titles = { 'task_retrieve': ["Retrieve Value (average case): L<sup>1</sup>-norm", "Retrieve Value (worst case): L<sup>&#8734;</sup>-norm" ],
+                        'task_range' : ["Determine Range (average case): L<sup>1</sup>-norm", "Determine Range (worst case): L<sup>&#8734;</sup>-norm" ],
+                        'task_extrema' : ["Find Extrema (average case): Wasserstein", "Find Extrema (worst case): Bottleneck"],
+                        'task_anomalies' : ["Find Anomalies (average case): Wasserstein", "Find Anomalies (worst case): Bottleneck"],
+                        'task_derive' : ["Compute Derived Value (average case): Volume Preservation", "" ],
+                        'task_characterize' : ["Characterize Distribution (average case): Frequency Preservation", ""],
+                        'task_cluster_trends' : ["Cluster: Trends (average case): Frequency Preservation", ""],
+                        'task_sort' : ["Sort: Pearson Correlation", "Sort: Spearman Rank Correlation"],
+                        'task_cluster_points' : ["Cluster: Points: Pearson Correlation", "Cluster: Points: Spearman Rank Correlation"] };
+
 var datasets = {};
 
 var update_func = null;
@@ -258,3 +268,7 @@ function get_selected_datafile(){
     return e.options[e.selectedIndex].value;
 }
 
+function get_selected_task(){
+    var e = document.getElementById("task");
+    return e.options[e.selectedIndex].value;
+}
