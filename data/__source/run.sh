@@ -58,13 +58,13 @@ python process.py -ds eeg_10000 -df chan20 > ../eeg_10000/eeg_chan20_10000.json
 python process.py -ds eeg_10000 -df chan25 > ../eeg_10000/eeg_chan25_10000.json
 python process.py -ds eeg_10000 -df chan30 > ../eeg_10000/eeg_chan30_10000.json
 
-mkdir ../climate_max_temp
-python process.py -ds climate_TMAX -df atl > ../climate_max_temp/climate_atl_tmax.json
-python process.py -ds climate_TMAX -df jfk > ../climate_max_temp/climate_jfk_tmax.json
-python process.py -ds climate_TMAX -df lax > ../climate_max_temp/climate_lax_tmax.json
-python process.py -ds climate_TMAX -df ord > ../climate_max_temp/climate_ord_tmax.json
-python process.py -ds climate_TMAX -df sea > ../climate_max_temp/climate_sea_tmax.json
-python process.py -ds climate_TMAX -df slc > ../climate_max_temp/climate_slc_tmax.json
+mkdir ../climate_tmax
+python process.py -ds climate_TMAX -df atl > ../climate_tmax/climate_atl_tmax.json
+python process.py -ds climate_TMAX -df jfk > ../climate_tmax/climate_jfk_tmax.json
+python process.py -ds climate_TMAX -df lax > ../climate_tmax/climate_lax_tmax.json
+python process.py -ds climate_TMAX -df ord > ../climate_tmax/climate_ord_tmax.json
+python process.py -ds climate_TMAX -df sea > ../climate_tmax/climate_sea_tmax.json
+python process.py -ds climate_TMAX -df slc > ../climate_tmax/climate_slc_tmax.json
 
 mkdir ../climate_prcp
 python process.py -ds climate_PRCP -df atl > ../climate_prcp/climate_atl_prcp.json
@@ -74,13 +74,13 @@ python process.py -ds climate_PRCP -df ord > ../climate_prcp/climate_ord_prcp.js
 python process.py -ds climate_PRCP -df sea > ../climate_prcp/climate_sea_prcp.json
 python process.py -ds climate_PRCP -df slc > ../climate_prcp/climate_slc_prcp.json
 
-mkdir ../climate_avg_wind
-python process.py -ds climate_AWND -df atl > ../climate_avg_wind/climate_atl_awnd.json
-python process.py -ds climate_AWND -df jfk > ../climate_avg_wind/climate_jfk_awnd.json
-python process.py -ds climate_AWND -df lax > ../climate_avg_wind/climate_lax_awnd.json
-python process.py -ds climate_AWND -df ord > ../climate_avg_wind/climate_ord_awnd.json
-python process.py -ds climate_AWND -df sea > ../climate_avg_wind/climate_sea_awnd.json
-python process.py -ds climate_AWND -df slc > ../climate_avg_wind/climate_slc_awnd.json
+mkdir ../climate_awind
+python process.py -ds climate_AWND -df atl > ../climate_awind/climate_atl_awnd.json
+python process.py -ds climate_AWND -df jfk > ../climate_awind/climate_jfk_awnd.json
+python process.py -ds climate_AWND -df lax > ../climate_awind/climate_lax_awnd.json
+python process.py -ds climate_AWND -df ord > ../climate_awind/climate_ord_awnd.json
+python process.py -ds climate_AWND -df sea > ../climate_awind/climate_sea_awnd.json
+python process.py -ds climate_AWND -df slc > ../climate_awind/climate_slc_awnd.json
 
 
 mkdir ../stock_price

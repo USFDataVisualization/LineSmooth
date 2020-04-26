@@ -14,9 +14,9 @@ import lcsmooth.ranks as lc_ranks
 # Methods and variables for data files
 data_dir = './data'
 out_dir = './pages/json'
-generate_parallel = True
+generate_parallel = False
 
-data_groups = ['astro', 'chi_homicide', 'climate_avg_wind', 'climate_prcp', 'climate_max_temp', 'eeg_500', 'eeg_2500',
+data_groups = ['astro', 'chi_homicide', 'climate_awnd', 'climate_prcp', 'climate_tmax', 'eeg_500', 'eeg_2500',
                'eeg_10000', 'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
 
 filter_list = ['cutoff', 'subsample', 'tda', 'rdp', 'gaussian', 'median', 'mean', 'min', 'max', 'savitzky_golay',
@@ -148,6 +148,7 @@ def get_all_ranks(datasets):
             overall[m] = dict.fromkeys(filter_list, 0)
 
         for df in datasets[ds]:
+            print( df)
             metric_data = generate_metric_data(ds, df)
 
             metric_reg = {}

@@ -28,9 +28,8 @@
     <script src="https://d3js.org/d3.v4.js" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js" crossorigin="anonymous"></script>
 
-    <script src="public/charts.js"></script>
     <script src="public/common.js"></script>
-    <script src="public/ranks.js"></script>
+    <script src="public/vis_rank_summary.js"></script>
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="public/favicon/apple-icon-57x57.png">
@@ -67,7 +66,7 @@
     <div class="sidebar">
         <form id="parameterForm">
         <script>
-            insert_dataset_selector();
+            insert_dataset_only_selector();
             insert_filter_checkboxes();
         </script>
         </form>
@@ -136,27 +135,49 @@
 <script>
 
 
-    function reload_tmp(){
-        d3.json( "/all_ranks", function( dinput ) {
-            let ds = get_selected_dataset();
-            let df = get_selected_datafile();
 
-            data = dinput.filter( function(d){
-                return d['dataset']==ds && d['datafile']==df;
-            })[0];
-            console.log(data);
+    let all_rank_data = null;
+    let active_list = [];
 
-            update_ranking("rank_l1", data['rank']['L1 norm'], 'Average Case:<br>L<sup>1</sup>-norm')
-            update_ranking("rank_linf", data['rank']['Linf norm'], 'Worst Case:<br>L<sup>&#8734;</sup>-norm')
-            update_ranking("rank_wass", data['rank']['peak wasserstein'], 'Average Case:<br>Wasserstein')
-            update_ranking("rank_bott", data['rank']['peak bottleneck'], 'Worst Case:<br>Bottleneck')
-            update_ranking("rank_dvol", data['rank']['delta volume'], 'Volume<br>Preservation')
-            update_ranking("rank_freq", data['rank']['frequency preservation'], 'Frequency<br>Preservation')
-            update_ranking("rank_pcc", data['rank']['pearson cc'], 'Pearson<br>Correlation')
-            update_ranking("rank_src", data['rank']['spearman rc'], 'Spearman Rank<br>Correlation')
+    function update_rank( doc_id, rank_data, title='Ranking' ){
+        html = '<span class="ranktext" style="text-decoration: underline;"><underline>' + title + '</underline></span><br>'
+                + '<span class="ranktext" style="color: darkgrey; font-size: small; ">Best</span><br>';
+
+        rank_data.forEach( function(key) {
+            if( document.getElementById("metric_"+key).checked ){
+                html += '<span class="rankbox ' + key + '_background"></span><span class="ranklabel">' + filter_short_names[key] + '</span><br>';
+            }
         });
+
+        html += '<span class="ranktext" style="color: darkgrey; font-size: small; ">Worst</span>';
+
+        document.getElementById(doc_id).innerHTML = html;
     }
-    load_datasets(reload_tmp);
+
+    function get_average_rank(metric){
+        let ds = get_selected_dataset();
+        tmp = preprocess_ranks( all_rank_data, ds, metric, active_list ).filter( d=> d.datafile=="average rank" )[0].ranks;
+        return tmp.map( d => d.class );
+    }
+
+    function update_task(){
+
+        active_list = get_active_filters();
+
+        update_rank( "rank_l1", get_average_rank("L1 norm"), 'Average Case:<br>L<sup>1</sup>-norm');
+        update_rank( "rank_linf", get_average_rank("Linf norm"), 'Worst Case:<br>L<sup>&#8734;</sup>-norm');
+        update_rank( "rank_dvol", get_average_rank("delta volume"), 'Volume<br>Preservation');
+        update_rank( "rank_wass", get_average_rank("peak wasserstein"), 'Average Case:<br>Wasserstein');
+        update_rank( "rank_bott", get_average_rank("peak bottleneck"), 'Worst Case:<br>Bottleneck');
+        update_rank( "rank_freq", get_average_rank("frequency preservation"), 'Frequency<br>Preservation');
+        update_rank( "rank_pcc", get_average_rank("pearson cc"), 'Pearson<br>Correlation');
+        update_rank( "rank_src", get_average_rank("spearman rc"), 'Spearman Rank<br>Correlation');
+    }
+
+    d3.json( "/all_ranks", function( dinput ) {
+        all_rank_data = dinput
+        load_datasets(update_task);
+    });
 
 </script>
 

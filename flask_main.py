@@ -6,6 +6,8 @@ from flask import request
 from flask import send_file
 from flask import send_from_directory
 
+from colorutils import Color
+
 import experiments
 import lcsmooth.ranks as ranks
 import webbrowser
@@ -28,8 +30,8 @@ filter_colors = {
     'chebyshev': ["#7F0CE8", "#BA84E8"],
 
     'subsample': ["#E8A20C", "#E8BC6F"],
-    'tda': ["#FF7B00", "#FFB987"],
-    'rdp': ["#E8410C", "#E8856F"]
+    'rdp': ["#FF7B00", "#FFB987"],
+    'tda': ["#E8410C", "#E8856F"]
 }
 
 
@@ -143,6 +145,14 @@ def get_filter_css():
         css['.' + key + '_regression'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 5}
         css['.' + key + '_fig_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
         css['.' + key + '_filter_light'] = {'fill': col_light, 'stroke': col_light}
+        css['.' + key + '_hollow_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
+        css['.' + key + '_hollow_filter_light'] = {'fill': 'none', 'stroke': 'none'}
+
+        col_very_light = Color(web=col_light)+Color((10, 10, 10))
+        css['.' + key + '_track'] = {'fill': 'none',
+                                     'stroke': col_very_light.web, 'stroke-opacity': 0.6, "stroke-width": 8 }
+
+
 
     ret = '\n'
     for key in css.keys():

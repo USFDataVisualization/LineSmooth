@@ -77,335 +77,59 @@
         <input type="submit" value="Save Image" onclick="saveImage('fig_teaser');" />
 
         <h4>Figure ???</h4>
+        <svg width="400" height="300" style="border: none;" id="fig_entropy_plot1"></svg>
+        <svg width="400" height="300" style="border: none;" id="fig_entropy_plot2"></svg>
+        <svg width="400" height="300" style="border: none;" id="fig_entropy_plot3"></svg><br>
+        <input type="submit" value="Save Images" onclick="saveImage('fig_entropy_plot1'); saveImage('fig_entropy_plot2'); saveImage('fig_entropy_plot3');" />
+
+        <h4>Figure ???</h4>
+        <svg width="510" height="280" style="border: none;" id="fig_dataset_summary_vis"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_dataset_summary_vis');" />
+
+        <h4>Figure ???</h4>
         <svg width="1710" height="740" style="border: none;" id="fig_datasets"></svg><br>
         <input type="submit" value="Save Image" onclick="saveImage('fig_datasets');" />
 
-<!--table class="table">
-  <tbody>
-    <tr>
-      <th scope="row">Row 2</th>
-      <td>
+        <h4>Figure ??? - Retrieve Value / Determine Range</h4>
+        <svg width="640" height="285" style="border: none;" id="fig_task_rv_l1"></svg><br>
+        <svg width="640" height="285" style="border: none;" id="fig_task_rv_linf"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_task_rv_l1');saveImage('fig_task_rv_linf');" />
 
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_0_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_0_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_0_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_0_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_0_0"></span>
-                </div>
+        <h4>Figure ??? - Compute Derived Value</h4>
+        <svg width="640" height="285" style="border: none;" id="fig_task_cdv"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_task_cdv');" />
 
-      </td>
-      <td>
+        <h4>Figure ??? - Find Extrema / Find Anomalies</h4>
+        <svg width="640" height="285" style="border: none;" id="fig_task_fe_wass"></svg><br>
+        <svg width="640" height="285" style="border: none;" id="fig_task_fe_bott"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_task_fe_wass');saveImage('fig_task_fe_bott');" />
 
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_1_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_1_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_1_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_1_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_1_0"></span>
-                </div>
+        <h4>Figure ??? - Characterize Distribution / Cluster: Trends</h4>
+        <svg width="640" height="285" style="border: none;" id="fig_task_cd"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_task_cd');" />
 
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_2_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_2_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_2_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_2_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_2_0"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_3_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_3_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_3_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_3_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_3_0"></span>
-                </div>
-
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Row 3</th>
-      <td>
-
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_0_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_0_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_0_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_0_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_0_1"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_1_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_1_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_1_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_1_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_1_1"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_2_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_2_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_2_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_2_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_2_1"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="teaser_approx_ent_value_3_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="teaser_l1_norm_value_3_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="teaser_linf_norm_value_3_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="teaser_wass_value_3_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="teaser_bott_value_3_1"></span>
-                </div>
-
-      </td>    </tr>
-  </tbody>
-</table>
-
-
-    </div>
-    <div style="width: 1700px; padding-left: 20px; padding-top: 40px;">
-        <h4>Figure 4</h4>
-        <svg width="1675" height="310" style="border: none;" id="fig_fitlers"></svg><br>
+        <h4>Figure ??? - Sort / Cluster: Points</h4>
+        <svg width="640" height="285" style="border: none;" id="fig_task_s_pcc"></svg><br>
+        <svg width="640" height="285" style="border: none;" id="fig_task_s_src"></svg><br>
+        <input type="submit" value="Save Image" onclick="saveImage('fig_task_s_pcc');saveImage('fig_task_s_src');" />
 
 
 
 
-<table class="table">
-  <tbody>
-    <tr>
-      <th scope="row">Row 1</th>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_0_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_0_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_0_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_0_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_0_0"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_1_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_1_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_1_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_1_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_1_0"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_2_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_2_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_2_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_2_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_2_0"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_3_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_3_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_3_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_3_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_3_0"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_4_0"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_4_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_4_0"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_4_0"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_4_0"></span>
-                </div>
-
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Row 2</th>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_0_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_0_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_0_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_0_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_0_1"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_1_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_1_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_1_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_1_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_1_1"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_2_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_2_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_2_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_2_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_2_1"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_3_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_3_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_3_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_3_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_3_1"></span>
-                </div>
-
-      </td>
-      <td>
-
-                <span>Approx Entropy: </span><span id="filter_approx_ent_value_4_1"></span>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
-                    <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="filter_l1_norm_value_4_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="filter_linf_norm_value_4_1"></span>
-                </div>
-                <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="filter_wass_value_4_1"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="filter_bott_value_4_1"></span>
-                </div>
-
-      </td>
-
-    </tr>
-  </tbody>
-</table>
-
-
-
-        <input type="submit" value="Save Image" onclick="saveImage('fig_fitlers');" />
-    </div>
-    <div style="padding-left: 20px; padding-top: 40px;">
-        <h4>Figure 5</h4>
-        <svg width="1390" height="495" style="border: none;" id="fig_ranks"></svg><br>
-        <input type="submit" value="Save Image" onclick="saveImage('fig_ranks');" />
-    </div>
-</div>
-
-
-
-<script src="public/fig_summary_rank.js"></script>
-<script-- src="public/fig_filters.js"></script-->
 <script src="public/fig_teaser.js"></script>
+<script src="public/fig_dataset_summary.js"></script>
+<script src="public/fig_ranks_per_task.js"></script>
 <script>
 	function saveImage( plotID ){
 		var svg_save = d3.select('#'+plotID);
 		saveSVGImage(svg_save, plotID+".png" );
 	}
 
-    //load_rank_figure();
     load_teaser();
     load_datasets_fig();
+    load_entropy_plots();
+    load_dataset_summary_vis();
+    load_fig_ranks_per_task();
 </script>
 
 </body>

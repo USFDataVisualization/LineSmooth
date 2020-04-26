@@ -17,9 +17,11 @@ def __metric_regression(x, y, x_cutoff):
     res_log = regression.irls(y, x, transform='log')
 
     points = []
-    if res['r2'] < res_log['r2']:
+    #print(str( res['r2']) + " " + str(res_log['r2'] ) )
+    if res['r2'] > res_log['r2']:
         m, c = res['result']
         r2 = res['r2']
+        mse = res['mse']
 
         x0 = [0, c]
         x1 = [x_cutoff, m * x_cutoff + c]
@@ -31,6 +33,7 @@ def __metric_regression(x, y, x_cutoff):
     else:
         log_m, log_c = res_log['result']
         r2 = res_log['r2']
+        mse = res_log['mse']
         for i in range(20):
             cx = x_cutoff * i / 19
             cy = log_m * cx + log_c
@@ -40,7 +43,7 @@ def __metric_regression(x, y, x_cutoff):
 
     return {'points': points,
             'area': area,
-            'r2': r2}
+            'r2': r2, 'mse': mse}
 
 
 def metric_ranks(all_metric_data, filters, fieldX, fieldY):

@@ -28,9 +28,10 @@ def lls(_y, _x, transform='none'):
 
     y_res = __tform_inv(np.dot(A, result), transform)
     r2 = sklearn.metrics.r2_score(np.array(_y), y_res)
+    mse = sklearn.metrics.mean_squared_error(np.array(_y), y_res)
 
     return {'result': result,
-            'r^2': r2,
+            'r2': r2, 'mse': mse,
             'transform': transform}
 
 
@@ -66,8 +67,9 @@ def irls(_y, _x, maxiter=50, w_init=1, d=0.0001, tolerance=0.001, transform='non
 
     y_res = __tform_inv(np.dot(A, result), transform)
     r2 = sklearn.metrics.r2_score(np.array(_y), y_res)
+    mse = sklearn.metrics.mean_squared_error(np.array(_y), y_res)
 
-    return {'result': result, 'r2': r2, 'weights': weights, 'tol': err, 'iter': (i + 1),
+    return {'result': result, 'r2': r2, 'mse': mse, 'weights': weights, 'tol': err, 'iter': (i + 1),
             'unweighted result': unweighted_result, 'transform': transform}
 
 

@@ -86,6 +86,7 @@ function update_ranking( doc_id, rank_data, title='Ranking' ){
     html = '<span class="ranktext" style="text-decoration: underline;"><underline>' + title + '</underline></span><br>'
             + '<span class="ranktext" style="color: darkgrey; font-size: small; ">Best</span><br>';
 
+    console.log(rank_data);
     keys = Object.keys(rank_data)
     keys.sort( (a,b) => rank_data[a]['rank'] - rank_data[b]['rank'] );
     keys.forEach( function(key) {

@@ -1,5 +1,5 @@
 
-var filter_list = [ "median", "min", "max", "gaussian", "savitzky_golay", "mean", "cutoff", "butterworth", "chebyshev", "subsample", "tda", "rdp" ];
+var filter_list = [ "median", "min", "max", "gaussian", "savitzky_golay", "mean", "cutoff", "butterworth", "chebyshev", "subsample", "rdp", "tda" ];
 
 var filter_groups = [
     {"title": "Rank Filters", "filters": [ "median", "min", "max"] },
@@ -9,32 +9,44 @@ var filter_groups = [
 ];
 
 var filter_short_names = {
-    "median": "Median",
+    "median": "median",
     "gaussian": "Gaussian",
-    "cutoff": "Cutoff",
-    "subsample": "Uniform",
+    "cutoff": "cutoff",
+    "subsample": "uniform",
     "rdp": "Douglas-Peucker",
-    "tda": "Topology",
+    "tda": "topology",
     "butterworth": "Butterworth",
     "chebyshev": "Chebyshev",
-    "max": "Maximum",
-    "min": "Minimum",
-    "mean": "Mean",
-    "savitzky_golay": "Savitzky-Golay"
+    "max": "max",
+    "min": "min",
+    "mean": "mean",
+    "savitzky_golay": "Savitzky-Golay",
+    "median_hollow": "median",
+    "gaussian_hollow": "Gaussian",
+    "cutoff_hollow": "cutoff",
+    "subsample_hollow": "uniform",
+    "rdp_hollow": "Douglas-Peucker",
+    "tda_hollow": "topology",
+    "butterworth_hollow": "Butterworth",
+    "chebyshev_hollow": "Chebyshev",
+    "max_hollow": "max",
+    "min_hollow": "min",
+    "mean_hollow": "mean",
+    "savitzky_golay_hollow": "Savitzky-Golay"
 };
 
 var filter_long_names = {
-    "median": "Median",
+    "median": "median",
     "gaussian": "Gaussian",
-    "cutoff": "Low-Pass Cutoff",
-    "subsample": "Uniform Subsampling",
+    "cutoff": "low-pass cutoff",
+    "subsample": "uniform subsampling",
     "rdp": "Douglas-Peucker",
-    "tda": "Topology",
+    "tda": "topology",
     "butterworth": "Butterworth",
     "chebyshev": "Chebyshev",
-    "max": "Maximum",
-    "min": "Minimum",
-    "mean": "Mean",
+    "max": "max",
+    "min": "min",
+    "mean": "mean",
     "savitzky_golay": "Savitzky-Golay"
 };
 
@@ -45,7 +57,7 @@ var metric_math_name = {'pearson cc': ["\u03C1",''],
                         'spearman rc': ['r','s'],
                         'L1 norm': ['\u2113\u2081',''],
                         'Linf norm': ['\u2113','\u221E'],
-                        'delta volume': ["\u03B4v",''],
+                        'delta volume': ["\u03B4a",''],
                         'frequency preservation': ["\u2131",''],
                         'peak wasserstein': ['W\u2081',''],
                         'peak bottleneck': ['W','\u221E'] };
@@ -273,3 +285,8 @@ function get_selected_task(){
     var e = document.getElementById("task");
     return e.options[e.selectedIndex].value;
 }
+
+function get_active_filters(){
+    return filter_list.filter( key => document.getElementById("metric_"+key).checked );
+}
+

@@ -45,7 +45,9 @@ function preprocess_ranks( rank_data, dataset, metric_name, active_list=filter_l
     return ret;
 }
 
-function vis_rank_summary( doc_id, rank_data ){
+
+
+function vis_rank_summary( doc_id, rank_data, startX=35, startY=55, xSpacing=55, ySpace=17, showRank=true, labelRotation=340, labelOffsetX=8 ){
 
     $(doc_id).empty();
     let svg = d3.select(doc_id);
@@ -53,16 +55,13 @@ function vis_rank_summary( doc_id, rank_data ){
     let instances = [];
     let links = [];
 
-    startX = 35;
-    startY = 55;
-
     let lineGenerator = d3.line().curve(d3.curveCardinal);
 
 
     function build_instance( r, x, y, box_size ){
         ret = []
         r.forEach( function(k){
-            ret.push({ 'class':k.class, 'x': x, 'y': y + k.rank*17, 'r': box_size, 'rank': k.rank });
+            ret.push({ 'class':k.class, 'x': x, 'y': y + k.rank*ySpace, 'r': box_size, 'rank': k.rank });
         });
         return ret;
     }
@@ -85,18 +84,24 @@ function vis_rank_summary( doc_id, rank_data ){
                     end]);
     }
 
-    function construct_points_and_paths(){
+    function construct_points_and_paths( ){
         curX = startX;
         curY = startY;
         curR = 0;
         rank_data.forEach( function(ds){
-            box_size = (ds.datafile=="average rank")?14:9;
+            box_size = 9;
+
+            if( ds.datafile=="average rank" || ds.datafile=="overall performance" ){
+                box_size = 14;
+                curX += xSpacing/4;
+            }
+
             instances.push( build_instance( ds.ranks, curX, curY, box_size ) );
             if( curR > 0 ){
                 links = links.concat( find_links( instances[instances.length-2], instances[instances.length-1] ) );
             }
             curR++;
-            curX += 55
+            curX += xSpacing;
         });
     }
 
@@ -105,7 +110,9 @@ function vis_rank_summary( doc_id, rank_data ){
             .data(links)
             .enter().append("path")
             .attr( 'd', function(d){ return make_path( [d.src.x+15,d.src.y+7.5], [d.dst.x,d.dst.y+7.5] ); } )
-            .attr("class", function(d){ return d.src.class + "_filter_light"; })
+            //.attr("class", function(d){ return d.src.class + "_filter_light"; })
+            .attr("class", function(d){ return d.src.class + "_track"; })
+            .attr("stroke-opacity", 0.6)
             .attr("fill", "none")
             .attr("stroke-width",7);
     }
@@ -115,12 +122,13 @@ function vis_rank_summary( doc_id, rank_data ){
         instance.forEach( function(f){
             gtmp.append("text")
                   .style("fill", "gray")
-                  .style("font-size", "13px")
+                  .style("font-size", "14px")
                   .attr("dy", ".35em")
                   .attr("font-family", "Arial")
+                  .attr("font-variant", "small-caps")
                   .attr("text-anchor", "start")
-                  .attr("transform", "translate("+ (f.x+19) +","+ (f.y+8) +")")
-                  .text( String(f.rank) + ": " + filter_short_names[ f.class ] );
+                  .attr("transform", "translate("+ (f.x+19) +","+ (f.y+7) +")")
+                  .text( (showRank? String(f.rank) + ": " : "") + filter_short_names[ f.class ] );
         });
     }
 
@@ -137,20 +145,34 @@ function vis_rank_summary( doc_id, rank_data ){
         });
     }
 
+    function add_label( svg_g, text, tX, tY, r, font_size="13px" ){
+        svg_g.append("text")
+              .style("fill", "black")
+              .style("font-size", font_size )
+              .attr("dy", ".35em")
+              .attr("font-family", "Arial")
+              .attr("text-anchor", "start")
+              .attr("transform", "translate(" + tX + "," + tY + ") rotate(" + r + ")")
+              .text(text);
+    }
+
     function label_datafiles(){
         curX = startX;
         let gtmp = svg.append("g");
         rank_data.forEach( function(d){
-            gtmp.append("text")
-              .style("fill", "black")
-              .style("font-size", (d.datafile=='overall')?"15px":"13px" )
-              .attr("dy", ".35em")
-              .attr("font-family", "Arial")
-              .attr("text-anchor", "start")
-              .attr("transform", "translate(" + (curX+4) + "," + (startY+8) + ") rotate(340)")
-              .text(d.datafile);
+            if( d.datafile=='overall performance'){
+                add_label( gtmp, 'overall', (curX+4), (startY+labelOffsetX-3), labelRotation, "15px" );
+                add_label( gtmp, 'performance', (curX+25), (startY+labelOffsetX-3), labelRotation, "15px" );
+            }
+            else if (d.datafile=='average rank'){
+                curX+=xSpacing/4;
+                add_label( gtmp, d.datafile, (curX+4), (startY+labelOffsetX), labelRotation, "15px" );
+            }
+            else{
+                add_label( gtmp, d.datafile, (curX+4), (startY+labelOffsetX), labelRotation, (d.datafile=='overall')?"15px":"13px" );
+            }
 
-            curX+=55;
+            curX+=xSpacing;
         });
     }
 
