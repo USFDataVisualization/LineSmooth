@@ -1,8 +1,6 @@
 #!/bin/bash
 
-#rm -rf cache
 rm *.pd
-#mkdir cache
 
 . venv/bin/activate
 

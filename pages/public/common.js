@@ -87,7 +87,10 @@ function load_datasets( __update_func ){
         keys.sort();
 
         keys.forEach( function(d){
-            html += '<option value="'+d+'">'+d+'</option>';
+            if( d == 'stock_price')
+                html += '<option value="'+d+'" selected>'+d+'</option>';
+            else
+                html += '<option value="'+d+'">'+d+'</option>';
         });
 
         document.getElementById("dataset").innerHTML = html;
@@ -227,18 +230,18 @@ function insert_task_selector(){
 }
 
 
-var pages = ["index.html", "ranks-by-dataset.html", "ranks-by-datafile.html", "entropy-plots.html", "performance.html", "figures.html"];
+var pages = ["index.html", "ranks-by-dataset.html", "ranks-by-datafile.html", "entropy-plots.html", "interactive-smoothing.html", "performance.html", "figures.html"];
 var page_titles = {"index.html": "Summary Ranks",
-                   "ranks-by-dataset.html": "Rank By Data Set",
-                   "ranks-by-datafile.html": "Rank By Data File",
-                   "entropy-plots.html": "Rank-Entropy Plots",
+                   "ranks-by-dataset.html": "Rank By Data Category",
+                   "ranks-by-datafile.html": "Rank By Dataset",
+                   "entropy-plots.html": "Entropy Plots",
                    "interactive-smoothing.html": "Interactive Smoothing",
                    "performance.html": "Performance Visualization",
                    "figures.html": "Paper Figures"};
 
 function insert_navbar( curpage ){
     html = `<nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <a class="navbar-brand" href="index.html">Line Chart Smoothing</a>
+              <a class="navbar-brand" href="index.html">LineSmooth</a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -265,7 +268,7 @@ function insert_navbar( curpage ){
 function insert_page_header(){
     html = `<div class="page" style="padding: 15px;">
                 <h1 style="margin: 0;">A Framework for the Analytical Evaluation of Line Chart Smoothing</h1>
-                <h3 style="padding-left: 5px;">InfoVis 2020 Submission #???</h3>
+                <h3 style="padding-left: 5px;">VAST 2020 Submission #1250</h3>
             </div>`;
     document.write(html);
 }

@@ -41,7 +41,7 @@ function load_teaser(){
         res = []
         inst0.forEach( function(i0){
             i1 = inst1.find( function(t){
-                return t.class == i0.class;
+                return t.path_class == i0.path_class;
             });
             res.push( {'src':i0,'dst':i1} );
         });
@@ -62,7 +62,7 @@ function load_teaser(){
             .enter().append("path")
             .attr( 'd', function(d){ return make_path( [d.src.x+15,d.src.y+7.5], [d.dst.x,d.dst.y+7.5] ); } )
             //.attr("class", function(d){ return d.src.class + "_filter_light"; })
-            .attr("class", function(d){ return d.src.class + "_track"; })
+            .attr("class", function(d){ return d.src.path_class; })
             .attr("fill-opacity", 0.7)
             .attr("fill", "none")
             .attr("stroke-width",4);
@@ -86,24 +86,35 @@ function load_teaser(){
         });
 
 
+        startY = 348;
+        dY = 25;
 
         curX = 28;
         last_rank = null;
         links = [];
+        line_classes = [];//['tda','gaussian','savitzky_golay','cutoff','rdp','subsample'];
         rank_order.forEach( function(rg){
             rg.subcats.forEach( function(n){
+                //console.log(teaser_ranks[n]);
                         //teaser_ranks[n].sort( function(a,b){ if(a.value<b.value) return -1; if(a.value>b.value) return 1; return 0; });
-                        curY = 320;
+                        curY = startY;
                         for( i = 0; i < teaser_ranks[n].length; i++ ){
+                            if( line_classes.includes(teaser_ranks[n][i].class) ){
+                                teaser_ranks[n][i].path_class = teaser_ranks[n][i].class + "_track2";
+                            }
+                            else{
+                                teaser_ranks[n][i].path_class = teaser_ranks[n][i].class + "_hollow";
+                            }
                             //teaser_ranks[n][i].rank = i+1;
                             //if(!top_3.has(teaser_ranks[n][i].class))
                             if( teaser_ranks[n][i].rank > 3 )
                                 teaser_ranks[n][i].class += "_hollow";
 
+
                             teaser_ranks[n][i].x = curX;
                             teaser_ranks[n][i].y = curY;
-                            teaser_ranks[n][i].r = 21;
-                            curY += 29;
+                            teaser_ranks[n][i].r = 20;
+                            curY += dY;
                         }
                         curX += 30;
                         if( last_rank != null )
@@ -115,7 +126,7 @@ function load_teaser(){
         });
 
 
-        //draw_path(svg, links);
+        draw_path(svg, links);
 
 
         metric_names.forEach( function(n){
@@ -132,11 +143,11 @@ function load_teaser(){
 
         let g_text = svg.append("g");
 
-        curY = 328;
+        curY = startY+8;
         for( i = 0; i < last_rank.length; i++ ){
             append_text( g_text, 344, curY, filter_short_names[ last_rank[i].class ], 'start', 'small-caps' );
             append_text( g_text, 20, curY, (i+1), 'end', 'start', 'small-caps' );
-            curY += 29;
+            curY += dY;
         }
 
         curX = 38;
@@ -147,7 +158,7 @@ function load_teaser(){
                   //.attr("dy", ".35em")
                   .attr("font-family", "Arial")
                   .attr("text-anchor", "start")
-                  .attr("transform", "translate("+ (curX+(rg.subcats.length-1)*10) +","+ (312) +") rotate(330)")
+                  .attr("transform", "translate("+ (curX+(rg.subcats.length-1)*10) +","+ (337) +") rotate(330)")
                   .text( rg['title'] );
 
             rg.subcats.forEach( function(n){
@@ -157,7 +168,7 @@ function load_teaser(){
                       //.attr("dy", ".35em")
                       .attr("font-family", "Arial")
                       .attr("text-anchor", "middle")
-                      .attr("transform", "translate("+ (curX-2) +","+ (674) +")")
+                      .attr("transform", "translate("+ (curX-2) +","+ (662) +")")
                       .text( metric_math_name[n][0] )
                         .append("tspan")
                             .attr("dy","4")

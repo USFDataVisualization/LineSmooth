@@ -82,14 +82,27 @@
             <div style="font-size:14px;">
                 <span>Approx Entropy: </span><span id="approx_ent_value"></span>
                 <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value</span><br>
+                    <span style="padding-top: 10px; text-decoration: underline;">Retrieve Value / Determine Range</span><br>
                     <span style="padding-left:7px;">Average case (L<sub>1</sub>-norm): </span><span id="l1_norm_value"></span><br>
                     <span style="padding-left:7px;">Worst case (L<sub>&#8734;</sub>-norm): </span><span id="linf_norm_value"></span>
                 </div>
                 <div style="padding-top: 5px;">
-                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema</span><br>
-                    <span style="padding-left:7px;">Average case (Wasserstein): </span><span id="wass_value"></span><br>
-                    <span style="padding-left:7px;">Worst case (Bottleneck): </span><span id="bott_value"></span>
+                    <span style="padding-top: 10px; text-decoration: underline;">Compute Derived Value</span><br>
+                    <span style="padding-left:7px;">Average case (&delta;a): </span><span id="delta_vol_value"></span><br>
+                </div>
+                <div style="padding-top: 5px;">
+                    <span style="padding-top: 10px; text-decoration: underline;">Find Extrema / Find Anomalies</span><br>
+                    <span style="padding-left:7px;">Average case (W<sub>1</sub>): </span><span id="wass_value"></span><br>
+                    <span style="padding-left:7px;">Worst case (W<sub>&#8734;</sub>): </span><span id="bott_value"></span>
+                </div>
+                <div style="padding-top: 5px;">
+                    <span style="padding-top: 10px; text-decoration: underline;">Char. Dist. / Cluster: Trends</span><br>
+                    <span style="padding-left:7px;">Average case (&#8497;): </span><span id="freq_pres_value"></span><br>
+                </div>
+                <div style="padding-top: 5px;">
+                    <span style="padding-top: 10px; text-decoration: underline;">Sort / Cluster: Points</span><br>
+                    <span style="padding-left:7px;">Value Pres. (&rho;): </span><span id="pearson_value"></span><br>
+                    <span style="padding-left:7px;">Order Pres. (r<sub>s</sub>): </span><span id="spearman_value"></span>
                 </div>
             </div>
 

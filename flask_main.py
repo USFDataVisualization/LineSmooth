@@ -107,7 +107,7 @@ def get_metric_data():
 
 @app.route('/all_ranks', methods=['GET', 'POST'])
 def get_all_rank_data():
-    cache_file = "cache/get_all_rank_data.json"
+    cache_file = "pages/json/get_all_rank_data.json"
     if not os.path.exists(cache_file):
         with open(cache_file, 'w') as outfile:
             json.dump( experiments.get_all_ranks(experiments.data_sets), outfile, indent=1)
@@ -145,14 +145,14 @@ def get_filter_css():
         css['.' + key + '_regression'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 5}
         css['.' + key + '_fig_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
         css['.' + key + '_filter_light'] = {'fill': col_light, 'stroke': col_light}
-        css['.' + key + '_hollow_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
+        css['.' + key + '_hollow_filter'] = {'fill': 'white', 'stroke': col_dark, 'stroke-width': 3}
         css['.' + key + '_hollow_filter_light'] = {'fill': 'none', 'stroke': 'none'}
 
         col_very_light = Color(web=col_light)+Color((10, 10, 10))
         css['.' + key + '_track'] = {'fill': 'none',
                                      'stroke': col_very_light.web, 'stroke-opacity': 0.6, "stroke-width": 8 }
-
-
+        css['.' + key + '_track2'] = {'fill': 'none',
+                                     'stroke': col_very_light.web, 'stroke-opacity': 0.5, "stroke-width": 6 }
 
     ret = '\n'
     for key in css.keys():
