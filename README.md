@@ -7,9 +7,9 @@ This package contains our source code, data, and a web-based demonstration.
 
 ## To run the demo:
 
-the We have tested this setup on Mac and Linux distributions. 
+We have tested this setup on Mac and Linux distributions. 
 
-You may visit live versions of this package at __http://131.247.3.213:5250__ or __http://131.247.3.215:5250__
+You may visit live versions of this package at __https://bit.ly/3cX2LvR__ or __https://bit.ly/3bQ8ovJ__ 
 
 ### [required] Install python3, python3-virtualenv, and git
 
