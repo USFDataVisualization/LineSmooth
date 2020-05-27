@@ -35,6 +35,29 @@ filter_colors = {
 }
 
 
+def cache_file(cmd, params):
+    file = cmd
+    for key in sorted(params.keys()):
+        file += "_" + str(params[key])
+    file = file.replace('.','_').replace(' ','_').replace('/','_').replace('\\','_')
+    return 'cache/' + file + '.json'
+
+
+def check_cache(_cache_file):
+    return os.path.exists( _cache_file )
+
+
+def get_cache( _cache_file ):
+    return send_file(_cache_file)
+
+
+def save_cache( _cache_file, str ):
+    f = open(_cache_file, "w")
+    f.write( str )
+    f.close()
+    return str
+
+
 @app.route('/')
 @app.route('/index.html')
 def render_index():
@@ -92,6 +115,10 @@ def get_metric_data():
     ds = request.args.get("dataset")
     df = request.args.get("datafile")
 
+    _cache_file = cache_file('metric', {'dataset':ds, 'datafile':df})
+    if check_cache( _cache_file ):
+        return get_cache( _cache_file )
+
     if not experiments.valid_dataset(experiments.data_sets, ds, df):
         print("unknown dataset: " + ds + " or data file: " + df)
         return "{}"
@@ -102,17 +129,17 @@ def get_metric_data():
     for f in experiments.measures:
         metric_reg.append(ranks.metric_ranks(metric_data, experiments.filter_list, 'approx entropy', f)),
 
-    return json.dumps({'metric': metric_data, 'rank': metric_reg})
+    return save_cache( _cache_file, json.dumps({'metric': metric_data, 'rank': metric_reg}) )
 
 
 @app.route('/all_ranks', methods=['GET', 'POST'])
 def get_all_rank_data():
-    cache_file = "pages/json/get_all_rank_data.json"
-    if not os.path.exists(cache_file):
-        with open(cache_file, 'w') as outfile:
+    _cache_file = "pages/json/get_all_rank_data.json"
+    if not os.path.exists(_cache_file):
+        with open(_cache_file, 'w') as outfile:
             json.dump( experiments.get_all_ranks(experiments.data_sets), outfile, indent=1)
 
-    return send_file(cache_file)
+    return send_file(_cache_file)
 
     # return json.dumps(experiments.get_all_ranks(experiments.data_sets))
 
@@ -126,10 +153,15 @@ def get_data():
         print("unknown dataset: " + ds + " or data file: " + df)
         return "{}"
 
+    _cache_file = cache_file('data', {'dataset': ds, 'datafile': df, 'filter':request.args.get("filter"),
+                                        'level': float(request.args.get("level"))})
+    if check_cache(_cache_file):
+        return get_cache(_cache_file)
+
     input_signal = experiments.load_dataset(ds, df)
     res = experiments.process_smoothing(input_signal, request.args.get("filter"), float(request.args.get("level")))
 
-    return json.dumps(res)
+    return save_cache( _cache_file, json.dumps(res))
 
 
 @app.route('/public/filters.css', methods=['GET', 'POST'])

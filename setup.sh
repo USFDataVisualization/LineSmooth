@@ -3,6 +3,9 @@
 # clean
 ./clean.sh
 
+# Create a directory for cache
+mkdir cache
+
 # Create Virtual Environment
 python3 -m venv venv
 

@@ -9,3 +9,4 @@ rm -rf venv
 rm -rf entropy
 rm tmp_*.pd
 rm -rf hera
+rm -rf cache

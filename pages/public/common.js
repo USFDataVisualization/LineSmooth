@@ -178,7 +178,7 @@ function insert_filter_checkboxes(){
     filter_groups.forEach( function(fg){
         html += '<div style="padding-top: 5px;">';
         html += '<fieldset style="border: 1px black solid">';
-        html += '<legend style="width: auto; font-size: 0.8em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.2em ">' + fg['title']
+        html += '<legend style="width: auto; font-size: 0.8em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.2em; ">' + fg['title']
                  + '<span style="font-size: 0.7em;">'
                  + ' ( <a href="javascript:void(0)" onclick="select_filter_group(\'' + fg['title'] + '\',true);">all</a> |'
                  + ' <a href="javascript:void(0)" onclick="select_filter_group(\'' + fg['title'] + '\', true, false);">only</a> |'
@@ -186,7 +186,7 @@ function insert_filter_checkboxes(){
                  + '</span></legend>';
         html += '<div style="padding-left: 10px;">'
         fg['filters'].forEach( function(key){
-            html += '<label class="checkmark-container">' + filter_long_names[key] +
+            html += '<label class="checkmark-container"><span style="font-variant: small-caps;">' + filter_long_names[key] + '</span>' +
                     '<span style="font-size: 0.7em;">' +
                     ' ( <a href="javascript:void(0)" onclick="select_filter_only(\'' + key + '\');">only</a> )' +
                     '</span>' +
