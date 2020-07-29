@@ -1,6 +1,7 @@
 # LineSmooth: An Analytical Framework for Evaluating the Effectiveness of Smoothing Techniques on Line Charts
-
-## VAST Submission 1250
+## Paul Rosen and Ghulam Jilani Quadri
+## Transactions on Visualization and Computer Graphics, 2021
+## Proceedings of VAST, 2020
 
 This package contains our source code, data, and a web-based demonstration.
 
@@ -9,7 +10,7 @@ This package contains our source code, data, and a web-based demonstration.
 
 We have tested this setup on Mac and Linux distributions. 
 
-You may visit live versions of this package at __https://bit.ly/3cX2LvR__ or __https://bit.ly/3bQ8ovJ__ 
+You may visit live versions of this package at __https://usfdatavisualization.github.io/LineSmoothDemo/__  
 
 ### [required] Install python3, python3-virtualenv, and git
 
@@ -27,7 +28,7 @@ You may visit live versions of this package at __https://bit.ly/3cX2LvR__ or __h
 ### [required] Generate the experiemental and start a webserver
 
     Run the server
-    > ./run_server_debug.sh
+    > ./run_server.sh
     
-    If everything goes as planned, you can open a webbrowser and open url http://localhost:5050
+    If everything goes as planned, you can open a webbrowser and open url http://localhost:5250
     

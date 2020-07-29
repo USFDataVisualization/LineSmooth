@@ -64,7 +64,7 @@ def __write_color_css():
         ret += key + '\n'
         ret += json.dumps(val, indent=2).replace('"', '').replace(',', ';') + '\n\n'
 
-    f = open("pages/public/filters.css", "w")
+    f = open("pages/style/filters.css", "w")
     f.write(ret)
     f.close()
 

@@ -149,7 +149,7 @@ def get_all_ranks(datasets):
             overall[m] = dict.fromkeys(filter_list, 0)
 
         for df in datasets[ds]:
-            print( "Ranking:" + df)
+            print( "Ranking: " + df)
             metric_data = generate_metric_data(ds, df)
 
             metric_reg = {}

@@ -1,5 +1,6 @@
 import json
 import os
+import webbrowser
 
 from flask import Flask
 from flask import request
@@ -41,37 +42,6 @@ def save_cache( _cache_file, str ):
 @app.route('/index.html')
 def render_index():
     return send_file('pages/index.html')
-
-'''
-@app.route('/interactive-smoothing.html')
-def render_smoothing():
-    return send_file('pages/interactive-smoothing.html')
-
-
-@app.route('/figures.html')
-def render_figures():
-    return send_file('pages/figures.html')
-
-
-@app.route('/ranks-by-dataset.html')
-def render_ranks_by_dataset():
-    return send_file('pages/ranks-by-dataset.html')
-
-
-@app.route('/ranks-by-datafile.html')
-def render_ranks_by_datafile():
-    return send_file('pages/ranks-by-datafile.html')
-
-
-@app.route('/entropy-plots.html')
-def render_entropy_plots():
-    return send_file('pages/entropy-plots.html')
-
-
-@app.route('/performance.html')
-def render_performance():
-    return send_file('pages/performance.html')
-'''
 
 
 @app.route('/<path:path>')
