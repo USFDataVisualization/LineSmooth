@@ -11,8 +11,8 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <!-- Our CSS -->
-    <link rel="stylesheet" href="public/style.css">
-    <link rel="stylesheet" href="public/filters.css">
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/filters.css">
 
     <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -25,33 +25,31 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
 
-    <script src="https://d3js.org/d3.v4.js" crossorigin="anonymous"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v4.js" integrity="sha384-2D+rRoPOU+IYMo2i8sD/TSf9L+6H+Dt8lxmKl1r7xyEcV83QdtJyeaoE1DHIG3F7" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js" integrity="sha384-hX5odjoulJel81+3dsnorXlZ7kA46f8qrV+2sBCcEAXaCyEAiRusFRjaefWw2NPp" crossorigin="anonymous"></script>
 
-    <script src="public/common.js"></script>
-    <script src="public/data_loader.js"></script>
-    <script src="public/vis_rank_summary.js"></script>
+    <script src="javascript/common.js"></script>
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="57x57" href="public/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="public/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="public/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="public/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="public/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="public/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="public/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="public/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="public/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="public/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="public/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="public/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="public/favicon/favicon-16x16.png">
-    <link rel="manifest" href="public/favicon/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="images/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="public/favicon/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="images/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <title>A Framework for the Analytical Evaluation of Line Chart Smoothing</title>
+    <title>LineSmooth: An Analytical Framework for Evaluating the Effectiveness of Smoothing Techniques on Line Charts</title>
 
 </head>
 <body>
@@ -64,123 +62,38 @@
 
 <div class="page">
 
-    <div class="sidebar">
-        <form id="parameterForm">
-        <script>
-            insert_dataset_only_selector();
-            insert_filter_checkboxes();
-        </script>
-        </form>
-    </div>
-    <div class="page-content" style="padding-bottom: 0;">
-        <div style="width: 1020px; height: 350px;">
-            <span style="text-align: center; width:auto; float: left; height:360px;">
-                <fieldset style="border: 1px black solid">
-                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
-                        Retrieve Value / Determine Range
-                    </legend>
-                    <span>
-                        <span id="rank_l1" class="rankspan2"></span>
-                        <span id="rank_linf" class="rankspan2"></span>
-                    </span>
-                </fieldset>
-            </span>
-            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
-                <fieldset style="border: 1px black solid; text-align: center;">
-                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
-                        Compute Derived Value
-                    </legend>
-                    <span style="display: grid;">
-                        <span id="rank_dvol" class="rankspan2" style="margin:auto; "></span>
-                    </span>
-                </fieldset>
-            </span>
-            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
-                <fieldset style="border: 1px black solid">
-                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
-                        Find Extrema / Find Anomalies
-                    </legend>
-                    <span>
-                        <span id="rank_wass" class="rankspan2"></span>
-                        <span id="rank_bott" class="rankspan2"></span>
-                    </span>
-                </fieldset>
-            </span>
-            <span style="text-align: center; width:auto; float: left; height:360px;">
-                <fieldset style="border: 1px black solid; text-align: center; width:auto;">
-                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
-                        Characterize Distribution / Cluster: Trends
-                    </legend>
-                    <span style="display: grid;">
-                        <span id="rank_freq" class="rankspan2" style="margin:auto; "></span>
-                    </span>
-                </fieldset>
-            </span>
-            <span style="text-align: center; width:auto; float: left; height:360px; margin-left: 20px;">
-                <fieldset style="border: 1px black solid; text-align: center; width:auto;">
-                    <legend style="width: auto; font-size: 0.95em; border: 1px black solid; margin-left: 0.5em; padding: 0em 0.5em ">
-                        Sort / Cluster: Points
-                    </legend>
-                    <span>
-                        <span id="rank_pcc" class="rankspan2"></span>
-                        <span id="rank_src" class="rankspan2"></span>
-                    </span>
-                </fieldset>
-            </span>
-        </div>
-    </div>
+		<div style="width: 900px; padding: 40px; padding-bottom:0; text-align: justify;">
+
+			<h4>Abstract</h4>
+			We present a comprehensive framework for evaluating line chart smoothing methods under a variety of visual analytics tasks. Line charts are commonly used to visualize a series of data samples. When the number of samples is large, or the data are noisy, smoothing can be applied to make the signal more apparent. However, there are a wide variety of smoothing techniques available, and the effectiveness of each depends upon both nature of the data and the visual analytics task at hand. To date, the visualization community lacks a summary work for analyzing and classifying the various smoothing methods available. In this paper, we establish a framework, based on 8 measures of the line smoothing effectiveness tied to 8 low-level visual analytics tasks. We then analyze 12 methods coming from 4 commonly used classes of line chart smoothing—rank filters, convolutional filters, frequency domain filters, and subsampling. The results show that while no method is ideal for all situations, certain methods, such as <font style="font-variant: small-caps;">Gaussian</font> filters and <font style="font-variant: small-caps;">Topology</font>-based subsampling, perform well in general. Other methods, such as low-pass <font style="font-variant: small-caps;">cutoff</font> filters and <font style="font-variant: small-caps;">Douglas-Peucker</font> subsampling, perform well for specific visual analytics tasks. Almost as importantly, our framework demonstrates that several methods, including the commonly used <font style="font-variant: small-caps;">uniform</font> subsampling, produce low-quality results, and should, therefore, be avoided, if possible.
+	</div>
+	
+	<div style="width: 900px; padding: 40px; padding-top:20px; text-align: center;">
+
+		<h4 style="padding-top: 30px;">Summary Ranks</h4>
+		<a href="ranks-summary.html"><img height=200 src="images/ranks-summary.png" /></a>
+
+		<h4 style="padding-top: 30px;">Rank By Data Category</h4>
+		<a href="ranks-by-datafile.html"><img height=200 src="images/ranks-by-datafile.png" /></a>
+
+		<h4 style="padding-top: 30px;">Rank By Dataset</h4>
+		<a href="ranks-by-dataset.html"><img height=200 src="images/ranks-by-dataset.png" /></a>
+
+		<h4 style="padding-top: 30px;">Entropy Plots</h4>
+		<a href="entropy-plots.html"><img height=200 src="images/entropy-plots.png" /></a>
+
+		<h4 style="padding-top: 30px;">Interactive Smoothing</h4>
+		<a href="interactive-smoothing.html"><img height=200 src="images/interactive-smoothing.png" /></a>
+
+		<h4 style="padding-top: 30px;">Performance Visualization</h4>
+		<a href="performance.html"><img height=200 src="images/performance.png" /></a>
+
+		<h4 style="padding-top: 30px;">Paper Figures</h4>
+		<a href="figures.html"><img height=200 src="images/figures.png" /></a>
+			
+		<p style="margin-top: 40px; font-size: 18px;">This work was partially supported by the National Science Foundation (IIS-1845204).</p>
+	</div>
 </div>
-
-
-
-<script>
-
-
-
-    let all_rank_data = null;
-    let active_list = [];
-
-    function update_rank( doc_id, rank_data, title='Ranking' ){
-        html = '<span class="ranktext" style="text-decoration: underline;"><underline>' + title + '</underline></span><br>'
-                + '<span class="ranktext" style="color: darkgrey; font-size: small; ">Best</span><br>';
-
-        rank_data.forEach( function(key) {
-            if( document.getElementById("metric_"+key).checked ){
-                html += '<span class="rankbox ' + key + '_background"></span><span class="ranklabel">' + filter_short_names[key] + '</span><br>';
-            }
-        });
-
-        html += '<span class="ranktext" style="color: darkgrey; font-size: small; ">Worst</span>';
-
-        document.getElementById(doc_id).innerHTML = html;
-    }
-
-    function get_average_rank(metric){
-        let ds = get_selected_dataset();
-        tmp = preprocess_ranks( all_rank_data, ds, metric, active_list ).filter( d=> d.datafile=="average rank" )[0].ranks;
-        return tmp.map( d => d.class );
-    }
-
-    function update_task(){
-
-        active_list = get_active_filters();
-
-        update_rank( "rank_l1", get_average_rank("L1 norm"), 'Average Case:<br>L<sup>1</sup>-norm');
-        update_rank( "rank_linf", get_average_rank("Linf norm"), 'Worst Case:<br>L<sup>&#8734;</sup>-norm');
-        update_rank( "rank_dvol", get_average_rank("delta volume"), 'Volume<br>Preservation');
-        update_rank( "rank_wass", get_average_rank("peak wasserstein"), 'Average Case:<br>Wasserstein');
-        update_rank( "rank_bott", get_average_rank("peak bottleneck"), 'Worst Case:<br>Bottleneck');
-        update_rank( "rank_freq", get_average_rank("frequency preservation"), 'Frequency<br>Preservation');
-        update_rank( "rank_pcc", get_average_rank("pearson cc"), 'Pearson<br>Correlation');
-        update_rank( "rank_src", get_average_rank("spearman rc"), 'Spearman Rank<br>Correlation');
-    }
-
-    d3.json( "/all_ranks", function( dinput ) {
-        all_rank_data = dinput
-        load_datasets(update_task);
-    });
-
-</script>
 
 
 

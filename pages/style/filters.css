@@ -1,0 +1,781 @@
+
+.checkmark-container input:checked ~ .checkmark_median
+{
+  background-color: #0BDEC3
+}
+
+.median_background
+{
+  background-color: #0BDEC3
+}
+
+.median_filter
+{
+  fill: #0BDEC3;
+  stroke: #0BDEC3
+}
+
+.median_regression
+{
+  fill: none;
+  stroke: #0BDEC3;
+  stroke-width: 5
+}
+
+.median_fig_filter
+{
+  fill: none;
+  stroke: #0BDEC3;
+  stroke-width: 3
+}
+
+.median_filter_light
+{
+  fill: #72E8D9;
+  stroke: #72E8D9
+}
+
+.median_hollow_filter
+{
+  fill: white;
+  stroke: #0BDEC3;
+  stroke-width: 3
+}
+
+.median_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.median_track
+{
+  fill: none;
+  stroke: #7cf2e3;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.median_track2
+{
+  fill: none;
+  stroke: #7cf2e3;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_min
+{
+  background-color: #59CB07
+}
+
+.min_background
+{
+  background-color: #59CB07
+}
+
+.min_filter
+{
+  fill: #59CB07;
+  stroke: #59CB07
+}
+
+.min_regression
+{
+  fill: none;
+  stroke: #59CB07;
+  stroke-width: 5
+}
+
+.min_fig_filter
+{
+  fill: none;
+  stroke: #59CB07;
+  stroke-width: 3
+}
+
+.min_filter_light
+{
+  fill: #8AFFAA;
+  stroke: #8AFFAA
+}
+
+.min_hollow_filter
+{
+  fill: white;
+  stroke: #59CB07;
+  stroke-width: 3
+}
+
+.min_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.min_track
+{
+  fill: none;
+  stroke: #94ffb4;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.min_track2
+{
+  fill: none;
+  stroke: #94ffb4;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_max
+{
+  background-color: #ADDB0F
+}
+
+.max_background
+{
+  background-color: #ADDB0F
+}
+
+.max_filter
+{
+  fill: #ADDB0F;
+  stroke: #ADDB0F
+}
+
+.max_regression
+{
+  fill: none;
+  stroke: #ADDB0F;
+  stroke-width: 5
+}
+
+.max_fig_filter
+{
+  fill: none;
+  stroke: #ADDB0F;
+  stroke-width: 3
+}
+
+.max_filter_light
+{
+  fill: #99CC74;
+  stroke: #99CC74
+}
+
+.max_hollow_filter
+{
+  fill: white;
+  stroke: #ADDB0F;
+  stroke-width: 3
+}
+
+.max_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.max_track
+{
+  fill: none;
+  stroke: #a3d67e;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.max_track2
+{
+  fill: none;
+  stroke: #a3d67e;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_gaussian
+{
+  background-color: #099CEB
+}
+
+.gaussian_background
+{
+  background-color: #099CEB
+}
+
+.gaussian_filter
+{
+  fill: #099CEB;
+  stroke: #099CEB
+}
+
+.gaussian_regression
+{
+  fill: none;
+  stroke: #099CEB;
+  stroke-width: 5
+}
+
+.gaussian_fig_filter
+{
+  fill: none;
+  stroke: #099CEB;
+  stroke-width: 3
+}
+
+.gaussian_filter_light
+{
+  fill: #86CCEB;
+  stroke: #86CCEB
+}
+
+.gaussian_hollow_filter
+{
+  fill: white;
+  stroke: #099CEB;
+  stroke-width: 3
+}
+
+.gaussian_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.gaussian_track
+{
+  fill: none;
+  stroke: #90d6f5;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.gaussian_track2
+{
+  fill: none;
+  stroke: #90d6f5;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_savitzky_golay
+{
+  background-color: #184EFF
+}
+
+.savitzky_golay_background
+{
+  background-color: #184EFF
+}
+
+.savitzky_golay_filter
+{
+  fill: #184EFF;
+  stroke: #184EFF
+}
+
+.savitzky_golay_regression
+{
+  fill: none;
+  stroke: #184EFF;
+  stroke-width: 5
+}
+
+.savitzky_golay_fig_filter
+{
+  fill: none;
+  stroke: #184EFF;
+  stroke-width: 3
+}
+
+.savitzky_golay_filter_light
+{
+  fill: #9DB8FF;
+  stroke: #9DB8FF
+}
+
+.savitzky_golay_hollow_filter
+{
+  fill: white;
+  stroke: #184EFF;
+  stroke-width: 3
+}
+
+.savitzky_golay_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.savitzky_golay_track
+{
+  fill: none;
+  stroke: #a7c2ff;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.savitzky_golay_track2
+{
+  fill: none;
+  stroke: #a7c2ff;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_mean
+{
+  background-color: #2509AF
+}
+
+.mean_background
+{
+  background-color: #2509AF
+}
+
+.mean_filter
+{
+  fill: #2509AF;
+  stroke: #2509AF
+}
+
+.mean_regression
+{
+  fill: none;
+  stroke: #2509AF;
+  stroke-width: 5
+}
+
+.mean_fig_filter
+{
+  fill: none;
+  stroke: #2509AF;
+  stroke-width: 3
+}
+
+.mean_filter_light
+{
+  fill: #9284E8;
+  stroke: #9284E8
+}
+
+.mean_hollow_filter
+{
+  fill: white;
+  stroke: #2509AF;
+  stroke-width: 3
+}
+
+.mean_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.mean_track
+{
+  fill: none;
+  stroke: #9c8ef2;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.mean_track2
+{
+  fill: none;
+  stroke: #9c8ef2;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_cutoff
+{
+  background-color: #E80C94
+}
+
+.cutoff_background
+{
+  background-color: #E80C94
+}
+
+.cutoff_filter
+{
+  fill: #E80C94;
+  stroke: #E80C94
+}
+
+.cutoff_regression
+{
+  fill: none;
+  stroke: #E80C94;
+  stroke-width: 5
+}
+
+.cutoff_fig_filter
+{
+  fill: none;
+  stroke: #E80C94;
+  stroke-width: 3
+}
+
+.cutoff_filter_light
+{
+  fill: #E884BF;
+  stroke: #E884BF
+}
+
+.cutoff_hollow_filter
+{
+  fill: white;
+  stroke: #E80C94;
+  stroke-width: 3
+}
+
+.cutoff_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.cutoff_track
+{
+  fill: none;
+  stroke: #f28ec9;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.cutoff_track2
+{
+  fill: none;
+  stroke: #f28ec9;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_butterworth
+{
+  background-color: #DD00FF
+}
+
+.butterworth_background
+{
+  background-color: #DD00FF
+}
+
+.butterworth_filter
+{
+  fill: #DD00FF;
+  stroke: #DD00FF
+}
+
+.butterworth_regression
+{
+  fill: none;
+  stroke: #DD00FF;
+  stroke-width: 5
+}
+
+.butterworth_fig_filter
+{
+  fill: none;
+  stroke: #DD00FF;
+  stroke-width: 3
+}
+
+.butterworth_filter_light
+{
+  fill: #F39EFF;
+  stroke: #F39EFF
+}
+
+.butterworth_hollow_filter
+{
+  fill: white;
+  stroke: #DD00FF;
+  stroke-width: 3
+}
+
+.butterworth_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.butterworth_track
+{
+  fill: none;
+  stroke: #fda8ff;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.butterworth_track2
+{
+  fill: none;
+  stroke: #fda8ff;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_chebyshev
+{
+  background-color: #7F0CE8
+}
+
+.chebyshev_background
+{
+  background-color: #7F0CE8
+}
+
+.chebyshev_filter
+{
+  fill: #7F0CE8;
+  stroke: #7F0CE8
+}
+
+.chebyshev_regression
+{
+  fill: none;
+  stroke: #7F0CE8;
+  stroke-width: 5
+}
+
+.chebyshev_fig_filter
+{
+  fill: none;
+  stroke: #7F0CE8;
+  stroke-width: 3
+}
+
+.chebyshev_filter_light
+{
+  fill: #BA84E8;
+  stroke: #BA84E8
+}
+
+.chebyshev_hollow_filter
+{
+  fill: white;
+  stroke: #7F0CE8;
+  stroke-width: 3
+}
+
+.chebyshev_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.chebyshev_track
+{
+  fill: none;
+  stroke: #c48ef2;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.chebyshev_track2
+{
+  fill: none;
+  stroke: #c48ef2;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_subsample
+{
+  background-color: #E8A20C
+}
+
+.subsample_background
+{
+  background-color: #E8A20C
+}
+
+.subsample_filter
+{
+  fill: #E8A20C;
+  stroke: #E8A20C
+}
+
+.subsample_regression
+{
+  fill: none;
+  stroke: #E8A20C;
+  stroke-width: 5
+}
+
+.subsample_fig_filter
+{
+  fill: none;
+  stroke: #E8A20C;
+  stroke-width: 3
+}
+
+.subsample_filter_light
+{
+  fill: #E8BC6F;
+  stroke: #E8BC6F
+}
+
+.subsample_hollow_filter
+{
+  fill: white;
+  stroke: #E8A20C;
+  stroke-width: 3
+}
+
+.subsample_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.subsample_track
+{
+  fill: none;
+  stroke: #f2c679;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.subsample_track2
+{
+  fill: none;
+  stroke: #f2c679;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_rdp
+{
+  background-color: #FF7B00
+}
+
+.rdp_background
+{
+  background-color: #FF7B00
+}
+
+.rdp_filter
+{
+  fill: #FF7B00;
+  stroke: #FF7B00
+}
+
+.rdp_regression
+{
+  fill: none;
+  stroke: #FF7B00;
+  stroke-width: 5
+}
+
+.rdp_fig_filter
+{
+  fill: none;
+  stroke: #FF7B00;
+  stroke-width: 3
+}
+
+.rdp_filter_light
+{
+  fill: #FFB987;
+  stroke: #FFB987
+}
+
+.rdp_hollow_filter
+{
+  fill: white;
+  stroke: #FF7B00;
+  stroke-width: 3
+}
+
+.rdp_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.rdp_track
+{
+  fill: none;
+  stroke: #ffc391;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.rdp_track2
+{
+  fill: none;
+  stroke: #ffc391;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+
+.checkmark-container input:checked ~ .checkmark_tda
+{
+  background-color: #E8410C
+}
+
+.tda_background
+{
+  background-color: #E8410C
+}
+
+.tda_filter
+{
+  fill: #E8410C;
+  stroke: #E8410C
+}
+
+.tda_regression
+{
+  fill: none;
+  stroke: #E8410C;
+  stroke-width: 5
+}
+
+.tda_fig_filter
+{
+  fill: none;
+  stroke: #E8410C;
+  stroke-width: 3
+}
+
+.tda_filter_light
+{
+  fill: #E8856F;
+  stroke: #E8856F
+}
+
+.tda_hollow_filter
+{
+  fill: white;
+  stroke: #E8410C;
+  stroke-width: 3
+}
+
+.tda_hollow_filter_light
+{
+  fill: none;
+  stroke: none
+}
+
+.tda_track
+{
+  fill: none;
+  stroke: #f28f79;
+  stroke-opacity: 0.6;
+  stroke-width: 8
+}
+
+.tda_track2
+{
+  fill: none;
+  stroke: #f28f79;
+  stroke-opacity: 0.5;
+  stroke-width: 6
+}
+

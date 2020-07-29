@@ -1,30 +1,8 @@
 import json
-import experiments
+import experiments as exp
 from colorutils import Color
 import lcsmooth.ranks as ranks
 
-
-
-'''
-# Old colors
-filter_colors = {
-    'median': ["#0CE8CC", "#72E8D9"],
-    'min': ["#00FF44", "#8AFFAA"],
-    'max': ["#59CB07", "#99CC74"],
-
-    'gaussian': ["#3409E8", "#9284E8"],
-    'savitzky_golay': ["#184EFF", "#9DB8FF"],
-    'mean': ["#099CEB", "#86CCEB"],
-
-    'cutoff': ["#E80C94", "#E884BF"],
-    'butterworth': ["#DD00FF", "#F39EFF"],
-    'chebyshev': ["#7F0CE8", "#BA84E8"],
-
-    'subsample': ["#E8A20C", "#E8BC6F"],
-    'rdp': ["#FF7B00", "#FFB987"],
-    'tda': ["#E8410C", "#E8856F"]
-}
-'''
 
 filter_colors = {
     'median': ["#0BDEC3", "#72E8D9"],
@@ -93,26 +71,26 @@ def __write_color_css():
 
 def __write_datasets():
     with open("pages/json/datasets.json", "w") as outfile:
-        json.dump(experiments.data_sets, outfile )
+        json.dump(exp.data_sets, outfile )
 
 
 def __write_metric_data():
 
-    for ds in experiments.data_sets:
-        for df in experiments.data_sets[ds]:
-            metric_data = experiments.generate_metric_data(ds, df)
+    for ds in exp.data_sets:
+        for df in exp.data_sets[ds]:
+            metric_data = exp.generate_metric_data(ds, df)
             metric_reg = []
 
-            for f in experiments.measures:
-                metric_reg.append(ranks.metric_ranks(metric_data, experiments.filter_list, 'approx entropy', f)),
+            for f in exp.measures:
+                metric_reg.append(ranks.metric_ranks(metric_data, exp.filter_list, 'approx entropy', f)),
 
-            with open(experiments.out_dir + '/' + ds + '/' + df + '/metric.json', "w") as outfile:
+            with open(exp.out_dir + '/' + ds + '/' + df + '/metric.json', "w") as outfile:
                 json.dump({'metric': metric_data, 'rank': metric_reg}, outfile)
 
 
 def __write_all_rank_data():
     with open("pages/json/all_rank_data.json", 'w') as outfile:
-        json.dump( experiments.get_all_ranks(experiments.data_sets), outfile, indent=1)
+        json.dump( exp.get_all_ranks(exp.data_sets), outfile, indent=1)
 
 
 ##########################################################################################
@@ -127,3 +105,7 @@ def build():
     __write_all_rank_data()
     __write_metric_data()
 
+
+if __name__ == "__main__":
+    exp.run_experiments()
+    build()

@@ -14,7 +14,6 @@ import lcsmooth.ranks as lc_ranks
 # Methods and variables for data files
 data_dir = './data'
 out_dir = './pages/json'
-generate_parallel = True
 
 data_groups = ['astro', 'chi_homicide', 'climate_awnd', 'climate_prcp', 'climate_tmax', 'eeg_500', 'eeg_2500',
                'eeg_10000', 'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
@@ -150,7 +149,7 @@ def get_all_ranks(datasets):
             overall[m] = dict.fromkeys(filter_list, 0)
 
         for df in datasets[ds]:
-            print( df)
+            print( "Ranking:" + df)
             metric_data = generate_metric_data(ds, df)
 
             metric_reg = {}
@@ -197,25 +196,29 @@ for group in data_groups:
     data_sets[group] = cur_ds
 
 
-if generate_parallel:
-    jobs = []
+def run_experiments(generate_parallel=True):
+    if generate_parallel:
+        jobs = []
 
-    # Create the processes
-    for _ds in data_sets:
-        if _ds == 'eeg_10000':
-            for df in data_sets[_ds]:
-                jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds, [df]]))
-        else:
-            jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds, data_sets[_ds]]))
+        # Create the processes
+        for _ds in data_sets:
+            if _ds == 'eeg_10000':
+                for df in data_sets[_ds]:
+                    jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds, [df]]))
+            else:
+                jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds, data_sets[_ds]]))
 
-    # Start the processes
-    for j in jobs:
-        j.start()
+        # Start the processes
+        for j in jobs:
+            j.start()
 
-    # Ensure all of the processes have finished
-    for j in jobs:
-        j.join()
-else:
-    for _ds in data_sets:
-        __generate_metric_dataset(_ds)
+        # Ensure all of the processes have finished
+        for j in jobs:
+            j.join()
+    else:
+        for _ds in data_sets:
+            __generate_metric_dataset(_ds)
 
+
+if __name__ == "__main__":
+    run_experiments()

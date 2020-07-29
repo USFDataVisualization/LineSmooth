@@ -1,24 +1,17 @@
 import json
 import os
 
-from flask import Flask, Response
+from flask import Flask
 from flask import request
 from flask import send_file
 from flask import send_from_directory
 
-from colorutils import Color
-
-import experiments
+import experiments as exp
 import lcsmooth.ranks as ranks
-import build_static
-import webbrowser
-
-build_static.build()
-
 
 app = Flask(__name__)
 
-# webbrowser.open_new_tab("http://localhost:5250")
+webbrowser.open_new_tab("http://localhost:5250")
 
 
 def cache_file(cmd, params):
@@ -26,7 +19,7 @@ def cache_file(cmd, params):
     for key in sorted(params.keys()):
         file += "_" + str(params[key])
     file = file.replace('.','_').replace(' ','_').replace('/','_').replace('\\','_')
-    return 'cache/' + file + '.json'
+    return 'pages/json/cache/' + file + '.json'
 
 
 def check_cache(_cache_file):
@@ -49,7 +42,7 @@ def save_cache( _cache_file, str ):
 def render_index():
     return send_file('pages/index.html')
 
-
+'''
 @app.route('/interactive-smoothing.html')
 def render_smoothing():
     return send_file('pages/interactive-smoothing.html')
@@ -78,11 +71,27 @@ def render_entropy_plots():
 @app.route('/performance.html')
 def render_performance():
     return send_file('pages/performance.html')
+'''
 
 
-@app.route('/public/<path:path>')
-def send_static(path):
-    return send_from_directory('pages/public', path)
+@app.route('/<path:path>')
+def send_static_html(path):
+    return send_from_directory('pages/', path)
+
+
+@app.route('/images/<path:path>')
+def send_static_images(path):
+    return send_from_directory('pages/images', path)
+
+
+@app.route('/javascript/<path:path>')
+def send_static_javascript(path):
+    return send_from_directory('pages/javascript', path)
+
+
+@app.route('/style/<path:path>')
+def send_static_style(path):
+    return send_from_directory('pages/style', path)
 
 
 @app.errorhandler(404)
@@ -93,7 +102,7 @@ def page_not_found(error_msg):
 
 @app.route('/datasets', methods=['GET', 'POST'])
 def get_datasets():
-    return json.dumps(experiments.data_sets)
+    return json.dumps(exp.data_sets)
 
 
 @app.route('/metric', methods=['GET', 'POST'])
@@ -105,15 +114,15 @@ def get_metric_data():
     if check_cache( _cache_file ):
         return get_cache( _cache_file )
 
-    if not experiments.valid_dataset(experiments.data_sets, ds, df):
+    if not exp.valid_dataset(exp.data_sets, ds, df):
         print("unknown dataset: " + ds + " or data file: " + df)
         return "{}"
 
-    metric_data = experiments.generate_metric_data(ds, df)
+    metric_data = exp.generate_metric_data(ds, df)
     metric_reg = []
 
-    for f in experiments.measures:
-        metric_reg.append(ranks.metric_ranks(metric_data, experiments.filter_list, 'approx entropy', f)),
+    for f in exp.measures:
+        metric_reg.append(ranks.metric_ranks(metric_data, exp.filter_list, 'approx entropy', f)),
 
     return save_cache( _cache_file, json.dumps({'metric': metric_data, 'rank': metric_reg}) )
 
@@ -123,11 +132,9 @@ def get_all_rank_data():
     _cache_file = "pages/json/get_all_rank_data.json"
     if not os.path.exists(_cache_file):
         with open(_cache_file, 'w') as outfile:
-            json.dump( experiments.get_all_ranks(experiments.data_sets), outfile, indent=1)
+            json.dump( exp.get_all_ranks(exp.data_sets), outfile, indent=1)
 
     return send_file(_cache_file)
-
-    # return json.dumps(experiments.get_all_ranks(experiments.data_sets))
 
 
 @app.route('/data', methods=['GET', 'POST'])
@@ -135,7 +142,7 @@ def get_data():
     ds = request.args.get("dataset")
     df = request.args.get("datafile")
 
-    if not experiments.valid_dataset(experiments.data_sets, ds, df):
+    if not exp.valid_dataset(exp.data_sets, ds, df):
         print("unknown dataset: " + ds + " or data file: " + df)
         return "{}"
 
@@ -144,40 +151,8 @@ def get_data():
     if check_cache(_cache_file):
         return get_cache(_cache_file)
 
-    input_signal = experiments.load_dataset(ds, df)
-    res = experiments.process_smoothing(input_signal, request.args.get("filter"), float(request.args.get("level")))
+    input_signal = exp.load_dataset(ds, df)
+    res = exp.process_smoothing(input_signal, request.args.get("filter"), float(request.args.get("level")))
 
     return save_cache( _cache_file, json.dumps(res))
-
-
-# @app.route('/public/filters.css', methods=['GET', 'POST'])
-# def get_filter_css():
-#     css = {}
-#
-#     for key in filter_colors.keys():
-#         col_dark = filter_colors[key][0]
-#         col_light = filter_colors[key][1]
-#         css['.checkmark-container input:checked ~ .checkmark_' + key] = {'background-color': col_dark}
-#         css['.' + key + '_background'] = {'background-color': col_dark}
-#         css['.' + key + '_filter'] = {'fill': col_dark, 'stroke': col_dark}
-#         css['.' + key + '_regression'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 5}
-#         css['.' + key + '_fig_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
-#         css['.' + key + '_filter_light'] = {'fill': col_light, 'stroke': col_light}
-#         css['.' + key + '_hollow_filter'] = {'fill': 'white', 'stroke': col_dark, 'stroke-width': 3}
-#         css['.' + key + '_hollow_filter_light'] = {'fill': 'none', 'stroke': 'none'}
-#
-#         col_very_light = Color(web=col_light)+Color((10, 10, 10))
-#         css['.' + key + '_track'] = {'fill': 'none',
-#                                      'stroke': col_very_light.web, 'stroke-opacity': 0.6, "stroke-width": 8 }
-#         css['.' + key + '_track2'] = {'fill': 'none',
-#                                      'stroke': col_very_light.web, 'stroke-opacity': 0.5, "stroke-width": 6 }
-#
-#     ret = '\n'
-#     for key in css.keys():
-#         val = css[key]
-#         ret += key + '\n'
-#         ret += json.dumps(val, indent=2).replace('"', '').replace(',', ';') + '\n\n'
-#
-#     return Response(ret, mimetype='text/css')
-#
 
