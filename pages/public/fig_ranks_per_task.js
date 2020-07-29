@@ -55,9 +55,9 @@ function load_fig_ranks_per_task(){
                     'peak wasserstein': 'fig_task_fe_wass'
                 };
 
-    d3.json( "datasets", function( dinput ) {
+    fetch_datasets( function( dinput ) {
         let datasets = Object.keys(dinput);
-        d3.json( "/all_ranks", function( dinput ) {
+        fetch_all_ranks( function( dinput ) {
             all_rank_data = dinput;
 
 
@@ -124,7 +124,7 @@ function load_fig_ranks_per_task(){
                 //
                 // Draw Visualization
                 //
-                vis_rank_summary("#" + metric_fig[cur_metric], cur_data, 5, 50, 38, 18, false, 320, 14 );
+                vis_rank_summary("#" + metric_fig[cur_metric], cur_data, 5, 50, 40, 18, false, 320, 14 );
             });
 
 

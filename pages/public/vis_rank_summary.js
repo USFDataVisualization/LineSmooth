@@ -122,7 +122,8 @@ function vis_rank_summary( doc_id, rank_data, startX=35, startY=55, xSpacing=55,
         instance.forEach( function(f){
             gtmp.append("text")
                   .style("fill", "gray")
-                  .style("font-size", "14px")
+                  //.style("font-size", "14px")
+                  .style("font-size", "17px")
                   .attr("dy", ".35em")
                   .attr("font-family", "Arial")
                   .attr("font-variant", "small-caps")
@@ -161,15 +162,15 @@ function vis_rank_summary( doc_id, rank_data, startX=35, startY=55, xSpacing=55,
         let gtmp = svg.append("g");
         rank_data.forEach( function(d){
             if( d.datafile=='overall performance'){
-                add_label( gtmp, 'overall', (curX+4), (startY+labelOffsetX-3), labelRotation, "15px" );
-                add_label( gtmp, 'performance', (curX+25), (startY+labelOffsetX-3), labelRotation, "15px" );
+                add_label( gtmp, 'overall', (curX+4), (startY+labelOffsetX-3), labelRotation, "16px" );
+                add_label( gtmp, 'performance', (curX+25), (startY+labelOffsetX-3), labelRotation, "16px" );
             }
             else if (d.datafile=='average rank'){
                 curX+=xSpacing/4;
-                add_label( gtmp, d.datafile, (curX+4), (startY+labelOffsetX), labelRotation, "15px" );
+                add_label( gtmp, d.datafile, (curX+4), (startY+labelOffsetX), labelRotation, "16px" );
             }
             else{
-                add_label( gtmp, d.datafile, (curX+4), (startY+labelOffsetX), labelRotation, (d.datafile=='overall')?"15px":"13px" );
+                add_label( gtmp, d.datafile, (curX+4), (startY+labelOffsetX), labelRotation, (d.datafile=='overall')?"16px":"14px" );
             }
 
             curX+=xSpacing;

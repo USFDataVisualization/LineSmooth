@@ -7,7 +7,8 @@ function stringize( v ){
 
 function reloadChart(){
     console.log("data?" + $('#parameterForm').serialize() );
-    d3.json( "data?" + $('#parameterForm').serialize(), function( dinput ) {
+    //d3.json( "data?" + $('#parameterForm').serialize(), function( dinput ) {
+    fetch_data_form( function( dinput ) {
 
         console.log( dinput );
         document.getElementById("approx_ent_value").innerHTML = stringize(dinput['metrics']['approx entropy']);

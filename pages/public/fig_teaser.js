@@ -1,9 +1,20 @@
 
-
     function append_text( grp, x, y, text, align='start', font_variant='normal' ){
                  grp.append("text")
                   .style("fill", "gray")
                   .style("font-size", "18px")
+                  .attr("dy", ".35em")
+                  .attr("font-family", "Arial")
+                  .attr("font-variant", font_variant)
+                  .attr("text-anchor", align)
+                  .attr("transform", "translate("+ x +","+ y +")")
+                  .text( text );
+    }
+
+    function append_text_teaser( grp, x, y, text, align='start', font_variant='normal' ){
+                 grp.append("text")
+                  .style("fill", "gray")
+                  .style("font-size", "24px")
                   .attr("dy", ".35em")
                   .attr("font-family", "Arial")
                   .attr("font-variant", font_variant)
@@ -57,12 +68,13 @@ function load_teaser(){
 
 
     function draw_path(svg, links){
+        console.log(links)
         svg.append("g").selectAll("path")
             .data(links)
             .enter().append("path")
             .attr( 'd', function(d){ return make_path( [d.src.x+15,d.src.y+7.5], [d.dst.x,d.dst.y+7.5] ); } )
             //.attr("class", function(d){ return d.src.class + "_filter_light"; })
-            .attr("class", function(d){ return d.src.path_class; })
+            .attr("class", function(d){ console.log(d.src.path_class ); return d.src.path_class; })
             .attr("fill-opacity", 0.7)
             .attr("fill", "none")
             .attr("stroke-width",4);
@@ -87,12 +99,12 @@ function load_teaser(){
 
 
         startY = 348;
-        dY = 25;
+        dY = 27;
 
-        curX = 28;
+        curX = 33;
         last_rank = null;
         links = [];
-        line_classes = [];//['tda','gaussian','savitzky_golay','cutoff','rdp','subsample'];
+        line_classes = ['tda','gaussian','savitzky_golay','cutoff','rdp','subsample'];
         rank_order.forEach( function(rg){
             rg.subcats.forEach( function(n){
                 //console.log(teaser_ranks[n]);
@@ -116,15 +128,14 @@ function load_teaser(){
                             teaser_ranks[n][i].r = 20;
                             curY += dY;
                         }
-                        curX += 30;
+                        curX += 33;
                         if( last_rank != null )
                             links = links.concat( find_links( last_rank,teaser_ranks[n]) );
                         last_rank = teaser_ranks[n];
 
             });
-            curX += 20;
+            curX += 24;
         });
-
 
         draw_path(svg, links);
 
@@ -145,16 +156,19 @@ function load_teaser(){
 
         curY = startY+8;
         for( i = 0; i < last_rank.length; i++ ){
-            append_text( g_text, 344, curY, filter_short_names[ last_rank[i].class ], 'start', 'small-caps' );
-            append_text( g_text, 20, curY, (i+1), 'end', 'start', 'small-caps' );
+            let txt = filter_short_names[ last_rank[i].class ];
+            if (txt[0] == txt[0].toLowerCase()) curY -= 2;
+            append_text_teaser( g_text, 384, curY, filter_short_names[ last_rank[i].class ], 'start', 'small-caps' );
+            if (txt[0] == txt[0].toLowerCase()) curY += 2;
+            append_text_teaser( g_text, 24, curY, (i+1), 'end', 'start', 'small-caps' );
             curY += dY;
         }
 
-        curX = 38;
+        curX = 44;
         rank_order.forEach( function(rg){
             g_text.append("text")
                   .style("fill", "gray")
-                  .style("font-size", "20px")
+                  .style("font-size", "24px")
                   //.attr("dy", ".35em")
                   .attr("font-family", "Arial")
                   .attr("text-anchor", "start")
@@ -162,20 +176,24 @@ function load_teaser(){
                   .text( rg['title'] );
 
             rg.subcats.forEach( function(n){
+                if( n=="peak wasserstein") curX += 2;
+                if( n=="peak bottleneck") curX += 6;
                 g_text.append("text")
                       .style("fill", "gray")
-                      .style("font-size", "18px")
+                      .style("font-size", "20px")
                       //.attr("dy", ".35em")
                       .attr("font-family", "Arial")
                       .attr("text-anchor", "middle")
-                      .attr("transform", "translate("+ (curX-2) +","+ (662) +")")
+                      .attr("transform", "translate("+ (curX-2) +","+ (681) +")")
                       .text( metric_math_name[n][0] )
                         .append("tspan")
                             .attr("dy","4")
                             .text(metric_math_name[n][1]);
-                curX += 30;
+                if( n=="peak wasserstein") curX -= 2;
+                 if( n=="peak bottleneck") curX -= 6;
+                curX += 33;
             });
-            curX += 20;
+            curX += 24;
         });
 
 
@@ -209,12 +227,12 @@ function load_teaser(){
             });
 
             if( i == 0 && j == 0 ){
-                add_linechart( "#fig_teaser", dinput['input'], dinput['input'], [5,10], [480,225], "dataset_fig_lines" );
+                add_linechart( "#fig_teaser", dinput['input'], dinput['input'], [5,10], [530,245], "dataset_fig_lines" );
             }
 
-            add_linechart( "#fig_teaser", dinput['input'], dinput['output'], [500+335*j,5+180*i], [320,150], f + "_fig_filter" );
+            add_linechart( "#fig_teaser", dinput['input'], dinput['output'], [590+375*j,5+180*i], [350,150], f + "_fig_filter" );
             //append_text( text_group, (5+335*i+15), (5+155*j+125), "approx entropy: " + dinput['metrics']['approx entropy'].toFixed(3) );
-            append_text( text_group, (500+335*j+15), (5+180*i+10), filter_long_names[f], 'start', 'small-caps' );
+            append_text_teaser( text_group, (590+375*j+15), (5+180*i+10), filter_long_names[f], 'start', 'small-caps' );
 
             if( ++load_dataset.counter == 12 ){
                 draw_ranks(teaser_svg, load_dataset.teaser_ranks);
@@ -295,9 +313,9 @@ function load_teaser(){
             if( i >= 2 ) i += 0.1;
             j *= 1.25;
 
-            add_linechart( "#fig_datasets", dinput['input'], dinput['input'], [5+335*i,10+155*j], [320,153], "dataset_fig_lines" );
+            add_linechart( "#fig_datasets", dinput['input'], dinput['input'], [5+365*i,10+155*j], [340,153], "dataset_fig_lines" );
             //append_text( text_group, (5+335*i+15), (5+155*j+125), "approx entropy: " + dinput['metrics']['approx entropy'].toFixed(3) );
-            append_text( text_group, (5+335*i+15), (5+155*j+5), ds['title'] );
+            append_text( text_group, (5+365*i+15), (5+155*j+5), ds['title'] );
 
         });
 
@@ -512,7 +530,8 @@ class SVG_Plot {
 
 
 
-    d3.json( "metric?dataset=eeg_500&datafile=eeg_chan10_500&task=task_retrieve", function( error, dinput ) {
+    //d3.json( "metric?dataset=eeg_500&datafile=eeg_chan10_500&task=task_retrieve", function( error, dinput ) {
+    fetch_metric( { 'dataset': 'eeg_500', 'datafile': 'eeg_chan10_500', 'task': 'task_retrieve' }, function( error, dinput ) {
         if (error) return console.warn(error);
 
         active_filters = ['chebyshev','tda']

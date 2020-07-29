@@ -71,8 +71,8 @@ function updateMetrics(){
 }
 
 function reloadMetrics(){
-    console.log( "metric?" + $('#parameterForm').serialize() );
-    d3.json( "metric?" + $('#parameterForm').serialize(), function( error, dinput ) {
+    //console.log( $('#parameterForm') );
+    fetch_metrics_form( function( error, dinput ) {
         if (error) return console.warn(error);
         console.log( dinput );
         metrics_data = dinput['metric'];

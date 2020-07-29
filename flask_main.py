@@ -10,29 +10,15 @@ from colorutils import Color
 
 import experiments
 import lcsmooth.ranks as ranks
+import build_static
 import webbrowser
+
+build_static.build()
+
 
 app = Flask(__name__)
 
-webbrowser.open_new_tab("http://localhost:5250")
-
-filter_colors = {
-    'median': ["#0CE8CC", "#72E8D9"],
-    'min': ["#00FF44", "#8AFFAA"],
-    'max': ["#59CB07", "#99CC74"],
-
-    'gaussian': ["#3409E8", "#9284E8"],
-    'savitzky_golay': ["#184EFF", "#9DB8FF"],
-    'mean': ["#099CEB", "#86CCEB"],
-
-    'cutoff': ["#E80C94", "#E884BF"],
-    'butterworth': ["#DD00FF", "#F39EFF"],
-    'chebyshev': ["#7F0CE8", "#BA84E8"],
-
-    'subsample': ["#E8A20C", "#E8BC6F"],
-    'rdp': ["#FF7B00", "#FFB987"],
-    'tda': ["#E8410C", "#E8856F"]
-}
+# webbrowser.open_new_tab("http://localhost:5250")
 
 
 def cache_file(cmd, params):
@@ -164,32 +150,34 @@ def get_data():
     return save_cache( _cache_file, json.dumps(res))
 
 
-@app.route('/public/filters.css', methods=['GET', 'POST'])
-def get_filter_css():
-    css = {}
+# @app.route('/public/filters.css', methods=['GET', 'POST'])
+# def get_filter_css():
+#     css = {}
+#
+#     for key in filter_colors.keys():
+#         col_dark = filter_colors[key][0]
+#         col_light = filter_colors[key][1]
+#         css['.checkmark-container input:checked ~ .checkmark_' + key] = {'background-color': col_dark}
+#         css['.' + key + '_background'] = {'background-color': col_dark}
+#         css['.' + key + '_filter'] = {'fill': col_dark, 'stroke': col_dark}
+#         css['.' + key + '_regression'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 5}
+#         css['.' + key + '_fig_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
+#         css['.' + key + '_filter_light'] = {'fill': col_light, 'stroke': col_light}
+#         css['.' + key + '_hollow_filter'] = {'fill': 'white', 'stroke': col_dark, 'stroke-width': 3}
+#         css['.' + key + '_hollow_filter_light'] = {'fill': 'none', 'stroke': 'none'}
+#
+#         col_very_light = Color(web=col_light)+Color((10, 10, 10))
+#         css['.' + key + '_track'] = {'fill': 'none',
+#                                      'stroke': col_very_light.web, 'stroke-opacity': 0.6, "stroke-width": 8 }
+#         css['.' + key + '_track2'] = {'fill': 'none',
+#                                      'stroke': col_very_light.web, 'stroke-opacity': 0.5, "stroke-width": 6 }
+#
+#     ret = '\n'
+#     for key in css.keys():
+#         val = css[key]
+#         ret += key + '\n'
+#         ret += json.dumps(val, indent=2).replace('"', '').replace(',', ';') + '\n\n'
+#
+#     return Response(ret, mimetype='text/css')
+#
 
-    for key in filter_colors.keys():
-        col_dark = filter_colors[key][0]
-        col_light = filter_colors[key][1]
-        css['.checkmark-container input:checked ~ .checkmark_' + key] = {'background-color': col_dark}
-        css['.' + key + '_background'] = {'background-color': col_dark}
-        css['.' + key + '_filter'] = {'fill': col_dark, 'stroke': col_dark}
-        css['.' + key + '_regression'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 5}
-        css['.' + key + '_fig_filter'] = {'fill': 'none', 'stroke': col_dark, 'stroke-width': 3}
-        css['.' + key + '_filter_light'] = {'fill': col_light, 'stroke': col_light}
-        css['.' + key + '_hollow_filter'] = {'fill': 'white', 'stroke': col_dark, 'stroke-width': 3}
-        css['.' + key + '_hollow_filter_light'] = {'fill': 'none', 'stroke': 'none'}
-
-        col_very_light = Color(web=col_light)+Color((10, 10, 10))
-        css['.' + key + '_track'] = {'fill': 'none',
-                                     'stroke': col_very_light.web, 'stroke-opacity': 0.6, "stroke-width": 8 }
-        css['.' + key + '_track2'] = {'fill': 'none',
-                                     'stroke': col_very_light.web, 'stroke-opacity': 0.5, "stroke-width": 6 }
-
-    ret = '\n'
-    for key in css.keys():
-        val = css[key]
-        ret += key + '\n'
-        ret += json.dumps(val, indent=2).replace('"', '').replace(',', ';') + '\n\n'
-
-    return Response(ret, mimetype='text/css')

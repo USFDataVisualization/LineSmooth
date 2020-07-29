@@ -21,7 +21,8 @@
 
 
         function reloadMetrics(){
-            d3.json( "metric?" + $('#parameterForm').serialize(), function( dinput ) {
+            //d3.json( "metric?" + $('#parameterForm').serialize(), function( dinput ) {
+            fetch_metrics_form( function( dinput ) {
                 metrics_data = dinput['metric'];
                 updateMetrics();
             });

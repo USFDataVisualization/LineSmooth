@@ -14,7 +14,7 @@ import lcsmooth.ranks as lc_ranks
 # Methods and variables for data files
 data_dir = './data'
 out_dir = './pages/json'
-generate_parallel = False
+generate_parallel = True
 
 data_groups = ['astro', 'chi_homicide', 'climate_awnd', 'climate_prcp', 'climate_tmax', 'eeg_500', 'eeg_2500',
                'eeg_10000', 'flights', 'nz_tourist', 'stock_price', 'stock_volume', 'unemployment']
@@ -31,10 +31,13 @@ data_sets = {}
 #
 #
 # Methods for generating metric data
-def load_dataset(ds, df):
-    filename = data_dir + "/" + ds + "/" + df + ".json"
+def load_json(filename):
     with open(filename) as json_file:
         return json.load(json_file)
+
+
+def load_dataset(ds, df):
+    return load_json(data_dir + "/" + ds + "/" + df + ".json")
 
 
 def valid_dataset(datasets, ds, df):
@@ -83,15 +86,15 @@ def process_smoothing(input_signal, filter_name, filter_level):
             'metrics': metrics}
 
 
-def __generate_filter_metric_data(_input_signal, _filter_name):
-    results = []
-    process_smoothing(_input_signal, _filter_name, 0)  # warm up
-    for i in range(100):
-        res = process_smoothing(_input_signal, _filter_name, float(i + 1) / 100)
-        res.pop('input')
-        res.pop('output')
-        results.append(res)
-    return results
+# def __generate_filter_metric_data(_input_signal, _filter_name):
+#     results = []
+#     process_smoothing(_input_signal, _filter_name, 0)  # warm up
+#     for i in range(100):
+#         res = process_smoothing(_input_signal, _filter_name, float(i + 1) / 100)
+#         res.pop('input')
+#         res.pop('output')
+#         results.append(res)
+#     return results
 
 
 def __create_directory(_dir, quiet=False):
@@ -108,8 +111,7 @@ def generate_metric_data(_dataset, _datafile, _filter_name='all', _input_data=No
 
     my_out_file = my_out_dir + _filter_name + '.json'
     if os.path.exists(my_out_file):
-        with open(my_out_file) as json_file:
-            return json.load(json_file)
+        return load_json( my_out_file)
 
     if _input_data is None:
         _input_data = load_dataset(_dataset, _datafile)
@@ -117,25 +119,25 @@ def generate_metric_data(_dataset, _datafile, _filter_name='all', _input_data=No
     if _filter_name == 'all':
         results = []
         for _filter in filter_list:
-            results += generate_metric_data(_dataset, _datafile, _filter_name=_filter, _input_data=_input_data,
-                                            quiet=quiet)
+            res = generate_metric_data(_dataset, _datafile, _filter_name=_filter, _input_data=_input_data, quiet=quiet)
+            for r in res:
+                r.pop('output')
+            results += res
     else:
-        results = __generate_filter_metric_data(_input_data, _filter_name)
+        results = []
+        process_smoothing(_input_data, _filter_name, 0)  # warm up
+        for i in range(101):
+            res = process_smoothing(_input_data, _filter_name, float(i) / 100)
+            res.pop('input')
+            results.append(res)
 
     if not quiet:
         print("Saving: " + my_out_file)
     with open(my_out_file, 'w') as outfile:
-        json.dump(results, outfile, indent=4, separators=(',', ': '))
+        # json.dump(results, outfile, indent=4, separators=(',', ': '))
+        json.dump(results, outfile)
 
     return results
-
-
-#
-# Metric data is generated when the program is loaded
-def __generate_metric_dataset(_ds):
-    for _df in data_sets[_ds]:
-        print("Checking: " + _ds + " " + _df)
-        generate_metric_data(_ds, _df)
 
 
 def get_all_ranks(datasets):
@@ -173,6 +175,14 @@ def get_all_ranks(datasets):
     return res
 
 
+#
+# Metric data is generated when the program is loaded
+def __generate_metric_dataset(_ds,_dfs):
+    for _df in _dfs:
+        print("Checking: " + _ds + " " + _df)
+        generate_metric_data(_ds, _df)
+
+
 #############################################
 #############################################
 #############################################
@@ -192,7 +202,11 @@ if generate_parallel:
 
     # Create the processes
     for _ds in data_sets:
-        jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds]))
+        if _ds == 'eeg_10000':
+            for df in data_sets[_ds]:
+                jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds, [df]]))
+        else:
+            jobs.append(multiprocessing.Process(target=__generate_metric_dataset, args=[_ds, data_sets[_ds]]))
 
     # Start the processes
     for j in jobs:

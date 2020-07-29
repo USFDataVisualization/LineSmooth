@@ -79,7 +79,7 @@ var update_func = null;
 
 function load_datasets( __update_func ){
     update_func = __update_func;
-    d3.json( "datasets", function( dinput ) {
+    fetch_datasets( function( dinput ) {
         datasets = dinput;
 
         html = "";
