@@ -3,11 +3,13 @@
 # clean
 ./clean.sh
 
-# Create a directory for cache
-mkdir cache
-
 # Create Virtual Environment
 python3 -m venv venv
+
+# Install OpenMP on Mac
+if [[ $OSTYPE == 'darwin'* ]]; then
+    brew install libomp
+fi
 
 # Activate the environment
 . venv/bin/activate
@@ -15,7 +17,10 @@ python3 -m venv venv
 pip install --upgrade pip
 
 # Within the activated environment, use the following command to install Flask and dependancies:
-pip install wheel numpy sklearn simplejson Flask python-dotenv watchdog blinker gunicorn matplotlib colorutils
+pip install wheel
+pip install cython
+pip install numpy simplejson Flask python-dotenv watchdog blinker gunicorn matplotlib
+pip install sklearn
 
 # Install Entropy library
 git clone https://github.com/raphaelvallat/entropy.git entropy/
@@ -28,23 +33,28 @@ deactivate
 
 # Clone hera
 git clone https://bitbucket.org/grey_narn/hera.git
-git checkout d72ebd3ede77c887e0f4fbb3d9c1410fb38f23ba
+cd hera
+git checkout 2c5e6c606ee37cd68bbe9f9915dba99f7677dd87
+cd ..
 
 # Patching for macport error
-patch hera/bottleneck/CMakeLists.txt hera_macport.patch
+if [[ $OSTYPE == 'darwin'* ]]; then
+    patch hera/bottleneck/CMakeLists.txt hera_macport.patch
+fi
+
 
 # Build Hera Bottleneck
 mkdir hera/bottleneck/bin
 cd hera/bottleneck/bin
 cmake ..
-make
+make bottleneck_dist
 cd ../../../
 
 # Build Hera Wasserstein
 mkdir hera/wasserstein/bin
 cd hera/wasserstein/bin
 cmake ..
-make
+make wasserstein_dist
 cd ../../../
 
 
